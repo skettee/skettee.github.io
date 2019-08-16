@@ -10,5 +10,32 @@
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>경사하강법</title>
+      <link>/tags/%EA%B2%BD%EC%82%AC%ED%95%98%EA%B0%95%EB%B2%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/%EA%B2%BD%EC%82%AC%ED%95%98%EA%B0%95%EB%B2%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>딥러닝</title>
+      <link>/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>선형회귀</title>
+      <link>/tags/%EC%84%A0%ED%98%95%ED%9A%8C%EA%B7%80/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/%EC%84%A0%ED%98%95%ED%9A%8C%EA%B7%80/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
