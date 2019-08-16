@@ -8,46 +8,12 @@
   </url>
   
   <url>
-    <loc>/categories/deep-learning/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/categories/linear-regression/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/%EA%B2%BD%EC%82%AC%ED%95%98%EA%B0%95%EB%B2%95/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/post/linear_regression/</loc>
-  </url>
-  
-  <url>
-    <loc>/tags/%EC%84%A0%ED%98%95%ED%9A%8C%EA%B7%80/</loc>
     <priority>0</priority>
   </url>
   
