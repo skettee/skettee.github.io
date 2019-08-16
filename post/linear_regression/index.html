@@ -74,6 +74,7 @@
 <li><a href="#keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</a></li>
 <li><a href="#손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</a></li>
 <li><a href="#w-와-b-값을-확인">\(w\)와 \(b\)값을 확인</a></li>
+<li><a href="#그래프로-확인">그래프로 확인</a></li>
 </ul></li>
 <li><a href="#해결-solution">해결 (Solution)</a></li>
 </ul></li>
@@ -484,7 +485,7 @@ hist = model.fit(X_train, Y_train, epochs=40000, verbose=0)
 </code></pre>
 
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0812 23:01:41.166896 4420593088 deprecation.py:506] From /Users/skettee/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0817 01:10:59.270397 4648547776 deprecation.py:506] From /Users/skettee/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
@@ -509,13 +510,26 @@ plt.show()
 <h3 id="w-와-b-값을-확인">\(w\)와 \(b\)값을 확인</h3>
 
 <pre><code class="language-python">w, b = model.get_weights()
-print('w: ', w[0][0])
-print('b: ', b[0])
+w =  w[0][0]
+b = b[0]
+print('w: ', w)
+print('b: ', b)
 </code></pre>
 
-<pre><code>w:  9.800606
-b:  0.0008281114
+<pre><code>w:  9.801797
+b:  0.0006815222
 </code></pre>
+
+<h3 id="그래프로-확인">그래프로 확인</h3>
+
+<pre><code class="language-python">plt.scatter(x, y)
+plt.plot(x, w*x+b, 'r')
+plt.xlabel('time^2 (s)')
+plt.ylabel('height (m)')
+plt.show()
+</code></pre>
+
+<p><img src="output_39_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -547,7 +561,7 @@ predict = model.predict([input_time*input_time])
 print('Predicted height = {:.3f} m'.format(predict[0][0]))
 </code></pre>
 
-<pre><code>Predicted height = 9.801 m
+<pre><code>Predicted height = 9.802 m
 </code></pre>
 		</div>
 		<footer class="post__footer">
