@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>/tags/cross-entropy-loss/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/categories/deep-learning/</loc>
     <priority>0</priority>
   </url>
@@ -18,7 +23,17 @@
   </url>
   
   <url>
+    <loc>/categories/logistic-regression/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/post/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/rmsprop/</loc>
     <priority>0</priority>
   </url>
   
@@ -43,11 +58,25 @@
   </url>
   
   <url>
+    <loc>/post/logistic_regression/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1%ED%9A%8C%EA%B7%80/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/post/linear_regression/</loc>
   </url>
   
   <url>
     <loc>/tags/%EC%84%A0%ED%98%95%ED%9A%8C%EA%B7%80/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/%EC%8B%9C%EA%B7%B8%EB%AA%A8%EC%9D%B4%EB%93%9C%ED%95%A8%EC%88%98/</loc>
     <priority>0</priority>
   </url>
   
