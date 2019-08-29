@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>뉴럴 네트워크 (Neural Network) - 딥러닝</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="뉴럴 네트워크 (Neural Network)" />
+<meta property="og:description" content="딥러닝의 세계로 들어가기 위해 알아야 하는 세번째 모델인 뉴럴 네트워크(Neural Network)에 대해 알아보고 keras를 이용해서 모델링을 해보자!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/neural_network/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/agate.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+  	<script>hljs.initHighlightingOnLoad();</script>
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="딥러닝" rel="home">
+				<div class="logo__title">딥러닝</div>
+				<div class="logo__tagline">딥러닝 모델링</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">뉴럴 네트워크 (Neural Network)</h1>
+			<div class="post__meta meta">
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/deep-learning" rel="category">Deep Learning</a>, <a class="meta__link" href="/categories/neural-network" rel="category">Neural Network</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#문제-problem">문제 (Problem)</a></li>
+<li><a href="#뉴럴-네트워크-neural-network-구성">뉴럴 네트워크(Neural Network) 구성</a></li>
+<li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a></li>
+<li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a>
+<ul>
+<li><a href="#원-핫-인코딩-one-hot-encoding">원-핫 인코딩 (One-hot encoding)</a></li>
+</ul></li>
+<li><a href="#모델링-modeling">모델링 (Modeling)</a>
+<ul>
+<li><a href="#소프트맥스-회귀-softmax-regression">소프트맥스 회귀 (Softmax Regression)</a></li>
+<li><a href="#정리">정리</a></li>
+</ul></li>
+<li><a href="#텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</a>
+<ul>
+<li><a href="#정규화-normalization"><del>정규화 (Normalization)</del></a></li>
+<li><a href="#keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</a></li>
+<li><a href="#손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</a></li>
+</ul></li>
+<li><a href="#해결-solution">해결 (Solution)</a></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
+			<p>딥러닝의 세계로 들어가기 위해 알아야 하는 세번째 모델인 뉴럴 네트워크(Neural Network)에 대해 알아보고 keras를 이용해서 모델링을 해보자!</p>
+
+<p>실제로 돌려 보고 싶으면 구글 코랩으로 ~</p>
+
+<p><a href="https://colab.research.google.com/github/skettee/notebooks/blob/master/neural_network.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" /></a></p>
+
+<h2 id="문제-problem">문제 (Problem)</h2>
+
+<p>💰 고객</p>
+
+<blockquote>
+<p>덕분에 친추가 되었어요. 고마워요~</p>
+
+<p>그 친구가 숙제를 부탁했는데&hellip; 해결해 주세요.</p>
+
+<p>아래와 같이 입력과 출력을 하는 프로그램이 필요해요.</p>
+
+<p>입력: 1 0 0 0 0 0 0 0 0 0, 출력: 0<br />
+입력: 0 1 0 0 0 0 0 0 0 0, 출력: 1<br />
+입력: 0 0 1 0 0 0 0 0 0 0, 출력: 2<br />
+입력: 0 0 0 1 0 0 0 0 0 0, 출력: 3<br />
+입력: 0 0 0 0 1 0 0 0 0 0, 출력: 4<br />
+입력: 0 0 0 0 0 1 0 0 0 0, 출력: 5<br />
+입력: 0 0 0 0 0 0 1 0 0 0, 출력: 6<br />
+입력: 0 0 0 0 0 0 0 1 0 0, 출력: 7<br />
+입력: 0 0 0 0 0 0 0 0 1 0, 출력: 8<br />
+입력: 0 0 0 0 0 0 0 0 0 1, 출력: 9</p>
+
+<p>데이터는 아래에 있어요.</p>
+</blockquote>
+
+<pre><code class="language-python">input_data = [
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+]
+
+output_data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>이건 제가 코딩해서 바로 만들어 드릴 수 있습니다!</p>
+</blockquote>
+
+<pre><code class="language-python">import numpy as np
+
+def human_coding(x):
+    for i in range(len(x)):
+        if x[i] == 1:
+            return i
+    return None
+
+test_data =  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+result = human_coding(test_data)
+print('input data is {} and ouput is {}'.format(test_data, result))
+</code></pre>
+
+<pre><code>input data is [0, 0, 0, 0, 0, 1, 0, 0, 0, 0] and ouput is 5
+</code></pre>
+
+<p>💰 고객</p>
+
+<blockquote>
+<p>아&hellip; 조건이 있어요.</p>
+
+<p>2-레이어 뉴럴 네트워크(NN)로 만들어 주세요.<br />
+히든 레이어(hidden layer)는 3개의 유닛들(units)로 구성되게 해 주세요.</p>
+</blockquote>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>ㅅㅂ</p>
+</blockquote>
+
+<h2 id="뉴럴-네트워크-neural-network-구성">뉴럴 네트워크(Neural Network) 구성</h2>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p><strong>뉴런(Neuron) 모델</strong> 은 앞에서 학습한 로지스틱 모델과 같다.<br />
+예를 들어서 3개의 변수(\(x_1\), \(x_2\), \(x_3\))를 입력 받을 경우<br />
+\(z=w_{1}x_{1} + w_{2}x_{2} + w_{3}x_{3} + b\)가 되고<br />
+\(a=\sigma(z)\) 가 된다.<br />
+아래 그림과 같이 표현 된다.</p>
+</blockquote>
+
+<p><img src="https://skettee.github.io/post/neural_network/neuron_model.png" alt="뉴런 모델" /></p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p><strong>뉴럴 네트워트(Neural Network)</strong> 는<br />
+하나의 뉴런, 즉 로지스틱 모델을 <strong>유닛(Unit)</strong> 이라고 하고<br />
+유닛들을 서로 연결한 구조이다.<br />
+유닛들을 모아서 <strong>레이어(Layer)</strong> 를 형성하고<br />
+레이어를 (오른쪽으로) 계속해서 쌓아가는 모양을 가지고 있다.</p>
+
+<p>아래 그림은<br />
+2-레이어 (2-layer) 뉴럴 네트워크이다.<br />
+4개의 유닛(4-units)들로 구성된 히든 레이어(hidden layer) 1개와<br />
+1개의 유닛(1-unit)으로 구성된 출력 레이어(output layer) 1개로 되어 있다.</p>
+</blockquote>
+
+<p><img src="https://skettee.github.io/post/neural_network/neural_network.png" alt="뉴럴 네트워크" /></p>
+
+<h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>이 문제는 데이터의 규칙에 따라 출력값을 결정하는 것이다.<br />
+&gt;    10개의 입력값 중에<br />
+&gt;    첫번째 입력값이 1이고 나머지가 0이면 출력값은 0<br />
+&gt;    두번째 입력값이 1이고 나머지가 0이면 출력값은 1<br />
+&gt;    &hellip;</p>
+
+<p>이 규칙을 학습 시켜서 원하는 출력값으로 분류하는 것이 목표다.</p>
+</blockquote>
+
+<h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
+
+<p>Keras, tensorflow등의 머신런닝 프레임워크를 사용하기 위해서는<br />
+각각이 요구하는 데이터의 형식 및 모양에 맞추어서 변환을 해 주어야 한다.</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>Keras가 원하는 입력과 출력의 모양(shape)는 다음과 같다.<br />
+(batch_size, input_dimension)<br />
+batch_size는 학습할 데이터의 개수이다.<br />
+input_demension은 학습을 할 때에 사용할 입력 변수의 개수이다.</p>
+</blockquote>
+
+<p><strong>입력 데이터 변환</strong></p>
+
+<pre><code class="language-python">print('batch_size= ', len(input_data))
+</code></pre>
+
+<pre><code>batch_size=  10
+</code></pre>
+
+<pre><code class="language-python">print('input_dimension= ', len(input_data[0]))
+</code></pre>
+
+<pre><code>input_dimension=  10
+</code></pre>
+
+<pre><code class="language-python">import numpy as np
+
+x = np.array(input_data)
+print('x.shape is ', x.shape)
+print('\nx is \n', x)
+</code></pre>
+
+<pre><code>x.shape is  (10, 10)
+
+x is 
+ [[1 0 0 0 0 0 0 0 0 0]
+ [0 1 0 0 0 0 0 0 0 0]
+ [0 0 1 0 0 0 0 0 0 0]
+ [0 0 0 1 0 0 0 0 0 0]
+ [0 0 0 0 1 0 0 0 0 0]
+ [0 0 0 0 0 1 0 0 0 0]
+ [0 0 0 0 0 0 1 0 0 0]
+ [0 0 0 0 0 0 0 1 0 0]
+ [0 0 0 0 0 0 0 0 1 0]
+ [0 0 0 0 0 0 0 0 0 1]]
+</code></pre>
+
+<p><strong>출력 데이터 변환</strong></p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>yes or no 문제라면 0과 1로 변환 하면 된다.<br />
+이번 문제는 0에서 9까지 10개다.<br />
+출력 데이터를 어떻게 변환해야 할까?</p>
+</blockquote>
+
+<h3 id="원-핫-인코딩-one-hot-encoding">원-핫 인코딩 (One-hot encoding)</h3>
+
+<p>&lsquo;강아지&rsquo;, &lsquo;고양이&rsquo;, &lsquo;토끼&rsquo;를 분류하는 문제가 있다고 하자<br />
+손실 함수(loss function)를 계산하기 위해서는 출력 데이터를 숫자로 표시 해야 한다.</p>
+
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>숫자</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>강아지</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>고양이</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>토끼</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+
+<p>시그모이드(Sigmoid)나 소프트맥스(softmax)와 같은 활성 함수(activation function)을 사용하기 위해서는 각 레이블(label)이 0과 1로 표현 되어야 한다. 원-핫-인코딩은 &lsquo;강아지&rsquo;, &lsquo;고양이&rsquo;, &lsquo;토끼&rsquo;를 0과 1로 표현하는 방법이다.</p>
+
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>숫자</th>
+<th>원-핫 벡터</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>강아지</td>
+<td>0</td>
+<td>[1, 0, 0]</td>
+</tr>
+
+<tr>
+<td>고양이</td>
+<td>1</td>
+<td>[0, 1, 0]</td>
+</tr>
+
+<tr>
+<td>토끼</td>
+<td>2</td>
+<td>[0, 0, 1]</td>
+</tr>
+</tbody>
+</table>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>아하~<br />
+0에서 9까지의 값을<br />
+원-핫 벡터 (one-hot vector)로 표시하면 되겠군</p>
+</blockquote>
+
+<pre><code class="language-python">from tensorflow.keras.utils import to_categorical
+
+y = to_categorical(output_data)
+print('y.shape is ', y.shape)
+print('\none-hot encoded y is \n', y)
+</code></pre>
+
+<pre><code>y.shape is  (10, 10)
+
+one-hot encoded y is 
+ [[1. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+ [0. 1. 0. 0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 1. 0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 1. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 1. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 1. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0. 1. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0. 0. 1. 0.]
+ [0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]]
+</code></pre>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>엇&hellip; 어어&hellip; 입력 데이터와 출력 데이터가 ???</p>
+</blockquote>
+
+<h2 id="모델링-modeling">모델링 (Modeling)</h2>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>입력 레이어(input layer)는 \(x_1\)에서 \(x_{10}\)까지 10개로 되어 있다.<br />
+히든 레이어(hidden layer)는 3개의 units로 구성 한다.<br />
+출력 레이어(output layer)는 10개의 units로 구성 한다.<br />
+그림으로 나타내면 다음과 같다.</p>
+
+<p>선들이 빠짐 없이 조밀하게 연결 되어 있다.<br />
+음&hellip; <strong>덴스(Dense)</strong> 하게 연결 되어있군&hellip;</p>
+</blockquote>
+
+<p><img src="https://skettee.github.io/post/neural_network/auto_coding_model.png" alt="오토 코딩 모델" /></p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>히든 레이어에 있는 유닛들의 활성함수(activation function)는 sigmoid로 한다.<br />
+출력 레이어에 있는 유닛들의 활성함수(activation function)를 sigmoid로 하면 <del>ㅈ된다</del>안된다.<br />
+왜냐하면<br />
+각 확률의 총합은 1이 나와야 하는데<br />
+sigmoid는<br />
+\(\hat y_{1}+\hat y_{2}+\hat y_{3}+\hat y_{4}+\hat y_{5}+\hat y_{6}+\hat y_{7}+\hat y_{8}+\hat y_{9}+\hat y_{10}=1\) 을 만족하지 않는다.</p>
+
+<p>걱정마라.  엔지니어를 갈아서 만든 것이 있다.<br />
+ 그것은 바로&hellip;</p>
+</blockquote>
+
+<h3 id="소프트맥스-회귀-softmax-regression">소프트맥스 회귀 (Softmax Regression)</h3>
+
+<p>0과 1, 두가지의 경우에 대한 분류는 로지스틱 회귀(logistic regression)로 모델링을 한다.<br />
+세가지 이상에 대한 분류는 소프트맥스 회귀(softmax regression)로 모델링을 한다.<br />
+소프트맥스의 활성 함수(activation function)는 아래와 같이 정의한다.</p>
+
+<p>\(z=w^{T}x+b\),<br />
+\(a=\sigma(z) = {{e^z}\over{\sum_{j=1}^{m} e^z}}\),<br />
+\(m=\) number of classes (분류 개수)</p>
+
+<p><strong>소프트맥스 회귀를 이용한 분류</strong></p>
+
+<p>3개로 분류된 아래 데이터를 가지고 10X10 공간을 3개의 클래스로 분류해 보자.<br />
+여기서 <strong>클래스(Class)</strong> 란 &lsquo;공통적인 성질을 가진 종류&rsquo;라는 뜻이다.</p>
+
+<pre><code class="language-python">import numpy as np
+
+x_data = np.array([
+    (1,4), (1,5), (1,6), (1,7), (1,8), (2,5), (2,6), (2,7), (2,8), (2,9), 
+    (3,6), (3,7), (3,8), (3,9), (4,7), (4,8), (4,9), (5,8), (5,9), (6,9),
+    (3,1), (4,1), (4,2), (5,1), (5,2), (5,3), (6,1), (6,2), (7,1), (8,1),
+    (7,5), (8,4), (8,5), (8,6), (9,3), (9,4), (9,5), (9,6), (9,7), (9,8)
+])
+
+y_data = np.array([
+    [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], 
+    [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0],
+    [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0],
+    [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1]
+])
+
+color_data = ['red', 'green', 'blue']
+</code></pre>
+
+<p>x_data를 그래프로 표시하면 아래와 같다.<br />
+y_data에서 [1,0,0]은 빨강, [0,1,0]은 초록, [0,0,1]은 파랑으로 클래스를 구분한다.</p>
+
+<pre><code class="language-python">%matplotlib inline
+import matplotlib.pyplot as plt
+
+plt.scatter([x[0] for x in x_data ], [x[1] for x in x_data], color=[color_data[i] for i in [np.argmax(x) for x in y_data]])
+plt.show()
+</code></pre>
+
+<p><img src="output_25_0.png" alt="png" /></p>
+
+<p>소프트맥스 회귀 모델은 Keras로 간단하게 모델링할 수 있다.</p>
+
+<pre><code class="language-python">from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense, Activation
+
+model = Sequential()
+model.add(Dense(3, input_shape=(2,), activation='softmax'))
+model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
+hist = model.fit(x_data, y_data, epochs=1000, verbose=0)
+</code></pre>
+
+<pre><code>WARNING: Logging before flag parsing goes to stderr.
+W0829 22:06:08.064495 140062107961152 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+</code></pre>
+
+<p>반복 학습할 수록 손실 값이 0에 가깝게 줄어 든다.</p>
+
+<pre><code class="language-python">plt.plot(hist.history['loss'])
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.show()
+</code></pre>
+
+<p><img src="output_29_0.png" alt="png" /></p>
+
+<p>학습이 완료된 소프트맥스 회귀 모델을 이용해서<br />
+10X10 공간을 3개의 클래스로 분류한 그래프를 그려 보자.</p>
+
+<pre><code class="language-python">x_data = []
+y_data = []
+c_data = []
+for i in range(10):
+    for j in range(10):
+        x_data.append(i)
+        y_data.append(j)
+        c_data.append(color_data[np.argmax(model.predict(np.array([i, j]).reshape(1, 2))[0])])
+
+plt.scatter(x_data, y_data, color=c_data)
+plt.show()
+</code></pre>
+
+<p><img src="output_31_0.png" alt="png" /></p>
+
+<p>소프트맥스 회귀 모델을 이용해서<br />
+10X10공간을 3개의 클래스로 분류가 잘 되는 것을 볼 수 있다.</p>
+
+<h3 id="정리">정리</h3>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>뉴럴 네트워크 모델(Neural Network model)을 만드는 방법을 정리해 보자.<br />
+1. 데이터를 변환한다.<br />
+  1. 입력 데이터의 형식과 모양을 변환한다.<br />
+  2. 출력 데이터의 형식과 모양을 변환한다. <strong>원-핫 인코딩(one-hot encoding)</strong> 을 사용한다.<br />
+2. <strong>히든 레이어(hidden layer)</strong>  정의<br />
+  1. 히든 레이어 개수를 정의한다. 여기서는 1-hidden layer를 사용한다.<br />
+  2. 히든 레이어 유닛 개수를 정의한다. 여기서는 3개이 유닛을 사용한다.<br />
+  3. 활성 함수(activation function)를 정의한다. 여기서는 <strong>시그모이드(sigmoid)</strong> 를 사용한다.<br />
+3. <strong>출력 레이어(output layer)</strong>  정의<br />
+  1. 출력 레이어 유닛 개수를 정의한다. 여기서는 10개의 클래스로 분류해야 되니까 10개의 유닛을 사용한다.<br />
+  2. 활성 함수(activation function)를 정의한다. 여기서는 <strong>소프트맥스(softmax)</strong> 를 사용한다.
+4. 손실 함수 (Loss function)를 정의한다. 여기서는 <strong>크로스-엔트로피 손실(cross-entropy loss)</strong> 를 사용한다.<br />
+5. 옵티마이저(Optimizer)를 정의한다. 여기서는 <strong>RMSProp</strong> 을 사용한다.<br />
+4. 반복할 회수(epoch)를 결정한다.<br />
+5. 주어진 조건으로 모델을 최적화(fit) 시킨다.</p>
+</blockquote>
+
+<h2 id="텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</h2>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>좋았어!</p>
+
+<p>이제 래리 페이지(Larry Page)가 냠냠한<br />
+<strong>케라스(Keras)</strong>를 이용해서 구현을 해보자!</p>
+</blockquote>
+
+<h3 id="정규화-normalization"><del>정규화 (Normalization)</del></h3>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>정규화 할거 없음!<br />
+0과 1로 되어 있는데 뭔&hellip; 필요???</p>
+</blockquote>
+
+<pre><code class="language-python">X_train = x
+Y_train = y
+</code></pre>
+
+<h3 id="keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</h3>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>5줄로 모델링이 가능하다!</p>
+
+<p>프랑소와 숄레 만만세!</p>
+</blockquote>
+
+<pre><code class="language-python">from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense, Activation
+
+# 모델을 준비한다.
+model = Sequential()
+# unit 개수가 3이고 입력 변수 x가 10개인  hidden layer를 생성하고 dense하게 연결한다.
+model.add(Dense(3, input_shape=(10,), activation='sigmoid'))
+# unit 개수가 10인 output layer를 생성하고 dense하게 연결한다.
+model.add(Dense(10, activation='softmax'))
+# Loss funtion과 Optimizer를 선택한다.
+model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
+# epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.
+hist = model.fit(X_train, Y_train, epochs=10000, verbose=0)
+</code></pre>
+
+<h3 id="손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</h3>
+
+<pre><code class="language-python">plt.plot(hist.history['loss'])
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.show()
+</code></pre>
+
+<p><img src="output_40_0.png" alt="png" /></p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>반복적으로 학습할 수록 손실(Loss)이 0에 가깝게 된다.<br />
+나이스!</p>
+</blockquote>
+
+<h2 id="해결-solution">해결 (Solution)</h2>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>고객님~ 원하시는 솔루션입니다.<br />
+test_data에 원하시는 값을 입력하시면<br />
+원하시는 결과값이 출력 됩니다.</p>
+</blockquote>
+
+<pre><code class="language-python">def auto_coding(x):
+    input_data = np.array(x).reshape(1, 10)
+    predict = model.predict(input_data)
+    return np.argmax(predict[0])
+
+test_data =  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+result = auto_coding(test_data)
+print('input data is {} and ouput is {}'.format(test_data, result))
+</code></pre>
+
+<pre><code>input data is [0, 0, 0, 0, 0, 1, 0, 0, 0, 0] and ouput is 5
+</code></pre>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>내가 만든 human_coding과<br />
+같은 결과가 나온다</p>
+
+<p>이것은<br />
+히든 레이어에서<br />
+학습에 의해서<br />
+자동으로 코딩이 되었다는 것이다.</p>
+
+<p>여기서 문제는<br />
+히든 레이어에서의 \(w\)와 \(b\) 값들이<br />
+왜 이런 값을 가지는지<br />
+모른다는 것이다.<br />
+그래서<br />
+Hidden(숨은) 레이어 라고 한다.</p>
+</blockquote>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" rel="tag">딥러닝</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%EB%89%B4%EB%9F%B4-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/" rel="tag">뉴럴 네트워크</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%EC%9B%90-%ED%95%AB-%EC%9D%B8%EC%BD%94%EB%94%A9/" rel="tag">원-핫 인코딩</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%EC%86%8C%ED%94%84%ED%8A%B8%EB%A7%A5%EC%8A%A4/" rel="tag">소프트맥스</a></li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/logistic_regression/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">로지스틱 회귀 (Logistic Regression)</p></a>
+	</div>
+</nav>
+<script src="https://utteranc.es/client.js"
+        repo="skettee/blog-comments"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 딥러닝.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

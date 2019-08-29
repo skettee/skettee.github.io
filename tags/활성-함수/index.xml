@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>활성 함수 on 딥러닝</title>
+    <link>/tags/%ED%99%9C%EC%84%B1-%ED%95%A8%EC%88%98/</link>
+    <description>Recent content in 활성 함수 on 딥러닝</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/tags/%ED%99%9C%EC%84%B1-%ED%95%A8%EC%88%98/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>로지스틱 회귀 (Logistic Regression)</title>
+      <link>/post/logistic_regression/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/logistic_regression/</guid>
+      <description>&lt;p&gt;딥러닝의 세계로 들어가기 위해 알아야 하는 두번째 모델인 로지스틱 회귀(Logistic Regression)에 대해 알아보고 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

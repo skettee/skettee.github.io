@@ -28,6 +28,11 @@
   </url>
   
   <url>
+    <loc>/categories/neural-network/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/post/</loc>
     <priority>0</priority>
   </url>
@@ -45,6 +50,15 @@
   <url>
     <loc>/tags/%EA%B2%BD%EC%82%AC%ED%95%98%EA%B0%95%EB%B2%95/</loc>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/%EB%89%B4%EB%9F%B4-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/neural_network/</loc>
   </url>
   
   <url>
@@ -76,17 +90,32 @@
   </url>
   
   <url>
+    <loc>/tags/%EC%86%8C%ED%94%84%ED%8A%B8%EB%A7%A5%EC%8A%A4/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/%EC%86%90%EC%8B%A4-%ED%95%A8%EC%88%98/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/%EC%8B%9C%EA%B7%B8%EB%AA%A8%EC%9D%B4%EB%93%9C%ED%95%A8%EC%88%98/</loc>
+    <loc>/tags/%EC%8B%9C%EA%B7%B8%EB%AA%A8%EC%9D%B4%EB%93%9C/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/%EC%9B%90-%ED%95%AB-%EC%9D%B8%EC%BD%94%EB%94%A9/</loc>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/%ED%8F%89%EA%B7%A0-%EC%A0%9C%EA%B3%B1-%EC%98%A4%EC%B0%A8/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/%ED%99%9C%EC%84%B1-%ED%95%A8%EC%88%98/</loc>
     <priority>0</priority>
   </url>
   
