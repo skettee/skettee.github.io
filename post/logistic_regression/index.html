@@ -443,9 +443,9 @@ plt.show()
 \(db = {\partial{J(w,b)}\over \partial b}\)</p>
 
 <p>REPEAT(epoch) {<br />
-\(w:=w-\alpha {dw \over {\sqrt {s_{dw} + \epsilon}}}\)</p>
+\(w:=w-\alpha {dw \over {\sqrt {S_{dw}} + \epsilon}}\)</p>
 
-<p>\(b:=b-\alpha {db \over {\sqrt {s_{db} + \epsilon}}}\)<br />
+<p>\(b:=b-\alpha {db \over {\sqrt {S_{db}} + \epsilon}}\)<br />
 }</p>
 
 <p>\(S_{dw} = \rho S_{dw} + (1-\rho)dw^2\),<br />

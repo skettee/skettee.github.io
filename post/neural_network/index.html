@@ -73,7 +73,7 @@
 </ul></li>
 <li><a href="#텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</a>
 <ul>
-<li><a href="#정규화-normalization"><del>정규화 (Normalization)</del></a></li>
+<li><a href="#정규화-normalization">정규화 (Normalization)</a></li>
 <li><a href="#keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</a></li>
 <li><a href="#손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</a></li>
 </ul></li>
@@ -204,11 +204,12 @@ print('input data is {} and ouput is {}'.format(test_data, result))
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>이 문제는 데이터의 규칙에 따라 출력값을 결정하는 것이다.<br />
-&gt;    10개의 입력값 중에<br />
-&gt;    첫번째 입력값이 1이고 나머지가 0이면 출력값은 0<br />
-&gt;    두번째 입력값이 1이고 나머지가 0이면 출력값은 1<br />
-&gt;    &hellip;</p>
+<p>이 문제는 데이터의 규칙에 따라 출력값을 결정하는 것이다.</p>
+
+<p>10개의 입력값 중에<br />
+   첫번째 입력값이 1이고 나머지가 0이면 출력값은 0<br />
+   두번째 입력값이 1이고 나머지가 0이면 출력값은 1<br />
+   &hellip;</p>
 
 <p>이 규칙을 학습 시켜서 원하는 출력값으로 분류하는 것이 목표다.</p>
 </blockquote>
@@ -433,7 +434,7 @@ y_data = np.array([
     [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1]
 ])
 
-color_data = ['red', 'green', 'blue']
+label_data = ['red', 'green', 'blue']
 </code></pre>
 
 <p>x_data를 그래프로 표시하면 아래와 같다.<br />
@@ -442,7 +443,7 @@ y_data에서 [1,0,0]은 빨강, [0,1,0]은 초록, [0,0,1]은 파랑으로 클�
 <pre><code class="language-python">%matplotlib inline
 import matplotlib.pyplot as plt
 
-plt.scatter([x[0] for x in x_data ], [x[1] for x in x_data], color=[color_data[i] for i in [np.argmax(x) for x in y_data]])
+plt.scatter([x[0] for x in x_data ], [x[1] for x in x_data], color=[label_data[i] for i in [np.argmax(x) for x in y_data]])
 plt.show()
 </code></pre>
 
@@ -450,19 +451,19 @@ plt.show()
 
 <p>소프트맥스 회귀 모델은 Keras로 간단하게 모델링할 수 있다.</p>
 
+<p><img src="https://skettee.github.io/post/neural_network/softmax_regression.png" alt="소프트맥스 회귀 모델" /></p>
+
 <pre><code class="language-python">from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense, Activation
 
+# 모델을 준비한다.
 model = Sequential()
+# 입력 변수 x가 2개, unit 개수가 3개인 output layer를 생성한다.
 model.add(Dense(3, input_shape=(2,), activation='softmax'))
+# Loss funtion과 Optimizer를 선택한다.
 model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
+# epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.
 hist = model.fit(x_data, y_data, epochs=1000, verbose=0)
-</code></pre>
-
-<pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0829 22:06:08.064495 140062107961152 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-Instructions for updating:
-Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
 
 <p>반복 학습할 수록 손실 값이 0에 가깝게 줄어 든다.</p>
@@ -475,6 +476,20 @@ plt.show()
 
 <p><img src="output_29_0.png" alt="png" /></p>
 
+<p>첫번째 x 데이터 (1,4)에 대해서 소프트맥스가 예측한 데이터는 다음과 같다.<br />
+예측된 확률을 모두 더하면 1이 되는 것을 확인할 수 있다.</p>
+
+<pre><code class="language-python">predict = model.predict(x_data[0].reshape(1, 2))
+print('y data is ', y_data[0])
+print('predicted y data is ', predict[0])
+print('sum of probability is ', np.sum(predict[0]))
+</code></pre>
+
+<pre><code>y data is  [1 0 0]
+predicted y data is  [0.980123   0.0051288  0.01474817]
+sum of probability is  0.99999994
+</code></pre>
+
 <p>학습이 완료된 소프트맥스 회귀 모델을 이용해서<br />
 10X10 공간을 3개의 클래스로 분류한 그래프를 그려 보자.</p>
 
@@ -485,16 +500,21 @@ for i in range(10):
     for j in range(10):
         x_data.append(i)
         y_data.append(j)
-        c_data.append(color_data[np.argmax(model.predict(np.array([i, j]).reshape(1, 2))[0])])
+        c_data.append(label_data[np.argmax(model.predict(np.array([i, j]).reshape(1, 2))[0])])
 
 plt.scatter(x_data, y_data, color=c_data)
 plt.show()
 </code></pre>
 
-<p><img src="output_31_0.png" alt="png" /></p>
+<p><img src="output_33_0.png" alt="png" /></p>
 
-<p>소프트맥스 회귀 모델을 이용해서<br />
-10X10공간을 3개의 클래스로 분류가 잘 되는 것을 볼 수 있다.</p>
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>스스로 학습해서<br />
+근처에 있는 땅을 자기것으로 만들면서<br />
+천하삼분지계 하고 있다!!!</p>
+</blockquote>
 
 <h3 id="정리">정리</h3>
 
@@ -529,7 +549,7 @@ plt.show()
 <strong>케라스(Keras)</strong>를 이용해서 구현을 해보자!</p>
 </blockquote>
 
-<h3 id="정규화-normalization"><del>정규화 (Normalization)</del></h3>
+<h3 id="정규화-normalization">정규화 (Normalization)</h3>
 
 <p>⚙️ 엔지니어</p>
 
@@ -549,11 +569,11 @@ Y_train = y
 <blockquote>
 <p>5줄로 모델링이 가능하다!</p>
 
-<p>프랑소와 숄레 만만세!</p>
+<p>프랑소와 숄레 만세!</p>
 </blockquote>
 
 <pre><code class="language-python">from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense, Activation
+from tensorflow.keras.layers import Dense
 
 # 모델을 준비한다.
 model = Sequential()
@@ -575,7 +595,7 @@ plt.ylabel('loss')
 plt.show()
 </code></pre>
 
-<p><img src="output_40_0.png" alt="png" /></p>
+<p><img src="output_42_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -621,7 +641,7 @@ print('input data is {} and ouput is {}'.format(test_data, result))
 <p>여기서 문제는<br />
 히든 레이어에서의 \(w\)와 \(b\) 값들이<br />
 왜 이런 값을 가지는지<br />
-모른다는 것이다.<br />
+인간은 모른다는 것이다.<br />
 그래서<br />
 Hidden(숨은) 레이어 라고 한다.</p>
 </blockquote>
@@ -645,6 +665,9 @@ Hidden(숨은) 레이어 라고 한다.</p>
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
 		<a class="post-nav__link" href="/post/logistic_regression/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">로지스틱 회귀 (Logistic Regression)</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/neural_network_mnist/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">뉴럴 네트워크 (NN) - MNIST</p></a>
 	</div>
 </nav>
 <script src="https://utteranc.es/client.js"

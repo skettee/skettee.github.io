@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/tags/adam/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <priority>0</priority>
   </url>
@@ -28,6 +33,11 @@
   </url>
   
   <url>
+    <loc>/tags/mnist/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/categories/neural-network/</loc>
     <priority>0</priority>
   </url>
@@ -39,6 +49,11 @@
   
   <url>
     <loc>/tags/rmsprop/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/relu/</loc>
     <priority>0</priority>
   </url>
   
@@ -55,6 +70,10 @@
   <url>
     <loc>/tags/%EB%89%B4%EB%9F%B4-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/</loc>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/neural_network_mnist/</loc>
   </url>
   
   <url>
@@ -110,12 +129,22 @@
   </url>
   
   <url>
+    <loc>/tags/%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%84%B8%ED%8A%B8/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/%ED%8F%89%EA%B7%A0-%EC%A0%9C%EA%B3%B1-%EC%98%A4%EC%B0%A8/</loc>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/%ED%99%9C%EC%84%B1-%ED%95%A8%EC%88%98/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/%ED%9B%88%EB%A0%A8-%EC%84%B8%ED%8A%B8/</loc>
     <priority>0</priority>
   </url>
   
