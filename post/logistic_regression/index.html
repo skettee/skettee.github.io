@@ -537,6 +537,15 @@ model.compile(loss='binary_crossentropy', optimizer='rmsprop')
 hist = model.fit(X_train, Y_train, epochs=10000, batch_size=20, verbose=0) 
 </code></pre>
 
+<pre><code>WARNING: Logging before flag parsing goes to stderr.
+W0901 10:08:24.463013 140371975219008 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+W0901 10:08:24.482560 140371975219008 deprecation.py:323] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.&lt;locals&gt;.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+</code></pre>
+
 <h3 id="손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</h3>
 
 <pre><code class="language-python">plt.plot(hist.history['loss'])
@@ -563,8 +572,8 @@ print('w: ', w)
 print('b: ', b)
 </code></pre>
 
-<pre><code>w:  14.634907
-b:  -7.5143723
+<pre><code>w:  14.712823
+b:  -7.5659995
 </code></pre>
 
 <h3 id="그래프로-확인">그래프로 확인</h3>

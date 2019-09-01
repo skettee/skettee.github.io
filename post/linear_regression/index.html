@@ -146,12 +146,13 @@ plt.show()
 
 <h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
 
+<p>Keras, tensorflow등의 머신런닝 프레임워크를 사용하기 위해서는<br />
+각각이 요구하는 데이터의 형식 및 모양에 맞추어서 변환을 해 주어야 한다.</p>
+
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>Keras, tensorflow등의 머신런닝 프레임워크를 사용하기 위해서는<br />
-각각이 요구하는 데이터의 형식 및 모양에 맞추어서 변환을 해 주어야 한다.<br />
-모델링을 하면서 골치 아픈 것 중에 하나는<br />
+<p>모델링을 하면서 골치 아픈 것 중에 하나는<br />
 입력과 출력의 모양(Shape)를 맞추어 주는 것이다.<br />
 복잡하다 &hellip; 잘못하면 다크-디멘션에 빠진다&hellip;<br />
 뒤에서 더 자세하게 설명할 기회가 있을 것이다.</p>
@@ -491,7 +492,7 @@ hist = model.fit(X_train, Y_train, epochs=3000, verbose=0)
 </code></pre>
 
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0827 13:24:13.240252 4570310080 deprecation.py:506] From /Users/skettee/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0901 10:10:02.460783 139866692384576 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
@@ -522,8 +523,8 @@ print('w: ', w)
 print('b: ', b)
 </code></pre>
 
-<pre><code>w:  0.8987676
-b:  -2.6254048
+<pre><code>w:  0.8991271
+b:  -2.6255682
 </code></pre>
 
 <h3 id="그래프로-확인">그래프로 확인</h3>
@@ -549,7 +550,7 @@ input_height에 원하시는 키를 입력하시면<br />
 &lsquo;몸짱반&rsquo;에 들어 갈 수 있는 몸무게가 자동으로 계산됩니다.</p>
 </blockquote>
 
-<pre><code class="language-python">input_height = 170.0
+<pre><code class="language-python">input_height = 178.0
 
 input_x = mm_scaler.transform(np.array([input_height]).reshape(-1, 1))
 predict = model.predict(input_x)
@@ -558,7 +559,7 @@ predict = mm_scaler.inverse_transform(predict)
 print('몸짱반에 들어갈 수 있는 몸무게는 {:.2f} kg 입니다'.format(predict[0][0]))
 </code></pre>
 
-<pre><code>몸짱반에 들어갈 수 있는 몸무게는 62.96 kg 입니다
+<pre><code>몸짱반에 들어갈 수 있는 몸무게는 70.15 kg 입니다
 </code></pre>
 		</div>
 		<footer class="post__footer">

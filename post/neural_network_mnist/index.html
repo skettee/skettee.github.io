@@ -60,6 +60,7 @@
 <li>
 <ul>
 <li><a href="#문제-problem">문제 (Problem)</a></li>
+<li><a href="#데이터-수집-data-collection">데이터 수집 (Data Collection)</a></li>
 <li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a>
 <ul>
 <li><a href="#훈련-세트와-테스트-세트-train-and-test-set">훈련 세트와 테스트 세트 (Train and Test set)</a></li>
@@ -69,7 +70,7 @@
 <li><a href="#모델링-modeling">모델링 (Modeling)</a>
 <ul>
 <li><a href="#relu-rectified-linear-unit">ReLU (Rectified Linear Unit)</a></li>
-<li><a href="#adam">Adam</a></li>
+<li><a href="#adam-adaptive-moment-estimation">Adam (Adaptive moment estimation)</a></li>
 <li><a href="#정리">정리</a></li>
 </ul></li>
 <li><a href="#텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</a>
@@ -78,6 +79,7 @@
 <li><a href="#keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</a></li>
 <li><a href="#모델-훈련">모델 훈련</a></li>
 <li><a href="#정확도-평가">정확도 평가</a></li>
+<li><a href="#규제-regularization">규제 (Regularization)</a></li>
 </ul></li>
 <li><a href="#해결-solution">해결 (Solution)</a></li>
 </ul></li>
@@ -97,12 +99,13 @@
 <p>👤 상사</p>
 
 <blockquote>
-<p>요즘 일이 없지?<br />
-아래 사이트에 가면  &lsquo;MNIST database of handwritten digits&rsquo; 데이터 세트에 대한 설명이 있네<br />
+<p>인공지능을 이용해서 사진을 인식하는 프로젝트를 시작한다<br />
+일단 기본 개념을 익히기 위해서  연습 문제를 풀어보게</p>
+
+<p>아래 사이트에 가면  &lsquo;MNIST database of handwritten digits&rsquo; 데이터 세트에 대한 설명이 있네<br />
 <a href="https://keras.io/datasets/">https://keras.io/datasets/</a><br />
 여기서 제공하는 MNIST 데이터 세트로 훈련해서<br />
-손으로 쓴 숫자를 인식하는 프로그램을 만들어 보게<br />
-업무에 도움이 될 듯</p>
+손으로 쓴 숫자를 인식하는 프로그램을 만들어 보게</p>
 </blockquote>
 
 <p>⚙️ 엔지니어</p>
@@ -123,11 +126,25 @@
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
+<p>영상인식을 하면서 가장 처음 실습해 보는것이 MNIST&hellip;<br />
+C에서의 &lsquo;hello world&rsquo;급이라고 할 수 있다.</p>
+
 <p>지금까지 학습한 모델링 지식을 가지고<br />
 숫자를 인식하는 NN 모델을 만들고<br />
 훈련과 테스트를 통해서<br />
 정확도를 계산하면<br />
 되겠군</p>
+</blockquote>
+
+<h2 id="데이터-수집-data-collection">데이터 수집 (Data Collection)</h2>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>keras.datasets를 이용해서<br />
+간단하게 데이터를 가져 올 수 있다.</p>
+
+<p>찬양하라 Keras!</p>
 </blockquote>
 
 <pre><code class="language-python">%matplotlib inline
@@ -207,7 +224,7 @@ plt.colorbar()
 plt.show()
 </code></pre>
 
-<p><img src="output_8_0.png" alt="png" /></p>
+<p><img src="output_9_0.png" alt="png" /></p>
 
 <p><strong>출력(y) 데이터 확인</strong></p>
 
@@ -264,16 +281,17 @@ one-hot encoded first Y_train is  [0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>일단, 2-layer NN 모델로 진행해 보자</p>
+<p>일단, 3-layer NN 모델로 진행해 보자</p>
 
 <p>일단이라고 말한 이유는<br />
 정답이 없기 때문이다.</p>
 
 <p>input layer는 2D(28X28)를 1D로 변환해서 784개의 x로 만든다.</p>
 
-<p>hidden layer는 128-unit으로 구성하자<br />
+<p>hidden layer 1은 128-unit으로 구성하자<br />
+hiddem layer 2는 32-unit으로 구성하자<br />
 왜냐고?<br />
-이유는 없다.  다른 예제에서 128-unit으로 하더라&hellip;</p>
+이유는 없다.</p>
 
 <p>output layer는 당연히 10-unit으로 구성, softmax를 activation function으로 사용한다.<br />
 loss는 cross-entropy loss를 사용</p>
@@ -302,9 +320,9 @@ plt.plot(x_list, y_list)
 plt.show()
 </code></pre>
 
-<p><img src="output_15_0.png" alt="png" /></p>
+<p><img src="output_16_0.png" alt="png" /></p>
 
-<p>시그모이드의 단점은  hidden layer가 많아 질 수록 학습이 안되는 문제가 있다. 미분의 미분의 미분의 &hellip; 미분을 하다 보면 미분값이 0에 가깝게 된다. 이러면 손실 함수의 최소값을 찾기 위해 \(w\)와 \(b\)를 움직이지 못한다.  이러한 단점을 보완하기 위해서 탄생한 것이 렐루(ReLU) 함수이다. 물론 엔지니어를 갈아서 만들었다&hellip;</p>
+<p>시그모이드의 단점은  hidden layer가 많아 질 수록 학습이 안되는 문제가 있다. 미분의 미분의 미분의 &hellip; 미분을 하다 보면 미분값이 0에 가깝게 된다. 그리고 \(z\)값이 엄청 크거나 작은 값이 되어도 미분값이 0에 가깝게 된다. 이러면 손실 함수의 최소값을 찾기 위해 \(w\)와 \(b\)를 움직이지 못한다.  이러한 단점을 보완하기 위해서 탄생한 것이 렐루(ReLU) 함수이다. 물론 엔지니어를 갈아서 만들었다&hellip;</p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -313,12 +331,13 @@ plt.show()
 기냥 쓰자</p>
 </blockquote>
 
-<h3 id="adam">Adam</h3>
+<h3 id="adam-adaptive-moment-estimation">Adam (Adaptive moment estimation)</h3>
 
 <p><strong>모멘텀(Momentum)</strong></p>
 
 <p>주식 좀 한다는 사람들은 &lsquo;지수이동평균&rsquo;에 대해서 잘 알고 있을 것이다.<br />
-상하로 진동하는 주식 그래프를 지수 이동 평균을 계산하면 부드러운 곡선으로 표시되고 상승 혹은 하강 추세를 쉽게 확인 할 수 있다.</p>
+상하로 진동하는 주식 그래프를 지수 이동 평균을 계산하면 부드러운 곡선으로 표시되고 상승 혹은 하강 추세를 쉽게 확인 할 수 있다.<br />
+지수이동평균은 현재의 값이 있으면 여기다가 과거에 이동한 방향에 대한 추진력(momentum)을 지수적으로 반영한 것이다.</p>
 
 <p>경사하강법(Gradient Descent)의 단점은 손실 함수의 최소값을 찾아가는 과정이 주식 그래프 처럼 진동이 심하다는 것이다. 따라서 경사하강법에 &lsquo;지수이동평균&rsquo;을 적용해서 <strong>부드럽게</strong> 손실 함수의 최소값을 찾아가는 방법을 모멘텀(Gradient Descent with momentum) 이라고 한다.</p>
 
@@ -382,12 +401,12 @@ plt.show()
   1. 입력 데이터의 형식과 모양을 변환한다. 2D를 1D로 변환한다.<br />
   2. 출력 데이터의 형식과 모양을 변환한다. <strong>원-핫 인코딩(one-hot encoding)</strong> 을 사용한다.<br />
 2. <strong>히든 레이어(hidden layer)</strong>  정의<br />
-  1. 히든 레이어 개수를 정의한다. 여기서는 1-hidden layer를 사용한다.<br />
-  2. 히든 레이어 유닛 개수를 정의한다. 여기서는 128개이 유닛을 사용한다.<br />
+  1. 히든 레이어 개수를 정의한다. 여기서는 2-hidden layer를 사용한다.<br />
+  2. 히든 레이어 유닛 개수를 정의한다. 여기서는 128개, 32개 유닛을 사용한다.<br />
   3. 활성 함수(activation function)를 정의한다. 여기서는 <strong>ReLU</strong> 를 사용한다.<br />
 3. <strong>출력 레이어(output layer)</strong>  정의<br />
   1. 출력 레이어 유닛 개수를 정의한다. 여기서는 10개의 클래스로 분류해야 되니까 10개의 유닛을 사용한다.<br />
-  2. 활성 함수(activation function)를 정의한다. <strong>소프트맥스(softmax)</strong> 를 사용한다.
+  2. 활성 함수(activation function)를 정의한다. <strong>소프트맥스(softmax)</strong> 를 사용한다.<br />
 4. 손실 함수 (Loss function)를 정의한다. <strong>크로스-엔트로피 손실(cross-entropy loss)</strong> 를 사용한다.<br />
 5. 옵티마이저(Optimizer)를 정의한다. 여기서는 <strong>Adam</strong> 을 사용한다.<br />
 4. 반복할 회수(epoch)를 결정한다.<br />
@@ -422,7 +441,7 @@ plt.xlabel(np.argmax(Y_train[0]))
 plt.show()
 </code></pre>
 
-<p><img src="output_18_0.png" alt="png" /></p>
+<p><img src="output_19_0.png" alt="png" /></p>
 
 <h3 id="keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</h3>
 
@@ -432,12 +451,13 @@ from tensorflow.keras.layers import Flatten, Dense
 model = Sequential()
 model.add(Flatten(input_shape=(28,28)))
 model.add(Dense(128, activation='relu'))
+model.add(Dense(32, activation='relu'))
 model.add(Dense(10, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 </code></pre>
 
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0831 11:08:29.792055 140361191307072 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0901 10:26:08.830246 140111957722944 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
@@ -445,13 +465,15 @@ Call initializer instance with the dtype argument instead of passing it to the c
 <h3 id="모델-훈련">모델 훈련</h3>
 
 <pre><code class="language-python">hist = model.fit(X_train, Y_train, epochs=10, verbose=0)
+train_acc = hist.history['acc'][-1]
+train_loss =  hist.history['loss'][-1]
 
-print('최종 훈련 정확도: ', hist.history['acc'][-1])
-print('최종 훈련 손실율: ', hist.history['loss'][-1])
+print('train accuracy: ', train_acc)
+print('train loss: ', train_loss)
 </code></pre>
 
-<pre><code>최종 훈련 정확도:  0.99535
-최종 훈련 손실율:  0.016128863334172638
+<pre><code>train accuracy:  0.9931333
+train loss:  0.020745519388704756
 </code></pre>
 
 <pre><code class="language-python">plt.plot(hist.history['loss'])
@@ -460,45 +482,155 @@ plt.ylabel('loss')
 plt.show()
 </code></pre>
 
-<p><img src="output_23_0.png" alt="png" /></p>
+<p><img src="output_24_0.png" alt="png" /></p>
 
 <h3 id="정확도-평가">정확도 평가</h3>
 
 <pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, Y_test)
 
-print('테스트 정확도: ', test_acc)
-print('테스트 손실율: ', test_loss)
+print('test accuracy: ', test_acc)
+print('test loss: ', test_loss)
 </code></pre>
 
-<pre><code>10000/10000 [==============================] - 0s 30us/sample - loss: 0.0784 - acc: 0.9797
-테스트 정확도:  0.9797
-테스트 손실율:  0.07837926464056436
+<pre><code>10000/10000 [==============================] - 0s 31us/sample - loss: 0.1054 - acc: 0.9755
+test accuracy:  0.9755
+test loss:  0.10535971706073397
 </code></pre>
 
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>정확도가 97%가 나왔다!<br />
-대충 만들었는데도 정확도가 상당히 높다.</p>
+<p>대충 만들었는데도 정확도가 상당히 높다.</p>
 
-<p>그런데<br />
-훈련을 마친 정확도 99%보다 정확도가 떨어진다.</p>
+<p>그런데&hellip;<br />
+훈련 정확도와 테스트 정확도가 차이가 난다.</p>
 
 <p>이것은<br />
 디자이너가<br />
-피팅모델에 딱 맞게<br />
-오버해서 옷을 만들어서 (over fitting)<br />
+피팅모델에 너무 딱 맞게<br />
+옷을 만들어서 (over fitting)<br />
 실제로 제품이 나왔을때<br />
-일반인은 입지 못하는<br />
+다른 사람은 입지도 못하는<br />
 사태와 비슷하다.</p>
 
-<p>이것을
+<p>이것을<br />
 훈련 세트에 <strong>과대적합(Overfitting)</strong> 되었다고 한다.</p>
 
 <p>과대적합(Overfitting)을 줄이는 방법<br />
-<strong>제약(Regularization)</strong> 과 <strong>드랍아웃(Dropout)</strong> 이 있다.<br />
-나중에 알아보자</p>
+<strong>규제(Regularization)</strong> 과 <strong>드랍아웃(Dropout)</strong> 이 있다.</p>
+
+<p>우선<br />
+규제(Regularization)에 대해서 알아 보자</p>
 </blockquote>
+
+<h3 id="규제-regularization">규제 (Regularization)</h3>
+
+<p>과대적합(Overfitting)을 줄이는 방법 중에 하나로서<br />
+기존의 손실함수 \(J(w,b)\)에 \( {\lambda \over {2m}} \sum_{l=1}^L ||w||^2\)를 추가한 것이다.</p>
+
+<p>\({\large J}(w, b) = -{1\over {m}}\sum_{i=1}^m [(y^{(i)}log({\hat y}^{(i)})) + (1-y^{(i)})log(1-{\hat y}^{(i)})]<br />
+\\
+\hspace{3.9em} + {\lambda \over {2m}} \sum_{l=1}^L ||w||^2\)</p>
+
+<p>우리는 이것을 <strong>L2 Regularization</strong> 이라고 한다.<br />
+\(\lambda\) 값은 모델에 따라서 적절하게 선택해야 한다.</p>
+
+<p>아래는 기존 모델에 \(\lambda = 0.0001\)인 L2 Regularization을 적용한 결과이다.<br />
+훈련 정확도는 떨어지고 테스트 정확도는 올라가서 둘 사이의 정확도가 비슷해 진다.</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>Regularization은 \(w\)의 역활을 줄여 줌으로써,<br />
+모델을 약간 <strong>바보</strong>로 만들어 준다.<br />
+어느 정도 바보로 만들어 질 것인지는<br />
+\(\lambda\)로 정해진다.</p>
+</blockquote>
+
+<pre><code class="language-python">from tensorflow.keras import regularizers
+
+model_l2 = Sequential()
+model_l2.add(Flatten(input_shape=(28,28)))
+model_l2.add(Dense(128, kernel_regularizer=regularizers.l2(0.0001), activation='relu'))
+model_l2.add(Dense(32, kernel_regularizer=regularizers.l2(0.0001), activation='relu'))
+model_l2.add(Dense(10, activation='softmax'))
+model_l2.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+hist = model_l2.fit(X_train, Y_train, epochs=10, verbose=0)
+train_acc_l2 = hist.history['acc'][-1]
+train_loss_l2 =  hist.history['loss'][-1]
+
+print('train accuracy: ', train_acc_l2)
+print('train loss: ', train_loss_l2)
+</code></pre>
+
+<pre><code>train accuracy:  0.9877833
+train loss:  0.08198130068182945
+</code></pre>
+
+<pre><code class="language-python">plt.plot(hist.history['loss'])
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.show()
+</code></pre>
+
+<p><img src="output_30_0.png" alt="png" /></p>
+
+<pre><code class="language-python">test_loss_l2, test_acc_l2 = model_l2.evaluate(X_test, Y_test)
+
+print('test accuracy: ', test_acc_l2)
+print('test loss: ', test_loss_l2)
+</code></pre>
+
+<pre><code>10000/10000 [==============================] - 0s 36us/sample - loss: 0.1214 - acc: 0.9766
+test accuracy:  0.9766
+test loss:  0.12139980588555337
+</code></pre>
+
+<pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame(data=[[train_acc, test_acc], [train_acc_l2, test_acc_l2]], 
+                  index = ['model', 'model_with_regularization'], 
+                  columns=['train accuracy', 'test accuracy'])
+df
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>train accuracy</th>
+      <th>test accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>model</th>
+      <td>0.993133</td>
+      <td>0.9755</td>
+    </tr>
+    <tr>
+      <th>model_with_regularization</th>
+      <td>0.987783</td>
+      <td>0.9766</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 <h2 id="해결-solution">해결 (Solution)</h2>
 
@@ -506,13 +638,15 @@ print('테스트 손실율: ', test_loss)
 
 <blockquote>
 <p>보스~ 원하시는 솔루션입니다.<br />
-test_data에 원하시는 이미지를 입력하시면<br />
+정확도는 97% 이상입니다.</p>
+
+<p>test_data에 원하시는 이미지를 입력하시면<br />
 원하시는 결과값이 출력 됩니다.</p>
 </blockquote>
 
 <pre><code class="language-python">def predict_handwrittendigits(x):
     x_data =(np.expand_dims(x, 0))
-    predict = model.predict(x_data)
+    predict = model_l2.predict(x_data)
     return np.argmax(predict)
 
 test_data = test_images[10]
@@ -525,7 +659,7 @@ plt.show()
 print('predicted digit is ', result)
 </code></pre>
 
-<p><img src="output_29_0.png" alt="png" /></p>
+<p><img src="output_35_0.png" alt="png" /></p>
 
 <pre><code>predicted digit is  0
 </code></pre>

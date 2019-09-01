@@ -60,7 +60,11 @@
 <li>
 <ul>
 <li><a href="#문제-problem">문제 (Problem)</a></li>
-<li><a href="#뉴럴-네트워크-neural-network-구성">뉴럴 네트워크(Neural Network) 구성</a></li>
+<li><a href="#뉴럴-네트워크-neural-network-구성">뉴럴 네트워크(Neural Network) 구성</a>
+<ul>
+<li><a href="#뉴런-모델-neuron-model">뉴런 모델 (Neuron model)</a></li>
+<li><a href="#뉴럴-네트워트-neural-network">뉴럴 네트워트(Neural Network)</a></li>
+</ul></li>
 <li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a></li>
 <li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a>
 <ul>
@@ -170,22 +174,19 @@ print('input data is {} and ouput is {}'.format(test_data, result))
 
 <h2 id="뉴럴-네트워크-neural-network-구성">뉴럴 네트워크(Neural Network) 구성</h2>
 
-<p>⚙️ 엔지니어</p>
+<h3 id="뉴런-모델-neuron-model">뉴런 모델 (Neuron model)</h3>
 
-<blockquote>
-<p><strong>뉴런(Neuron) 모델</strong> 은 앞에서 학습한 로지스틱 모델과 같다.<br />
+<p>뉴런(Neuron) 모델 은 앞에서 학습한 로지스틱 모델과 같다.<br />
 예를 들어서 3개의 변수(\(x_1\), \(x_2\), \(x_3\))를 입력 받을 경우<br />
 \(z=w_{1}x_{1} + w_{2}x_{2} + w_{3}x_{3} + b\)가 되고<br />
 \(a=\sigma(z)\) 가 된다.<br />
 아래 그림과 같이 표현 된다.</p>
-</blockquote>
 
 <p><img src="https://skettee.github.io/post/neural_network/neuron_model.png" alt="뉴런 모델" /></p>
 
-<p>⚙️ 엔지니어</p>
+<h3 id="뉴럴-네트워트-neural-network">뉴럴 네트워트(Neural Network)</h3>
 
-<blockquote>
-<p><strong>뉴럴 네트워트(Neural Network)</strong> 는<br />
+<p>뉴럴 네트워트(Neural Network)는<br />
 하나의 뉴런, 즉 로지스틱 모델을 <strong>유닛(Unit)</strong> 이라고 하고<br />
 유닛들을 서로 연결한 구조이다.<br />
 유닛들을 모아서 <strong>레이어(Layer)</strong> 를 형성하고<br />
@@ -195,7 +196,6 @@ print('input data is {} and ouput is {}'.format(test_data, result))
 2-레이어 (2-layer) 뉴럴 네트워크이다.<br />
 4개의 유닛(4-units)들로 구성된 히든 레이어(hidden layer) 1개와<br />
 1개의 유닛(1-unit)으로 구성된 출력 레이어(output layer) 1개로 되어 있다.</p>
-</blockquote>
 
 <p><img src="https://skettee.github.io/post/neural_network/neural_network.png" alt="뉴럴 네트워크" /></p>
 
