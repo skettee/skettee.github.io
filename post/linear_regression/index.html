@@ -116,12 +116,7 @@ weight_data=  [45.198, 46.212, 45.850, 47.389, 46.920, 49.275, 49.790, 50.354, 5
 
 <h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
-<p>데이터가 어떤 모양인지<br />
-확인해 보아야 겠군</p>
-</blockquote>
+<p>데이터가 어떤 모양인지 확인해 보자.</p>
 
 <pre><code class="language-python">%matplotlib inline
 
@@ -156,18 +151,21 @@ plt.show()
 입력과 출력의 모양(Shape)를 맞추어 주는 것이다.<br />
 복잡하다 &hellip; 잘못하면 다크-디멘션에 빠진다&hellip;<br />
 뒤에서 더 자세하게 설명할 기회가 있을 것이다.</p>
-
-<p>일단 여기서는<br />
-키와 몸무게 데이터를 각각 매트릭스로 변환하자<br />
-행의 크기는 데이터의 개수<br />
-열의 크기는 측정한 항목의 개수</p>
-
-<p>키 값을 입력하면 &lsquo;몸짱반&rsquo;에 들어갈 수 있는 몸무게를 예측해야 하니까&hellip;<br />
-키 데이터를 입력 x라고 하고 몸무게 데이터를 출력 y라고 하자</p>
-
-<p>키 데이터는 50개의 &lsquo;키&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스<br />
-몸무게 데이터는 50개의 &lsquo;몸무게&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스이다.</p>
 </blockquote>
+
+<p>일단 여기서는  키와 몸무게 데이터를 각각 매트릭스로 변환하자</p>
+
+<ul>
+<li>열의 크기는 데이터의 개수<br /></li>
+<li>컬럼의 크기는 측정한 항목의 개수<br /></li>
+</ul>
+
+<p>키 값을 입력하면 &lsquo;몸짱반&rsquo;에 들어갈 수 있는 몸무게를 예측해야 한다. 키 데이터를 입력 x라고 하고 몸무게 데이터를 출력 y라고 하자</p>
+
+<ul>
+<li>키 데이터는 50개의 &lsquo;키&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스<br /></li>
+
+<li><p>몸무게 데이터는 50개의 &lsquo;몸무게&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스이다.</p>
 
 <pre><code class="language-python">import numpy as np
 
@@ -180,7 +178,7 @@ print('\ny = ', y[:10])
 print('y.shape= ', y.shape)
 </code></pre>
 
-<pre><code>x =  [[150. ]
+<p>x =  [[150. ]
  [150.8]
  [151.6]
  [152.4]
@@ -190,9 +188,9 @@ print('y.shape= ', y.shape)
  [155.7]
  [156.5]
  [157.3]]
-x.shape=  (50, 1)
+x.shape=  (50, 1)</p>
 
-y =  [[45.198]
+<p>y =  [[45.198]
  [46.212]
  [45.85 ]
  [47.389]
@@ -202,8 +200,8 @@ y =  [[45.198]
  [50.354]
  [51.694]
  [50.789]]
-y.shape=  (50, 1)
-</code></pre>
+y.shape=  (50, 1)</p></li>
+</ul>
 
 <p>⚙️ 엔지니어</p>
 
@@ -215,19 +213,13 @@ y.shape=  (50, 1)
 
 <h2 id="선형-모델링-linear-modeling">선형 모델링 (Linear Modeling)</h2>
 
+<p>모델을 \(y=wx+b\)로 놓고<br />
+주어진 데이터에 가장 비슷한 직선을 표시하는 \(w\)와 \(b\)를 찾아 가는 것이 선형 모델링이다.<br />
+\(w\)는 직선의 기울기고 \(b\)는 \(y\)절편이라고 배웠지만, 이제 부터는 \(w\)는 <strong>가중치(weight)</strong> 로, \(b\)는 <strong>바이어스(bias)</strong> 로 부르자</p>
+
 <p>⚙️ 엔지니어)</p>
 
 <blockquote>
-<p>모델을 \(y=wx+b\)로 놓고<br />
-주어진 데이터에 가장 비슷한 직선을 표시하는<br />
-\(w\)와 \(b\)를 구하면 끝!</p>
-
-<p>\(w\)는 직선의 기울기고 \(b\)는 \(y\)절편이라고 배웠지만,<br />
-이제 부터는 \(w\)는 <strong>weight</strong>고<br />
-\(b\)는 <strong>bias</strong>로 부르도록 하겠다&hellip;</p>
-
-<p>왜? 멋있으니까!</p>
-
 <p>그런데&hellip; \(w\)와 \(b\)를 어떻게 구하면 되지?</p>
 </blockquote>
 
@@ -390,14 +382,7 @@ print('x for minimum y is: ', xx)
 <p>x for minimum y is:  1.0000000033659349</p></li>
 </ol>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
-<p>좋았어!</p>
-
-<p>\(w\)와 \(b\)에 대한 손실 함수의 순간 변화율(미분값)을 구해서<br />
-반복해서 업데이트를 해 주면<br />
-자동으로 손실 함수의 최소 값에 도달 할 수 있겠어!</p>
+<p>\(w\)와 \(b\)에 대한 손실 함수의 순간 변화율(미분값)을 구해서 반복해서 업데이트를 해 주면 자동으로 손실 함수의 최소 값에 도달 할 수 있다.</p>
 
 <p>수식으로 표현해보자</p>
 
@@ -407,21 +392,23 @@ print('x for minimum y is: ', xx)
 <p>\(b:=b-\alpha {\partial{J(w,b)}\over \partial b}\) , \(\alpha=0.01\) learining rate<br />
 }</p>
 
-<p>아하! <strong>손실함수의 최소값을 찾아 가는 것</strong>이 기계(Machine)가 학습(Learning)하는 방법이구나!</p>
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>아하! 손실함수의 최소값을 찾아 가는 것이 기계(Machine)가 학습(Learning)하는 방법이구나!</p>
 </blockquote>
 
 <h3 id="정리">정리</h3>
 
-<p>⚙️ 엔지니어</p>
+<p>선형 모델(Linear model)을 만드는 방법을 정리해 보자.</p>
 
-<blockquote>
-<p>선형 모델(Linear model)을 만드는 방법을 정리해 보자.<br />
-1. \(\hat{y}=wx+b\) 함수를 정의한다.<br />
-2. 손실 함수 (Loss function)를 정의한다. 여기서는 <strong>평균 제곱 오차(mean squared error)</strong> 를 사용한다.<br />
-3. 손실 함수의 최소값을 찾는 방법을 선택한다. 여기서는 <strong>경사 하강법(gradient descent)</strong> 을 사용한다. 그리고 최소값을 찾는 방법(알고리즘)을 <strong>옵티마이저(Optimizer)</strong> 라고 부르겠다.<br />
-4. 반복할 회수(epoch)를 결정한다.<br />
-5. 주어진 조건으로 모델을 최적화(fit) 시킨다.</p>
-</blockquote>
+<ol>
+<li>\(\hat{y}=wx+b\) 함수를 정의한다.<br /></li>
+<li>손실 함수 (Loss function)를 정의한다. 여기서는 <strong>평균 제곱 오차(mean squared error)</strong> 를 사용한다.<br /></li>
+<li>손실 함수의 최소값을 찾는 방법을 선택한다. 여기서는 <strong>경사 하강법(gradient descent)</strong> 을 사용한다. 그리고 최소값을 찾는 방법(알고리즘)을 <strong>옵티마이저(Optimizer)</strong> 라고 부르겠다.<br /></li>
+<li>반복할 회수(epoch)를 결정한다.<br /></li>
+<li>주어진 조건으로 모델을 최적화(fit) 시킨다.<br /></li>
+</ol>
 
 <h2 id="텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</h2>
 
@@ -436,6 +423,12 @@ print('x for minimum y is: ', xx)
 
 <h3 id="정규화-normalization">정규화(Normalization)</h3>
 
+<p><strong>정규값 = (현재값 - 최소값) / (최대값-최소값)</strong> 으로 정규화 하자</p>
+
+<p>그래프를 보면,<br />
+데이터의 모양은 그대로 유지하면서도<br />
+x축의 값이 0에서 1사이로 변환된 것을 볼 수 있다.</p>
+
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
@@ -443,12 +436,6 @@ print('x for minimum y is: ', xx)
 
 <p>이거 안하면 엉뚱한 답이 나온다.
 꼭 해야됨!</p>
-
-<p><strong>정규값 = (현재값 - 최소값) / (최대값-최소값)</strong> 으로 정규화 한다!</p>
-
-<p>그래프를 보면,<br />
-데이터의 모양은 그대로 유지하면서도<br />
-x축의 값이 0에서 1사이로 변환된 것을 볼 수 있다.</p>
 </blockquote>
 
 <pre><code class="language-python">from sklearn import preprocessing
@@ -580,6 +567,9 @@ print('몸짱반에 들어갈 수 있는 몸무게는 {:.2f} kg 입니다'.forma
 
 
 <nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/latent_factor_model/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">잠재 인수 모델 (Latent Factor Model)</p></a>
+	</div>
 	<div class="post-nav__item post-nav__item--next">
 		<a class="post-nav__link" href="/post/logistic_regression/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">로지스틱 회귀 (Logistic Regression)</p></a>
 	</div>

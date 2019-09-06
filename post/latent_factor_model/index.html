@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>잠재 인수 모델 (Latent Factor Model) - 막돼먹은 엔지니어의 머신런닝 개발기</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="잠재 인수 모델 (Latent Factor Model)" />
+<meta property="og:description" content="영화나 상품 추천에 사용되는 잠재 인수 모델(Latent Factor Model)을 살펴 보고 Keras로 모델링을 해보자!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/latent_factor_model/" />
+
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/agate.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+  	<script>hljs.initHighlightingOnLoad();</script>
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="막돼먹은 엔지니어의 머신런닝 개발기" rel="home">
+				<div class="logo__title">막돼먹은 엔지니어의 머신런닝 개발기</div>
+				<div class="logo__tagline">딥러닝 모델링</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">잠재 인수 모델 (Latent Factor Model)</h1>
+			<div class="post__meta meta">
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/deep-learning" rel="category">Deep Learning</a>, <a class="meta__link" href="/categories/recommendation" rel="category">Recommendation</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#문제-problem">문제 (Problem)</a></li>
+<li><a href="#데이터-수집-data-collection">데이터 수집 (Data Collection)</a>
+<ul>
+<li><a href="#ratings-데이터프레임">Ratings 데이터프레임</a></li>
+<li><a href="#movies-데이터프레임">Movies 데이터프레임</a></li>
+<li><a href="#번-사용자가-5개-별점을-준-영화-리스트">#번 사용자가 5개 별점을 준 영화 리스트</a></li>
+</ul></li>
+<li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a>
+<ul>
+<li><a href="#데이터-확인-data-visualization">데이터 확인 (Data Visualization)</a></li>
+<li><a href="#데이터-모델링-data-modeling">데이터 모델링 (Data Modeling)</a></li>
+<li><a href="#행렬-인수-분해-matrix-factorization">행렬 인수 분해 (Matrix Factorization)</a></li>
+<li><a href="#잠재-인수-모델-latent-factor-model">잠재 인수 모델 (Latent factor model)</a>
+<ul>
+<li><a href="#손실함수-loss-function">손실함수(Loss function)</a></li>
+<li><a href="#최적화-optimization">최적화(Optimization)</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a></li>
+<li><a href="#모델링-modeling">모델링 (Modeling)</a>
+<ul>
+<li><a href="#embedding">Embedding</a></li>
+<li><a href="#미니-데이터를-가지고-modeling">미니 데이터를 가지고 Modeling</a></li>
+<li><a href="#모델-훈련">모델 훈련</a></li>
+<li><a href="#예측">예측</a></li>
+<li><a href="#movielens를-가지고-모델링-modeling-하기">Movielens를 가지고 모델링(Modeling)하기</a>
+<ul>
+<li><a href="#데이터-변환">데이터 변환</a></li>
+<li><a href="#latent-factor-모델링">Latent factor 모델링</a></li>
+</ul></li>
+<li><a href="#모델-훈련-및-평가">모델 훈련 및 평가</a></li>
+</ul></li>
+<li><a href="#해결-solution">해결 (Solution)</a></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
+			<p>영화나 상품 추천에 사용되는 잠재 인수 모델(Latent Factor Model)을 살펴 보고 Keras로 모델링을 해보자!</p>
+
+<p>실제로 돌려 보고 싶으면 구글 코랩으로 ~</p>
+
+<p><a href="https://colab.research.google.com/github/skettee/notebooks/blob/master/latent_factor_model.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" /></a></p>
+
+<h2 id="문제-problem">문제 (Problem)</h2>
+
+<p>👤 상사</p>
+
+<blockquote>
+<p>인공지능을 이용해서 영화를 추천하는 프로젝트를 시작한다<br />
+데이터는 movielens에서 제공하는 데이터를 사용하게<br />
+<a href="https://movielens.org/">https://movielens.org/</a></p>
+
+<p>여기서 제공하는 영화 메타데이터와 사용자 별점을 이용해서<br />
+영화에 대한 사용자의 별점을 예측하는 프로그램을 만들어 보게</p>
+</blockquote>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>아니 보스&hellip; 사진 인식 프로젝트는 어떻게 하라고&hellip;  CNN시작도 안했는데&hellip;<br />
+막 지르는 구나&hellip;</p>
+</blockquote>
+
+<h2 id="데이터-수집-data-collection">데이터 수집 (Data Collection)</h2>
+
+<p>이제는 데이터 수집도 일이 되었다.<br />
+데이터를 다운로드하고 파일로 저장하고 데이터프레임으로 변환하는 작업이 필요하다.</p>
+
+<p>우리가 사용할 무비렌즈 데이터셋은 다음과 같다.</p>
+
+<p><strong>MovieLens Latest Datasets</strong><br />
+100,000 ratings and 3,600 tag applications applied to 9,000 movies by 600 users. Last updated <sup>9</sup>&frasl;<sub>2018</sub>.</p>
+
+<ul>
+<li><a href="http://files.grouplens.org/datasets/movielens/ml-latest-small-README.html">README.txt</a><br /></li>
+<li>ml-latest-small.zip (size: 1 MB)</li>
+<li><a href="http://files.grouplens.org/datasets/movielens/ml-latest-small.zip">http://files.grouplens.org/datasets/movielens/ml-latest-small.zip</a></li>
+</ul>
+
+<p>Zip파일을 풀면 아래의 데이터가 나온다. (README.txt 참조)</p>
+
+<ol>
+<li><p>ratings.csv</p>
+
+<ul>
+<li>파일 형식: userId, movieId, rating, timestamp</li>
+<li>userId: 1 ~ 610 사이의 정수값<br /></li>
+<li>movieId: 1 ~ 193609 사이의 정수값<br /></li>
+<li>rating: 0.5 ~ 5.0 사이의 별점값 (0.5씩 증가)<br /></li>
+<li>timestamp: 별점을 준 시간을 초로 표시  (1970.01.01 부터 UTC time)<br /></li>
+</ul></li>
+
+<li><p>movies.csv</p>
+
+<ul>
+<li>파일 형식: movieId, title, genres</li>
+<li>movieId: 1 ~ 193609 사이의 정수값<br /></li>
+<li>title: 영화 제목<br /></li>
+
+<li><p>genres: 하나 이상의 장르가 &lsquo;|&rsquo; 로 연결되어 표시<br />
+Action, Adventure, Animation, Children&rsquo;s, Comedy, Comedy, Documentary, Drama, Fantasy, Film-Noir, Horror, Musical, Mystery, Romance, Sci-Fi, Thriller, War, Western</p>
+
+<pre><code class="language-python">import sys
+import time
+
+import os
+import tempfile
+import zipfile
+from six.moves import urllib
+import tensorflow as tf
+
+def _progresshook(count, block_size, total_size):
+global start_time
+if count == 0:
+start_time = time.time()
+return
+duration = time.time() - start_time
+progress_size = int(count * block_size)
+speed = int(progress_size / (1024 * duration))
+percent = int(count * block_size * 100 / total_size)
+sys.stdout.write(&quot;\r...%d%%, %d MB, %d KB/s, %d seconds passed&quot; %
+            (percent, progress_size / (1024 * 1024), speed, duration))
+sys.stdout.flush()
+
+DATA_DIR = &quot;/tmp/movielens-data/&quot;
+DATA_SET = 'ml-latest-small'
+RATINGS_FILE = &quot;ratings.csv&quot;
+MOVIES_FILE = &quot;movies.csv&quot;
+DATA_URL = &quot;http://files.grouplens.org/datasets/movielens/&quot;
+
+data_subdir = os.path.join(DATA_DIR, DATA_SET)
+expected_files = [&quot;{}.zip&quot;.format(DATA_SET), RATINGS_FILE, MOVIES_FILE]
+
+tf.io.gfile.makedirs(data_subdir)
+if set(expected_files).intersection(
+tf.io.gfile.listdir(data_subdir)) == set(expected_files):
+print(&quot;Dataset {} has already been downloaded&quot;.format(DATA_SET))
+else:
+tf.io.gfile.makedirs(data_subdir)
+
+url = &quot;{}{}.zip&quot;.format(DATA_URL, DATA_SET)
+temp_dir = tempfile.mkdtemp()
+
+try:
+zip_path = os.path.join(temp_dir, &quot;{}.zip&quot;.format(DATA_SET))
+zip_path, _ = urllib.request.urlretrieve(url, zip_path, _progresshook)
+statinfo = os.stat(zip_path)
+print()
+print(&quot;Successfully downloaded {} {} bytes&quot;.format(zip_path, statinfo.st_size))
+
+zipfile.ZipFile(zip_path, &quot;r&quot;).extractall(temp_dir)
+
+working_dir = os.path.join(temp_dir, DATA_SET)
+
+tf.io.gfile.copy(os.path.join(working_dir, &quot;ratings.csv&quot;), os.path.join(temp_dir, RATINGS_FILE))
+tf.io.gfile.copy(os.path.join(working_dir, &quot;movies.csv&quot;), os.path.join(temp_dir, MOVIES_FILE))
+        
+tf.io.gfile.rmtree(working_dir)
+
+for fname in tf.io.gfile.listdir(temp_dir):
+    if not tf.io.gfile.exists(os.path.join(data_subdir, fname)):
+        tf.io.gfile.copy(os.path.join(temp_dir, fname),
+                         os.path.join(data_subdir, fname))
+    else:
+        print(&quot;Skipping copy of {}, as it already exists in the &quot;
+                     &quot;destination folder.&quot;.format(fname))
+finally:
+tf.io.gfile.rmtree(temp_dir)
+</code></pre></li>
+</ul>
+
+<p>&hellip;100%, 0 MB, 782 KB/s, 1 seconds passed
+Successfully downloaded /tmp/tmpgpeoa1q0/ml-latest-small.zip 978202 bytes</p></li>
+</ol>
+
+<h3 id="ratings-데이터프레임">Ratings 데이터프레임</h3>
+
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+
+ratings_df = pd.read_csv(os.path.join(data_subdir, RATINGS_FILE))
+ratings_df.head()
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userId</th>
+      <th>movieId</th>
+      <th>rating</th>
+      <th>timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4.0</td>
+      <td>964982703</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>3</td>
+      <td>4.0</td>
+      <td>964981247</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>6</td>
+      <td>4.0</td>
+      <td>964982224</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1</td>
+      <td>47</td>
+      <td>5.0</td>
+      <td>964983815</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1</td>
+      <td>50</td>
+      <td>5.0</td>
+      <td>964982931</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="movies-데이터프레임">Movies 데이터프레임</h3>
+
+<pre><code class="language-python">movies_df = pd.read_csv(os.path.join(data_subdir, MOVIES_FILE))
+movies_df.head()
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>movieId</th>
+      <th>title</th>
+      <th>genres</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>Toy Story (1995)</td>
+      <td>Adventure|Animation|Children|Comedy|Fantasy</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>Jumanji (1995)</td>
+      <td>Adventure|Children|Fantasy</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>3</td>
+      <td>Grumpier Old Men (1995)</td>
+      <td>Comedy|Romance</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>4</td>
+      <td>Waiting to Exhale (1995)</td>
+      <td>Comedy|Drama|Romance</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>5</td>
+      <td>Father of the Bride Part II (1995)</td>
+      <td>Comedy</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="번-사용자가-5개-별점을-준-영화-리스트">#번 사용자가 5개 별점을 준 영화 리스트</h3>
+
+<pre><code class="language-python">userId = 100 # 1~610
+rating = 5  # 1 ~ 5
+top_movie_ids = ratings_df[(ratings_df['userId'] == userId) 
+                           &amp; (ratings_df['rating'] == rating)].movieId
+top_titles = movies_df[movies_df['movieId'].isin(top_movie_ids)].title
+
+print('Top rated titles of userId {}:\n'.format(userId))
+for item in top_titles:
+    print(item)
+</code></pre>
+
+<pre><code>Top rated titles of userId 100:
+
+Top Gun (1986)
+Terms of Endearment (1983)
+Christmas Vacation (National Lampoon's Christmas Vacation) (1989)
+Officer and a Gentleman, An (1982)
+Sweet Home Alabama (2002)
+</code></pre>
+
+<h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
+
+<h3 id="데이터-확인-data-visualization">데이터 확인 (Data Visualization)</h3>
+
+<pre><code class="language-python">print('{} Ratings, {} Users, {} Movies'.format(len(ratings_df), 
+                                               len(ratings_df.userId.unique()), 
+                                               len(ratings_df.movieId.unique())))
+</code></pre>
+
+<pre><code>100836 Ratings, 610 Users, 9724 Movies
+</code></pre>
+
+<p>데이터가 구멍이 난 것이 없는지 확인</p>
+
+<pre><code class="language-python"># Check missing data
+print('missing number of userId data is ', ratings_df['userId'].isnull().sum())
+print('missing number of movieId data is ', ratings_df['movieId'].isnull().sum())
+print('missing number of rating data is ', ratings_df['rating'].isnull().sum())
+</code></pre>
+
+<pre><code>missing number of userId data is  0
+missing number of movieId data is  0
+missing number of rating data is  0
+</code></pre>
+
+<p><code>userId</code>, <code>movieId</code>, <code>rating</code> 세개만 가지고 피처 벡터(feature vector)를 추출할 예정이다.<br />
+일단 <code>userId</code>를 컬럼(Column), <code>movieId</code>를 열(Row)로 만들어서 <code>rating</code>값을 확인해 보자</p>
+
+<pre><code class="language-python">df_table = ratings_df.set_index([&quot;movieId&quot;, &quot;userId&quot;]).unstack()
+df_table.shape
+</code></pre>
+
+<pre><code>(9724, 1220)
+</code></pre>
+
+<pre><code class="language-python">df_table.iloc[808:817, 212:222].fillna(&quot;&quot;)
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="10" halign="left">rating</th>
+    </tr>
+    <tr>
+      <th>userId</th>
+      <th>213</th>
+      <th>214</th>
+      <th>215</th>
+      <th>216</th>
+      <th>217</th>
+      <th>218</th>
+      <th>219</th>
+      <th>220</th>
+      <th>221</th>
+      <th>222</th>
+    </tr>
+    <tr>
+      <th>movieId</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1057</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1059</td>
+      <td></td>
+      <td>4</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>1060</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1061</td>
+      <td></td>
+      <td></td>
+      <td>3.5</td>
+      <td></td>
+      <td>3</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1064</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1066</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1068</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1073</td>
+      <td></td>
+      <td>3</td>
+      <td></td>
+      <td></td>
+      <td>3</td>
+      <td></td>
+      <td>2.5</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1077</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>3</td>
+      <td>2</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>4</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>빵꾸가 많이 보인다&hellip;<br />
+별점이 비어 있는 빵꾸난 부분을<br />
+우리가 만들 모델을 통해서<br />
+별점을 예측해서 채워 넣어야 한다.</p>
+
+<p>어떻게?</p>
+</blockquote>
+
+<h3 id="데이터-모델링-data-modeling">데이터 모델링 (Data Modeling)</h3>
+
+<p>데이터가 크고 불완전하면 이해하기도 어렵고 다루기도 어렵다.<br />
+미니 데이터를 만들어서 솔루션을 찾아보자!</p>
+
+<p>5편의 영화에 대해서 4명이 별점을 매긴 데이터가 있다.</p>
+
+<table>
+<thead>
+<tr>
+<th>영화 \ 평가자</th>
+<th>Alice</th>
+<th>Bob</th>
+<th>Carol</th>
+<th>Dave</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>뷰티인사이드</strong></td>
+<td>5</td>
+<td>5</td>
+<td>1</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td><strong>라라랜드</strong></td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td><strong>러브스토리</strong></td>
+<td>5</td>
+<td>5</td>
+<td>1</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td><strong>매트릭스</strong></td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>5</td>
+</tr>
+
+<tr>
+<td><strong>스타워즈</strong></td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+
+<p>우리는 여기서 앨리스(Alice), 밥(Bob), 캐롤(Carol), 데이브(Dave)를 분류할 수 있는 특징과 뷰티 인사이드, 라라랜드, 러브 스토리, 매트릭스, 스타워즈를 분류 할 수 있는 특징을 발견할 것이다.</p>
+
+<p>우선 영화를 보자<br />
+뷰티 인사이드, 라라랜드, 러브 스토리는 &lsquo;로맨틱 영화&rsquo;로 분류할 수 있고,<br />
+매트릭스와 스타워즈는 &lsquo;공상과학 영화&rsquo;로 분류할 수 있다.</p>
+
+<table>
+<thead>
+<tr>
+<th>영화 \ 특징</th>
+<th>로맨틱 영화</th>
+<th>공상과학 영화</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>뷰티인사이드</strong></td>
+<td>높은 점수</td>
+<td>낮은 점수</td>
+</tr>
+
+<tr>
+<td><strong>라라랜드</strong></td>
+<td>높은 점수</td>
+<td>낮은 점수</td>
+</tr>
+
+<tr>
+<td><strong>러브스토리</strong></td>
+<td>높은 점수</td>
+<td>낮은 점수</td>
+</tr>
+
+<tr>
+<td><strong>매트릭스</strong></td>
+<td>낮은 점수</td>
+<td>높은 점수</td>
+</tr>
+
+<tr>
+<td><strong>스타워즈</strong></td>
+<td>낮은 점수</td>
+<td>높은 점수</td>
+</tr>
+</tbody>
+</table>
+
+<p>사용자를 보자<br />
+앨리스와 밥은 로맨틱 영화를 좋아하고 공상과학 영화를 좋아하지 않는 &lsquo;로맨틱한 사람&rsquo;으로 분류할 수 있고,<br />
+캐롤과 데이브는 공상과학 영화를 좋아하고 로맨틱 영화를 좋아하지 않는 &lsquo;상상력이 풍부한 사람&rsquo;으로 분류할 수 있다.</p>
+
+<table>
+<thead>
+<tr>
+<th>특징 \ 평가자</th>
+<th>Alice</th>
+<th>Bob</th>
+<th>Carol</th>
+<th>Dave</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>로맨틱한 사람</strong></td>
+<td>높은 점수</td>
+<td>높은 점수</td>
+<td>낮은 점수</td>
+<td>낮은 점수</td>
+</tr>
+
+<tr>
+<td><strong>상상력이 풍부한 사람</strong></td>
+<td>낮은 점수</td>
+<td>낮은 점수</td>
+<td>높은 점수</td>
+<td>높은 점수</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>잠재 인수(Latent factor)</strong></p>
+
+<p>&lsquo;로맨틱 영화&rsquo;, &lsquo;상상력이 풍부한 사람&rsquo;과 같은 피처(feature)는 데이터에서는 보이지 않는다.<br />
+이와같이 데이터들 속에 숨어있는 특징을 <strong>잠재 인수(Latent factor)</strong> 라고 한다.</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>잠재 인수(Latent factor)의 값들이<br />
+영화의 특징을 보여주고<br />
+평가자의 특징을 보여 주면서<br />
+별점수까지 보여 주는 방법이 없을까?</p>
+
+<p>있다! 그것은 바로&hellip;</p>
+</blockquote>
+
+<h3 id="행렬-인수-분해-matrix-factorization">행렬 인수 분해 (Matrix Factorization)</h3>
+
+<p>별점 매트릭스를 \(R\)라고 하자</p>
+
+<p>\(R= \begin{bmatrix}
+5 &amp; 5 &amp; 1 &amp; 1  \\
+5 &amp; 4 &amp; 1 &amp; 1  \\
+5 &amp; 5 &amp; 1 &amp; 1  \\
+1 &amp; 1 &amp; 5 &amp; 5  \\
+1 &amp; 1 &amp; 5 &amp; 4
+\end{bmatrix}\)</p>
+
+<p>우리는 이제 \(R\) (5X4) 매트릭스를 \(Q\) (5X2)와 \(P^T\) (2X4) 매트릭스로 분해를 할 것이다.</p>
+
+<pre><code class="language-python"># Non-negative matrix factorization
+from sklearn.decomposition import NMF
+R = [
+     [5,5,1,1],
+     [5,4,1,1],
+     [5,5,1,1],
+     [1,1,5,5],
+     [1,1,5,4],
+    ]
+
+k = 2 # number of factors
+model = NMF(n_components=k)
+Q = model.fit_transform(np.array(R))
+P = model.components_
+</code></pre>
+
+<p>아래 \(Q\) 매트릭스를 보자.</p>
+
+<p>0번 컬럼(Column)을 &lsquo;로맨틱 영화&rsquo;,<br />
+1번 컬럼(Column)을 &lsquo;공상과학 영화&rsquo; 라고 하면<br />
+\(Q\) 매트릭스는 영화의 특징을 나타내고 있다.</p>
+
+<pre><code class="language-python"># Q (5X2) 매트릭스
+pd.DataFrame(Q, columns=['Romantic', 'Sci-Fi'])
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Romantic</th>
+      <th>Sci-Fi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1.931132</td>
+      <td>0.000002</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1.744253</td>
+      <td>0.047301</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.931132</td>
+      <td>0.000002</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.376532</td>
+      <td>2.425963</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.375488</td>
+      <td>2.186905</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>아래 \(P^T\) 매트릭스를 보자.</p>
+
+<p>0번 열(Row)을 &lsquo;로맨틱한 사람&rsquo;,<br />
+1번 열(Row)을 &lsquo;상상력이 풍부한 사람&rsquo; 이라고 하면<br />
+\(P^T\) 매트릭스는 평가자의 특징을 나타내고 있다.</p>
+
+<pre><code class="language-python"># P (2X4) 매트릭스
+pd.DataFrame(P, index=['Romantic Guy', 'Imaginary Guy'])
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Romantic Guy</td>
+      <td>2.669263</td>
+      <td>2.503536</td>
+      <td>0.518479</td>
+      <td>0.518187</td>
+    </tr>
+    <tr>
+      <td>Imaginary Guy</td>
+      <td>0.000000</td>
+      <td>0.023698</td>
+      <td>2.077725</td>
+      <td>1.872818</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>마지막으로 \(Q\)와 \(P^T\) 매트릭스가<br />
+별점을 표현하는 지를 확인하기 위해서<br />
+\(Q\)와 \(P^T\)를 곱해 보자</p>
+
+<pre><code class="language-python">R_hat = np.dot(Q,P)
+pd.DataFrame(R_hat)
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>5.154699</td>
+      <td>4.834659</td>
+      <td>1.001255</td>
+      <td>1.000692</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>4.655871</td>
+      <td>4.367922</td>
+      <td>1.002637</td>
+      <td>0.992436</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.154699</td>
+      <td>4.834659</td>
+      <td>1.001255</td>
+      <td>1.000692</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.005062</td>
+      <td>1.000152</td>
+      <td>5.235708</td>
+      <td>4.738501</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.002276</td>
+      <td>0.991874</td>
+      <td>4.738469</td>
+      <td>4.290248</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>\(R\)과 근사한 값이 나온다.</p>
+
+<p>이렇게  \(R \simeq Q \cdot P^T\) 를 <strong>행렬인수분해(Matrix Factorization)</strong> 라고 한다.</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>놀랍다!</p>
+
+<p>평가자들의 영화 평점 매트릭스만 가지고<br />
+평가자들의 잠재 인수(latent factor)와<br />
+영화의 잠재 인수(latent factor)를<br />
+추출할 수 있다.</p>
+
+<p>여러분&hellip; 수학이 이렇게 신기하고<br />
+재미있습니다.</p>
+
+<p>학생때<br />
+열심히 할걸&hellip;</p>
+
+<p>그러나</p>
+
+<p>별점이 빵꾸난 데이터에 대해서<br />
+잠재 인수(Latent factor)를 어떻게 찾을까?</p>
+</blockquote>
+
+<h3 id="잠재-인수-모델-latent-factor-model">잠재 인수 모델 (Latent factor model)</h3>
+
+<p>알고 있는 데이터세트(\(X, Y\))를 학습하여 새로운 입력값(\(X_{new}\))에 대해 출력값(\(\hat Y\))을 예측하는 모델이 선형 회귀 모델이다. 잠재 인수 모델도 선형 회귀 모델과 비슷하게 손실함수를 정의하고 손실함수가 최소가 되는 \(P\)와 \(Q\)를 찾는 모델이다.</p>
+
+<h4 id="손실함수-loss-function">손실함수(Loss function)</h4>
+
+<p>잠재 인수 모델(Latent factor model)에서의 손실 함수(Loss function)는 <strong>SSE(Sum of Squared Error)</strong> 를 사용한다.</p>
+
+<p>\(J(p, q) = {1 \over 2}\sum_{(i,j) \in R} (r_{ij} - q_i \cdot p_{j}^T)^2\)</p>
+
+<p>여기에 과대적합(Overfitting)을 방지하기 위해서 <strong>L2 Regularization</strong> 을 추가한다.</p>
+
+<p>\(J(p, q) = {1 \over 2}\sum_{(i,j) \in R} (r_{ij} - q_i \cdot p_{j}^T)^2 + {1 \over 2}\lambda \sum_{i} ||q_i||^2 + {1 \over 2}\lambda \sum_{j} ||p_j||^2\)</p>
+
+<h4 id="최적화-optimization">최적화(Optimization)</h4>
+
+<p>손실함수의 최소값을 찾기 위해서 <strong>경사 하강법(Gradient Descent)</strong> 을 적용한다.</p>
+
+<p>REPEAT(epoch) {<br />
+\(p:=p-\alpha {\partial {J(p,q)}\over \partial p}\)</p>
+
+<p>\(q:=q-\alpha {\partial{J(p,q)}\over \partial q}\) , \(\alpha\): learining rate<br />
+}</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>이제 미니 데이터를 가지고 모델링을 해보자!</p>
+</blockquote>
+
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+
+data = [
+    ['Alice', 'Beauty Inside', 5],
+    ['Alice', 'La La Land', 5],
+    ['Alice', 'Love Story', 5],
+    ['Alice', 'Matrix', 1],
+    ['Alice', 'Star Wars', 1], 
+    ['Bob', 'La La Land', 4],
+    ['Bob', 'Love Story', 5],
+    ['Bob', 'Matrix', 1],
+    ['Bob', 'Star Wars', 1],
+    ['Carol', 'Beauty Inside', 1],
+    ['Carol', 'La La Land', 1],
+    ['Carol', 'Matrix', 5],
+    ['Carol', 'Star Wars', 5], 
+    ['Dave', 'Beauty Inside', 1], 
+    ['Dave', 'La La Land', 1],
+    ['Dave', 'Love Story', 1],
+    ['Dave', 'Matrix', 5],
+    ['Dave', 'Star Wars', 4],
+]
+
+mini_df = pd.DataFrame( data = data, columns = ['user', 'item', 'rating'])
+df_table = mini_df.set_index([&quot;item&quot;, &quot;user&quot;]).unstack().fillna('?')
+
+df_table
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="4" halign="left">rating</th>
+    </tr>
+    <tr>
+      <th>user</th>
+      <th>Alice</th>
+      <th>Bob</th>
+      <th>Carol</th>
+      <th>Dave</th>
+    </tr>
+    <tr>
+      <th>item</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Beauty Inside</td>
+      <td>5.0</td>
+      <td>?</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>La La Land</td>
+      <td>5.0</td>
+      <td>4</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>Love Story</td>
+      <td>5.0</td>
+      <td>5</td>
+      <td>?</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>Matrix</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>5</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <td>Star Wars</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>5</td>
+      <td>4.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
+
+<p>잠재 인수 모델(Latent factor model)에서 데이터 훈련을 위한 입력 값은 &lsquo;평가자&rsquo;와 &lsquo;영화&rsquo;의 인덱스 값, 그리고 별점이다.<br />
+미니 데이터로 예를 들면 &lsquo;라라랜드&rsquo;를 평가한 &lsquo;Alice&rsquo;의 평점이 &lsquo;5.0&rsquo; 이므로 모델에 입력하는 값은 다음과 같다.</p>
+
+<ul>
+<li>라라랜드를 인덱싱한 값: 1</li>
+<li>앨리스를 인덱싱한 값: 0</li>
+<li>별점 5.0</li>
+</ul>
+
+<p>따라서 영화 리스트와 평가자 리스트를 겹치지 않게 인덱싱 값으로 변환해야 한다.</p>
+
+<p>다음은 미니 데이터에서 평가자(<code>user</code>)를 인덱싱한 결과이다.<br />
+앨리스는 0, 밥은 1, 캐럴은 2, 데이브는 3으로 변환된 것을 확인할 수 있다.</p>
+
+<pre><code class="language-python">mini_df.user = mini_df.user.astype('category').cat.codes.values
+df_table = mini_df.set_index([&quot;item&quot;, &quot;user&quot;]).unstack().fillna('?')
+
+df_table
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="4" halign="left">rating</th>
+    </tr>
+    <tr>
+      <th>user</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+    <tr>
+      <th>item</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Beauty Inside</td>
+      <td>5.0</td>
+      <td>?</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>La La Land</td>
+      <td>5.0</td>
+      <td>4</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>Love Story</td>
+      <td>5.0</td>
+      <td>5</td>
+      <td>?</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>Matrix</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>5</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <td>Star Wars</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>5</td>
+      <td>4.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>영화(<code>item</code>)의 경우도 인덱싱을 한다.<br />
+뷰티인사이드가 0, 라라랜드가 1, 러브스토리가 2, 매트릭스가 3, 스타워즈 4로 변환된 것을 확인 할 수 있다.</p>
+
+<pre><code class="language-python">mini_df.item = mini_df.item.astype('category').cat.codes.values
+df_table = mini_df.set_index([&quot;item&quot;, &quot;user&quot;]).unstack().fillna('?')
+
+df_table
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="4" halign="left">rating</th>
+    </tr>
+    <tr>
+      <th>user</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+    <tr>
+      <th>item</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>5.0</td>
+      <td>?</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>5.0</td>
+      <td>4</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.0</td>
+      <td>5</td>
+      <td>?</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>5</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>5</td>
+      <td>4.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="모델링-modeling">모델링 (Modeling)</h2>
+
+<p>잠재 인수 모델에서 필요한 Embedding에 대해서 알아보자.</p>
+
+<h3 id="embedding">Embedding</h3>
+
+<p>임베딩(Embedding)은 잠재 인수 (Latent factor)를 생성한다.<br />
+영화(<code>item</code>)의 잠재 인수와 잠재 벡터는 아래와 같이 생성한다.</p>
+
+<pre><code class="language-python">from tensorflow.keras import Model
+from tensorflow.keras.layers import Input, Embedding, Flatten, dot
+from tensorflow.keras import regularizers
+
+n_items = len(mini_df.item.unique()) # 5편의 영화
+n_items_latent_factors = 2 # 영화의 잠재 인수 개수
+
+item_input = Input(shape=[1])
+# Item latent factor
+item_embedding = Embedding(n_items, n_items_latent_factors, # (5X2) Latent factor
+                           name='item_embedding')(item_input)
+# Item latent vector
+item_vec = Flatten()(item_embedding)
+</code></pre>
+
+<pre><code>WARNING: Logging before flag parsing goes to stderr.
+W0906 18:42:21.169342 140660089382720 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+</code></pre>
+
+<p>평가자(<code>user</code>)의 잠재 인수와 잠재 벡터를 생성한다.</p>
+
+<pre><code class="language-python">n_users = len(mini_df.user.unique()) # 4명의 평가자
+n_users_latent_factors = 2 # 평가자의 잠재 인수 개수
+
+user_input = Input(shape=[1])
+# User latent factor
+user_embedding = Embedding(n_users, n_users_latent_factors, # (4X2) Latent factor
+                           name='user_embedding')(user_input)
+# User latent vector
+user_vec = Flatten()(user_embedding)
+</code></pre>
+
+<h3 id="미니-데이터를-가지고-modeling">미니 데이터를 가지고 Modeling</h3>
+
+<p>\(\hat R = Q \cdot P^T\)</p>
+
+<pre><code class="language-python">r_hat = dot([item_vec, user_vec], axes=-1)
+mini_model = Model([user_input, item_input], r_hat)
+mini_model.compile(optimizer = 'sgd', loss = 'mean_squared_error')
+</code></pre>
+
+<h3 id="모델-훈련">모델 훈련</h3>
+
+<pre><code class="language-python">hist = mini_model.fit([mini_df.user, mini_df.item], mini_df.rating, epochs=2000, verbose=0) 
+print('loss: ', hist.history['loss'][-1])
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+
+plt.plot(hist.history['loss'])
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.show()
+</code></pre>
+
+<pre><code>loss:  0.03074105642735958
+</code></pre>
+
+<p><img src="output_44_1.png" alt="png" /></p>
+
+<h3 id="예측">예측</h3>
+
+<p>이제 빵꾸난 별점을 예측해 보자</p>
+
+<pre><code class="language-python">Q = mini_model.get_layer(name='item_embedding').get_weights()[0]
+P = mini_model.get_layer(name='user_embedding').get_weights()[0]
+P_t = np.transpose(P)
+
+R_hat = np.dot(Q, P_t)
+pd.DataFrame(R_hat)
+</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>4.999927</td>
+      <td>4.525294</td>
+      <td>1.004016</td>
+      <td>0.994853</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>4.739066</td>
+      <td>4.290169</td>
+      <td>1.003192</td>
+      <td>0.989438</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.235585</td>
+      <td>4.737882</td>
+      <td>1.014246</td>
+      <td>1.008297</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.002523</td>
+      <td>1.002334</td>
+      <td>5.235493</td>
+      <td>4.738781</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.001823</td>
+      <td>0.992321</td>
+      <td>4.738204</td>
+      <td>4.290364</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<pre><code class="language-python">print('뷰티 인사이드에 대한 Bob의 예상 별점은 {:.1f}'.format(R_hat[0][1]))
+print('러브 스토리에 대한 Carol의 예상 별점은 {:.1f} 이다.'.format(R_hat[2][2]))
+</code></pre>
+
+<pre><code>뷰티 인사이드에 대한 Bob의 예상 별점은 4.5
+러브 스토리에 대한 Carol의 예상 별점은 1.0 이다.
+</code></pre>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>우리가 예상한 별점과 가깝게 예측을 하고 있다!</p>
+
+<p>이제 Movielens의 별점 정보를 가지고 모델링을 하자</p>
+</blockquote>
+
+<h3 id="movielens를-가지고-모델링-modeling-하기">Movielens를 가지고 모델링(Modeling)하기</h3>
+
+<h4 id="데이터-변환">데이터 변환</h4>
+
+<p>훈련 데이터는 <code>ratings_df</code>에서 랜덤하게 80%를 선택하고,<br />
+테스트 데이터는 나머지 20%를 랜덤하게 선택한다.</p>
+
+<pre><code class="language-python">movielens_df = ratings_df.copy()
+
+# Indexing userId and movieId
+users = movielens_df.userId.unique()
+movies = movielens_df.movieId.unique()
+
+userid2idx = {o:i for i,o in enumerate(users)}
+movieid2idx = {o:i for i,o in enumerate(movies)}
+
+movielens_df['userId'] = movielens_df['userId'].apply(lambda x: userid2idx[x])
+movielens_df['movieId'] = movielens_df['movieId'].apply(lambda x: movieid2idx[x])
+
+# Split train and test data
+split = np.random.rand(len(movielens_df)) &lt; 0.8
+
+train_df = movielens_df[split]
+test_df = movielens_df[~split]
+
+print('shape of train data is ',train_df.shape)
+print('shape of test data is ',test_df.shape)
+</code></pre>
+
+<pre><code>shape of train data is  (80863, 4)
+shape of test data is  (19973, 4)
+</code></pre>
+
+<h4 id="latent-factor-모델링">Latent factor 모델링</h4>
+
+<pre><code class="language-python">n_movies = len(movielens_df.movieId.unique())
+n_users = len(movielens_df.userId.unique())
+n_latent_factors = 64
+
+movie_input = Input(shape=[1])
+# Item latent factor
+movie_embedding = Embedding(n_movies, n_latent_factors,
+                           name='movie_embedding')(movie_input)
+# Item latent vector
+movie_vec = Flatten()(movie_embedding)
+
+user_input = Input(shape=[1])
+# User latent factor
+user_embedding = Embedding(n_users, n_latent_factors,
+                           name='user_embedding')(user_input)
+# User latent vector
+user_vec = Flatten()(user_embedding)
+
+r_hat = dot([movie_vec, user_vec], axes=-1)
+model = Model([user_input, movie_input], r_hat)
+model.compile(optimizer = 'adam', loss = 'mean_squared_error')
+</code></pre>
+
+<h3 id="모델-훈련-및-평가">모델 훈련 및 평가</h3>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>돌려놓고 커피 한잔 하세여~</p>
+</blockquote>
+
+<pre><code class="language-python">hist = model.fit([train_df.userId, train_df.movieId], train_df.rating, 
+                 batch_size=128, epochs=50, verbose=0, 
+                 validation_data = ([test_df.userId, test_df.movieId],test_df.rating)) 
+print('train loss: ', hist.history['loss'][-1])
+print('test loss: ', hist.history['val_loss'][-1])
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+
+plt.plot(hist.history['loss'], 'b')
+plt.plot(hist.history['val_loss'] , 'r')
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+</code></pre>
+
+<pre><code>train loss:  0.015583596717465682
+test loss:  1.4580945893663293
+</code></pre>
+
+<p><img src="output_54_1.png" alt="png" /></p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>음&hellip;<br />
+개선 사항이 보이지만<br />
+오늘은 여기까지 하자</p>
+</blockquote>
+
+<h2 id="해결-solution">해결 (Solution)</h2>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>보스~ 원하시는 솔루션입니다.</p>
+
+<p>userId, movieId 값을 입력하시면<br />
+예상되는 별점값이 출력 됩니다.</p>
+</blockquote>
+
+<pre><code class="language-python">userId = 214       # 1 ~ 610
+movieId = 1059  # 1 ~ 193609
+movie_title = list(movies_df[movies_df['movieId']==movieId].title)[0]
+
+user_v = np.expand_dims(userid2idx[userId], 0)
+movie_v = np.expand_dims(movieid2idx[movieId], 0)
+predict = model.predict([user_v, movie_v])
+
+print('영화 {} 에 대한 사용자 ID {}님의 예상 별점은 {:.1f} 입니다.'.format(movie_title, userId, predict[0][0]))
+</code></pre>
+
+<pre><code>영화 William Shakespeare's Romeo + Juliet (1996) 에 대한 사용자 ID 214님의 예상 별점은 4.0 입니다.
+</code></pre>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" rel="tag">딥러닝</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%EC%9E%A0%EC%9E%AC-%EC%9D%B8%EC%88%98/" rel="tag">잠재 인수</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%ED%96%89%EB%A0%AC%EC%9D%B8%EC%88%98%EB%B6%84%ED%95%B4/" rel="tag">행렬인수분해</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/%EC%B6%94%EC%B2%9C/" rel="tag">추천</a></li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/linear_regression/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">선형 회귀 (Linear Regression)</p></a>
+	</div>
+</nav>
+<script src="https://utteranc.es/client.js"
+        repo="skettee/blog-comments"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 막돼먹은 엔지니어의 머신런닝 개발기.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

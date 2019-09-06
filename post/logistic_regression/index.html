@@ -113,7 +113,7 @@ chinchu_data = ['no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>데이터 분석이 크게 가치가 있을 것 같지가 않고&hellip;<br />
+<p>데이터 분석이 크게 의미가 있을 것 같지가 않고&hellip;<br />
 일단 친추를 요청하면 결과를 쉽게 알 수 있을것 같은데&hellip;</p>
 </blockquote>
 
@@ -131,12 +131,7 @@ chinchu_data = ['no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no'
 
 <h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
-<p>데이터가 어떤 모양인지<br />
-확인해 보아야 겠군</p>
-</blockquote>
+<p>데이터가 어떤 모양인지 확인해 보자.</p>
 
 <pre><code class="language-python">%matplotlib inline
 
@@ -160,24 +155,19 @@ plt.show()
 
 <h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
 <p>키와 친추 데이터를 각각 매트릭스로 변환하자<br />
-행의 크기는 데이터의 개수<br />
-열의 크기는 측정한 항목의 개수</p>
+ - 열의 크기는 데이터의 개수<br />
+ - 컬럼의 크기는 측정한 항목의 개수</p>
 
-<p>키 값을 입력하면 &lsquo;친추&rsquo;가능 여부(yes or no)를 예측해야 하니까&hellip;<br />
-키 데이터를 입력 x라고 하고 친추 가능 여부를 출력 y라고 하자</p>
+<p>키 값을 입력하면 &lsquo;친추&rsquo;가능 여부(yes or no)를 예측해야 한다. 키 데이터를 입력 x라고 하고 친추 가능 여부를 출력 y라고 하자</p>
 
-<p>키 데이터는 50개의 &lsquo;키&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스<br />
-친추 데이터는 50개의 &lsquo;친추 여부&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스이다.</p>
+<ul>
+<li>키 데이터는 50개의 &lsquo;키&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스<br /></li>
+<li>친추 데이터는 50개의 &lsquo;친추 여부&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스이다.<br /></li>
+</ul>
 
-<p>손실 함수(Loss function)를 계산하기 위해서는<br />
-&lsquo;yes&rsquo;, &lsquo;no&rsquo;를 계산이 가능한 수로 표시해야 한다.<br />
-여기에서는 &lsquo;yes&rsquo;와 &lsquo;no&rsquo; 두가지의 결과만 있으니까<br />
-&lsquo;yes&rsquo;를 1로, &lsquo;no&rsquo;를 0으로 변환한다.</p>
-</blockquote>
+<p>손실 함수(Loss function)를 계산하기 위해서는 &lsquo;yes&rsquo;, &lsquo;no&rsquo;를 계산이 가능한 수로 표시해야 한다.<br />
+여기에서는 &lsquo;yes&rsquo;와 &lsquo;no&rsquo; 두가지의 결과만 있으니까 &lsquo;yes&rsquo;를 1로, &lsquo;no&rsquo;를 0으로 변환한다.</p>
 
 <pre><code class="language-python">def transform_y(y):
     if y == 'yes':
@@ -281,7 +271,7 @@ plt.show()
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>그만 알아보자&hellip;<br />
+<p>내 이럴줄 알았다&hellip;<br />
 결론적으로 계단 함수(Step function)는 사용할 수 없다!<br />
 왜냐하면&hellip;</p>
 
@@ -297,20 +287,10 @@ plt.show()
 
 <h3 id="시그모이드-함수-sigmoid-function">시그모이드 함수 (Sigmoid function)</h3>
 
-<p>\(\sigma(x) = {1 \over {1 + e^{-x}}}\)</p>
-
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
-<p>쿠퍼 형님은 이런 말을 하셨지<br />
-<strong>&lsquo;우린 답을 찾을 거야, 늘 그랬듯이&rsquo;</strong></p>
-
-<p>엔지니어들은<br />
-미분이 잘 되고<br />
-x에 어떤 값을 넣어도 0이나 1의 값에 가까운 값을 가지는<br />
-함수를 만들어 냈다.<br />
+<p>엔지니어들은 미분이 잘 되고 \(x\)에 어떤 값을 넣어도 0이나 1의 값에 가까운 값을 가지는 함수를 만들어 냈다.<br />
 이것이 시그모이드 함수다.</p>
-</blockquote>
+
+<p>\(\sigma(x) = {1 \over {1 + e^{-x}}}\)</p>
 
 <pre><code class="language-python">sigmoid = lambda x: 1.0 / (1.0 + np.exp(-x))
 
@@ -428,16 +408,8 @@ plt.show()
 
 <h3 id="rmsprop">RMSProp</h3>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
-<p>RMSProp의 원리는<br />
-급경사인 경우에는 보폭을 낮추어서 가장 아래인지를 세밀히 살피고<br />
-완만한 경사인 경우에는 보폭을 넓혀서 빨리 지나가는 방식이다.<br />
+<p>RMSProp의 원리는 급경사인 경우에는 보폭을 낮추어서 가장 아래인지를 세밀히 살피고, 완만한 경사인 경우에는 보폭을 넓혀서 빨리 지나가는 방식이다.<br />
 이 방식은 매우 빠르게 손실 함수의 최소값을 찾을 수 있다.</p>
-
-<p>이것도 엔지니어를 갈아서 만든 것이니<br />
-우리는 사용하기만 하면 된다</p>
 
 <p>\(dw = {\partial {J(w,b)}\over \partial w}\),<br />
 \(db = {\partial{J(w,b)}\over \partial b}\)</p>
@@ -454,22 +426,27 @@ plt.show()
 <p>\(\alpha=0.001\) : learining rate,<br />
 \(\rho=0.9\) : discounting factor,<br />
 \(\epsilon=1e-07\) : small value to avoid zero denominator</p>
-</blockquote>
-
-<h3 id="정리">정리</h3>
 
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>로지스틱 모델(Logistic model)을 만드는 방법을 정리해 보자.<br />
-1. \(z=wx+b\) 함수를 정의한다.<br />
-2. \(a = \sigma(z)\) 함수를 정의한다. \(a\)를 <strong>활성 함수(activation function)</strong> 라고 한다.<br />
-3. \(\hat{y} = a\) 이다.
-2. 손실 함수 (Loss function)를 정의한다. 여기서는 <strong>크로스-엔트로피 손실(cross-entropy loss)</strong> 를 사용한다.<br />
-3. 옵티마이저(Optimizer)를 선택한다. 여기서는 <strong>RMSProp</strong>을 사용한다.<br />
-4. 반복할 회수(epoch)를 결정한다.<br />
-5. 주어진 조건으로 모델을 최적화(fit) 시킨다.</p>
+<p>이것도 엔지니어를 갈아서 만든 것이니<br />
+우리는 사용하기만 하면 된다</p>
 </blockquote>
+
+<h3 id="정리">정리</h3>
+
+<p>로지스틱 모델(Logistic model)을 만드는 방법을 정리해 보자.</p>
+
+<ol>
+<li>\(z=wx+b\) 함수를 정의한다.<br /></li>
+<li>\(a = \sigma(z)\) 함수를 정의한다. \(a\)를 <strong>활성 함수(activation function)</strong> 라고 한다.<br /></li>
+<li>\(\hat{y} = a\) 이다.</li>
+<li>손실 함수 (Loss function)를 정의한다. 여기서는 <strong>크로스-엔트로피 손실(cross-entropy loss)</strong> 를 사용한다.<br /></li>
+<li>옵티마이저(Optimizer)를 선택한다. 여기서는 <strong>RMSProp</strong>을 사용한다.<br /></li>
+<li>반복할 회수(epoch)를 결정한다.<br /></li>
+<li>주어진 조건으로 모델을 최적화(fit) 시킨다.<br /></li>
+</ol>
 
 <h2 id="텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</h2>
 
@@ -478,23 +455,21 @@ plt.show()
 <blockquote>
 <p>좋았어!</p>
 
-<p>이제 구글(Google)이 냠냠한<br />
-<strong>케라스(Keras)</strong>를 이용해서 구현을 해보자!</p>
+<p><strong>케라스(Keras)</strong>를 이용해서 구현을 해보자!</p>
 </blockquote>
 
 <h3 id="정규화-normalization">정규화 (Normalization)</h3>
+
+<p><strong>정규값 = (현재값 - 최소값) / (최대값-최소값)</strong> 으로 정규화 한다!</p>
+
+<p>그래프를 보면,<br />
+데이터의 모양은 그대로 유지하면서도 \(x\)축의 값이 0에서 1사이로 변환된 것을 볼 수 있다.</p>
 
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
 <p>이제 정규화는<br />
 선택이 아닌 <strong>필수</strong>!</p>
-
-<p><strong>정규값 = (현재값 - 최소값) / (최대값-최소값)</strong> 으로 정규화 한다!</p>
-
-<p>그래프를 보면,<br />
-데이터의 모양은 그대로 유지하면서도<br />
-x축의 값이 0에서 1사이로 변환된 것을 볼 수 있다.</p>
 </blockquote>
 
 <pre><code class="language-python">from sklearn import preprocessing

@@ -138,12 +138,11 @@ C에서의 &lsquo;hello world&rsquo;급이라고 할 수 있다.</p>
 
 <h2 id="데이터-수집-data-collection">데이터 수집 (Data Collection)</h2>
 
+<p><code>keras.datasets</code>를 이용해서 간단하게 데이터를 가져 올 수 있다.</p>
+
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>keras.datasets를 이용해서<br />
-간단하게 데이터를 가져 올 수 있다.</p>
-
 <p>찬양하라 Keras!</p>
 </blockquote>
 
@@ -159,39 +158,24 @@ import matplotlib.pyplot as plt
 
 <h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
 <p>지금까지 본 문제와는 사이즈가 다르다!<br />
-우선 훈련 세트와 테스트 세트에 대해서<br />
-알아 보자</p>
-</blockquote>
+우선 훈련 세트와 테스트 세트에 대해서 알아 보자</p>
 
 <h3 id="훈련-세트와-테스트-세트-train-and-test-set">훈련 세트와 테스트 세트 (Train and Test set)</h3>
 
+<p>우리가 만든 모델을 훈련 시킬때 사용하는 데이터가 <strong>훈련 세트 (Train set)</strong><br />
+훈련을 마친 모델에 대해서 성능을 확인하기 위해 사용하는 데이터가 <strong>테스트 세트 (Test set)</strong></p>
+
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>우리가 만든 모델을 훈련 시킬때 사용하는 데이터가<br />
-<strong>훈련 세트 (Train set)</strong></p>
-
-<p>훈련을 마친 모델에 대해서<br />
-성능을 확인하기 위해 사용하는 데이터가<br />
-<strong>테스트 세트 (Test set)</strong></p>
-
 <p>훈련 세트는 학교 수업이고<br />
 테스트 세트는 모의 고사라고 생각하면 된다.</p>
 </blockquote>
 
 <h3 id="데이터-확인-data-visualization">데이터 확인 (Data Visualization)</h3>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
-<p>설명만 들어서는 어떻게 모델링을 해야 할지<br />
-감이 오지 않는다.<br />
-데이터를 눈으로 확인해 보자</p>
-</blockquote>
+<p>설명만 들어서는 어떻게 모델링을 해야 할지 감이 오지 않는다. 데이터를 눈으로 확인해 보자</p>
 
 <p><strong>입력(x) 데이터 확인</strong></p>
 
@@ -218,25 +202,45 @@ x-y 그래프에서 점을 찍는데 점 색깔이 회색조로 256개가 있다
 <p>아래 그림을 보자</p>
 </blockquote>
 
-<pre><code class="language-python"># 이미지 (image) 확인
-plt.imshow(train_images[0], cmap='gray')
+<pre><code class="language-python">pick_image = 0 # 0 ~ 59999
+
+plt.figure(figsize=(8,3))
+plt.subplot(1,2,1)
+# 이미지(image) 확인
+plt.imshow(train_images[pick_image], cmap='gray')
 plt.colorbar()
+plt.xlabel('image of {}'.format(train_labels[pick_image]))
+plt.subplot(1,2,2)
+# 픽셀(pixel)값 분포
+plt.plot(train_images[0].flatten())
+plt.xlabel('x')
 plt.show()
 </code></pre>
 
 <p><img src="output_9_0.png" alt="png" /></p>
 
-<p><strong>출력(y) 데이터 확인</strong></p>
+<p>같은 숫자는 픽셀값의 분포가 비슷할 것이라고 가정을 하고 입력 x를 784개의 픽셀값으로 한다.<br />
+이렇게 남들과는 다르고 나와 나의 부류와는 비슷한 특징을 <strong>피처(feature)</strong> 라고 하고 특징들의 배열을 <strong>피처 벡터(feature vector)</strong> 라고 한다.</p>
+
+<p>여기서 피처(feature)는 &ldquo;0~255사이의 픽셀값&rdquo;이고 피터 벡터(feature vector)는 &ldquo;784개의 픽셀값의 배열&rdquo;이다.</p>
 
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>batch_size = 60000<br />
-imput_dimension = 1<br />
-0에서 9까지 10개의 클래스(Class)로 분류하면 된다.</p>
-
-<p>참고로 위의 이미지에 대한 y값은 5다.</p>
+<p>나중에 이야기 하겠지만<br />
+피처(feature)를 찾는 것이<br />
+피를 말리는<br />
+어려운 일이다&hellip;</p>
 </blockquote>
+
+<p><strong>출력(y) 데이터 확인</strong></p>
+
+<ul>
+<li>batch_size = 60000<br /></li>
+<li>input_dimension = 1<br /></li>
+</ul>
+
+<p>0에서 9까지 10개의 클래스(Class)로 분류하면 된다.</p>
 
 <pre><code class="language-python">train_labels
 </code></pre>
@@ -254,15 +258,10 @@ imput_dimension = 1<br />
 
 <h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
 <p>입력 데이터의 shape (28,28)를 (784, )로 변환해 주어야 한다.<br />
 이 작업은 keras layer에서 처리해 주면 된다. (나중에 하겠다는 얘기다.)</p>
 
-<p>소프트맥스(Softmax)를 사용할 예정이니까<br />
-출력 데이터를 원-핫 인코딩으로 변환해 주자</p>
-</blockquote>
+<p>소프트맥스(Softmax)를 사용할 예정이니까 출력 데이터를 원-핫 인코딩으로 변환해 주자</p>
 
 <pre><code class="language-python">from tensorflow.keras.utils import to_categorical
 
@@ -278,28 +277,23 @@ one-hot encoded first Y_train is  [0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]
 
 <h2 id="모델링-modeling">모델링 (Modeling)</h2>
 
+<p>일단, 3-layer NN 모델로 진행해 보자<br />
+일단이라고 말한 이유는 정답이 없기 때문이다.</p>
+
+<ul>
+<li>input layer는 2D(28X28)를 1D로 변환해서 784개의 x로 만든다.<br /></li>
+<li>hidden layer 1은 128-unit으로 구성하자<br /></li>
+<li>hiddem layer 2는 32-unit으로 구성하자<br /></li>
+<li>output layer는 당연히 10-unit으로 구성, softmax를 activation function으로 사용한다.<br /></li>
+<li>loss는 cross-entropy loss를 사용<br /></li>
+</ul>
+
+<p>남은것은<br />
+hidden layer의 activation function과 optimizer를 선택하는 것이다.</p>
+
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>일단, 3-layer NN 모델로 진행해 보자</p>
-
-<p>일단이라고 말한 이유는<br />
-정답이 없기 때문이다.</p>
-
-<p>input layer는 2D(28X28)를 1D로 변환해서 784개의 x로 만든다.</p>
-
-<p>hidden layer 1은 128-unit으로 구성하자<br />
-hiddem layer 2는 32-unit으로 구성하자<br />
-왜냐고?<br />
-이유는 없다.</p>
-
-<p>output layer는 당연히 10-unit으로 구성, softmax를 activation function으로 사용한다.<br />
-loss는 cross-entropy loss를 사용</p>
-
-<p>남은것은<br />
-hidden layer의 activation function과<br />
-optimizer를 선택하는 것이다.</p>
-
 <p>오늘,<br />
 새로운 것들을 소개 하겠다.<br />
 hidden layer의 activation function의 정석 <strong>ReLU</strong>,<br />
@@ -320,7 +314,7 @@ plt.plot(x_list, y_list)
 plt.show()
 </code></pre>
 
-<p><img src="output_16_0.png" alt="png" /></p>
+<p><img src="output_17_0.png" alt="png" /></p>
 
 <p>시그모이드의 단점은  hidden layer가 많아 질 수록 학습이 안되는 문제가 있다. 미분의 미분의 미분의 &hellip; 미분을 하다 보면 미분값이 0에 가깝게 된다. 그리고 \(z\)값이 엄청 크거나 작은 값이 되어도 미분값이 0에 가깝게 된다. 이러면 손실 함수의 최소값을 찾기 위해 \(w\)와 \(b\)를 움직이지 못한다.  이러한 단점을 보완하기 위해서 탄생한 것이 렐루(ReLU) 함수이다. 물론 엔지니어를 갈아서 만들었다&hellip;</p>
 
@@ -393,55 +387,41 @@ plt.show()
 
 <h3 id="정리">정리</h3>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
 <p>NN을 이용한 MNIST 인식 모델을 만드는 방법을 정리해 보자.<br />
 1. 데이터를 변환한다.<br />
-  1. 입력 데이터의 형식과 모양을 변환한다. 2D를 1D로 변환한다.<br />
-  2. 출력 데이터의 형식과 모양을 변환한다. <strong>원-핫 인코딩(one-hot encoding)</strong> 을 사용한다.<br />
+    1. 입력 데이터의 형식과 모양을 변환한다. 2D를 1D로 변환한다.<br />
+    2. 출력 데이터의 형식과 모양을 변환한다. <strong>원-핫 인코딩(one-hot encoding)</strong> 을 사용한다.<br />
 2. <strong>히든 레이어(hidden layer)</strong>  정의<br />
-  1. 히든 레이어 개수를 정의한다. 여기서는 2-hidden layer를 사용한다.<br />
-  2. 히든 레이어 유닛 개수를 정의한다. 여기서는 128개, 32개 유닛을 사용한다.<br />
-  3. 활성 함수(activation function)를 정의한다. 여기서는 <strong>ReLU</strong> 를 사용한다.<br />
+    1. 히든 레이어 개수를 정의한다. 여기서는 2-hidden layer를 사용한다.<br />
+    2. 히든 레이어 유닛 개수를 정의한다. 여기서는 128개, 32개 유닛을 사용한다.<br />
+    3. 활성 함수(activation function)를 정의한다. 여기서는 <strong>ReLU</strong> 를 사용한다.<br />
 3. <strong>출력 레이어(output layer)</strong>  정의<br />
-  1. 출력 레이어 유닛 개수를 정의한다. 여기서는 10개의 클래스로 분류해야 되니까 10개의 유닛을 사용한다.<br />
-  2. 활성 함수(activation function)를 정의한다. <strong>소프트맥스(softmax)</strong> 를 사용한다.<br />
+    1. 출력 레이어 유닛 개수를 정의한다. 여기서는 10개의 클래스로 분류해야 되니까 10개의 유닛을 사용한다.<br />
+    2. 활성 함수(activation function)를 정의한다. <strong>소프트맥스(softmax)</strong> 를 사용한다.<br />
 4. 손실 함수 (Loss function)를 정의한다. <strong>크로스-엔트로피 손실(cross-entropy loss)</strong> 를 사용한다.<br />
 5. 옵티마이저(Optimizer)를 정의한다. 여기서는 <strong>Adam</strong> 을 사용한다.<br />
-4. 반복할 회수(epoch)를 결정한다.<br />
-5. 주어진 조건으로 모델을 최적화(fit) 시킨다.</p>
-</blockquote>
+6. 반복할 회수(epoch)를 결정한다.<br />
+7. 주어진 조건으로 모델을 최적화(fit) 시킨다.</p>
 
 <h2 id="텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</h2>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
-<p><strong>케라스(Keras)</strong>를 이용해서 구현을 해보자!</p>
-</blockquote>
+<p><strong>케라스(Keras)</strong> 를 이용해서 구현을 해보자!</p>
 
 <h3 id="정규화-normalization">정규화 (Normalization)</h3>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
 <p><strong>정규값 = (현재값 - 최소값) / (최대값-최소값)</strong> 으로 정규화 한다!<br />
-최소값이 0이고,<br />
-최대값이 255이니까<br />
-현재값에서 /255 를 해 주면 된다.</p>
-</blockquote>
+최소값이 0이고, 최대값이 255이니까 현재값에서 /255 를 해 주면 된다.</p>
 
 <pre><code class="language-python">X_train = train_images / 255.0
 X_test = test_images / 255.0
 
-plt.imshow(X_train[0], cmap='gray')
+plt.imshow(X_train[pick_image], cmap='gray')
 plt.colorbar()
-plt.xlabel(np.argmax(Y_train[0]))
+plt.xlabel(np.argmax(Y_train[pick_image]))
 plt.show()
 </code></pre>
 
-<p><img src="output_19_0.png" alt="png" /></p>
+<p><img src="output_20_0.png" alt="png" /></p>
 
 <h3 id="keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</h3>
 
@@ -457,7 +437,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 </code></pre>
 
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0901 10:26:08.830246 140111957722944 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0906 19:08:54.737059 139909354948416 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
@@ -472,8 +452,8 @@ print('train accuracy: ', train_acc)
 print('train loss: ', train_loss)
 </code></pre>
 
-<pre><code>train accuracy:  0.9931333
-train loss:  0.020745519388704756
+<pre><code>train accuracy:  0.9932
+train loss:  0.019363174817231873
 </code></pre>
 
 <pre><code class="language-python">plt.plot(hist.history['loss'])
@@ -482,7 +462,7 @@ plt.ylabel('loss')
 plt.show()
 </code></pre>
 
-<p><img src="output_24_0.png" alt="png" /></p>
+<p><img src="output_25_0.png" alt="png" /></p>
 
 <h3 id="정확도-평가">정확도 평가</h3>
 
@@ -492,19 +472,18 @@ print('test accuracy: ', test_acc)
 print('test loss: ', test_loss)
 </code></pre>
 
-<pre><code>10000/10000 [==============================] - 0s 31us/sample - loss: 0.1054 - acc: 0.9755
-test accuracy:  0.9755
-test loss:  0.10535971706073397
+<pre><code>10000/10000 [==============================] - 0s 31us/sample - loss: 0.1025 - acc: 0.9768
+test accuracy:  0.9768
+test loss:  0.1024522928831917
 </code></pre>
+
+<p>대충 만들었는데도 정확도가 상당히 높다.<br />
+그런데&hellip;<br />
+훈련 정확도와 테스트 정확도가 차이가 난다.</p>
 
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>대충 만들었는데도 정확도가 상당히 높다.</p>
-
-<p>그런데&hellip;<br />
-훈련 정확도와 테스트 정확도가 차이가 난다.</p>
-
 <p>이것은<br />
 디자이너가<br />
 피팅모델에 너무 딱 맞게<br />
@@ -512,16 +491,11 @@ test loss:  0.10535971706073397
 실제로 제품이 나왔을때<br />
 다른 사람은 입지도 못하는<br />
 사태와 비슷하다.</p>
-
-<p>이것을<br />
-훈련 세트에 <strong>과대적합(Overfitting)</strong> 되었다고 한다.</p>
-
-<p>과대적합(Overfitting)을 줄이는 방법<br />
-<strong>규제(Regularization)</strong> 과 <strong>드랍아웃(Dropout)</strong> 이 있다.</p>
-
-<p>우선<br />
-규제(Regularization)에 대해서 알아 보자</p>
 </blockquote>
+
+<p>이것을 훈련 세트에 <strong>과대적합(Overfitting)</strong> 되었다고 한다.<br />
+과대적합(Overfitting)을 줄이는 방법으로는 <strong>규제(Regularization)</strong> 과 <strong>드랍아웃(Dropout)</strong> 이 있다.<br />
+규제(Regularization)에 대해서 알아 보자</p>
 
 <h3 id="규제-regularization">규제 (Regularization)</h3>
 
@@ -564,8 +538,8 @@ print('train accuracy: ', train_acc_l2)
 print('train loss: ', train_loss_l2)
 </code></pre>
 
-<pre><code>train accuracy:  0.9877833
-train loss:  0.08198130068182945
+<pre><code>train accuracy:  0.9884667
+train loss:  0.07978579129775365
 </code></pre>
 
 <pre><code class="language-python">plt.plot(hist.history['loss'])
@@ -574,7 +548,7 @@ plt.ylabel('loss')
 plt.show()
 </code></pre>
 
-<p><img src="output_30_0.png" alt="png" /></p>
+<p><img src="output_31_0.png" alt="png" /></p>
 
 <pre><code class="language-python">test_loss_l2, test_acc_l2 = model_l2.evaluate(X_test, Y_test)
 
@@ -582,15 +556,15 @@ print('test accuracy: ', test_acc_l2)
 print('test loss: ', test_loss_l2)
 </code></pre>
 
-<pre><code>10000/10000 [==============================] - 0s 36us/sample - loss: 0.1214 - acc: 0.9766
-test accuracy:  0.9766
-test loss:  0.12139980588555337
+<pre><code>10000/10000 [==============================] - 0s 38us/sample - loss: 0.1201 - acc: 0.9777
+test accuracy:  0.9777
+test loss:  0.12008701454401016
 </code></pre>
 
 <pre><code class="language-python">import pandas as pd
 
 df = pd.DataFrame(data=[[train_acc, test_acc], [train_acc_l2, test_acc_l2]], 
-                  index = ['model', 'model_with_regularization'], 
+                  index = ['model', 'model_with_l2'], 
                   columns=['train accuracy', 'test accuracy'])
 df
 </code></pre>
@@ -619,14 +593,14 @@ df
   </thead>
   <tbody>
     <tr>
-      <th>model</th>
-      <td>0.993133</td>
-      <td>0.9755</td>
+      <td>model</td>
+      <td>0.993200</td>
+      <td>0.9768</td>
     </tr>
     <tr>
-      <th>model_with_regularization</th>
-      <td>0.987783</td>
-      <td>0.9766</td>
+      <td>model_with_l2</td>
+      <td>0.988467</td>
+      <td>0.9777</td>
     </tr>
   </tbody>
 </table>
@@ -644,12 +618,14 @@ df
 원하시는 결과값이 출력 됩니다.</p>
 </blockquote>
 
-<pre><code class="language-python">def predict_handwrittendigits(x):
+<pre><code class="language-python">pick_image = 10 # 0 ~ 9999
+
+def predict_handwrittendigits(x):
     x_data =(np.expand_dims(x, 0))
     predict = model_l2.predict(x_data)
     return np.argmax(predict)
 
-test_data = test_images[10]
+test_data = test_images[pick_image]
 result = predict_handwrittendigits(test_data)
 
 plt.imshow(test_data, cmap='gray')

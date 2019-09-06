@@ -58,6 +58,11 @@
   </url>
   
   <url>
+    <loc>/categories/recommendation/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/</loc>
     <priority>0</priority>
   </url>
@@ -129,12 +134,31 @@
   </url>
   
   <url>
+    <loc>/tags/%EC%9E%A0%EC%9E%AC-%EC%9D%B8%EC%88%98/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/latent_factor_model/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/%EC%B6%94%EC%B2%9C/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%84%B8%ED%8A%B8/</loc>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/%ED%8F%89%EA%B7%A0-%EC%A0%9C%EA%B3%B1-%EC%98%A4%EC%B0%A8/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/%ED%96%89%EB%A0%AC%EC%9D%B8%EC%88%98%EB%B6%84%ED%95%B4/</loc>
     <priority>0</priority>
   </url>
   
