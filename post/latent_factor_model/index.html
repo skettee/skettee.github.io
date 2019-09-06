@@ -1462,23 +1462,21 @@ pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
 
 <p>훈련 데이터는 <code>ratings_df</code>에서 랜덤하게 80%를 선택하고,<br />
 테스트 데이터는 나머지 20%를 랜덤하게 선택한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">movielens_df <span style="color:#f92672">=</span> ratings_df<span style="color:#f92672">.</span>copy()
-
-<span style="color:#75715e"># Indexing userId and movieId</span>
-users <span style="color:#f92672">=</span> movielens_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique()
-movies <span style="color:#f92672">=</span> movielens_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Indexing userId and movieId</span>
+users <span style="color:#f92672">=</span> ratings_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique()
+movies <span style="color:#f92672">=</span> ratings_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique()
 
 userid2idx <span style="color:#f92672">=</span> {o:i <span style="color:#66d9ef">for</span> i,o <span style="color:#f92672">in</span> enumerate(users)}
 movieid2idx <span style="color:#f92672">=</span> {o:i <span style="color:#66d9ef">for</span> i,o <span style="color:#f92672">in</span> enumerate(movies)}
 
-movielens_df[<span style="color:#e6db74">&#39;userId&#39;</span>] <span style="color:#f92672">=</span> movielens_df[<span style="color:#e6db74">&#39;userId&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: userid2idx[x])
-movielens_df[<span style="color:#e6db74">&#39;movieId&#39;</span>] <span style="color:#f92672">=</span> movielens_df[<span style="color:#e6db74">&#39;movieId&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: movieid2idx[x])
+ratings_df[<span style="color:#e6db74">&#39;userId&#39;</span>] <span style="color:#f92672">=</span> ratings_df[<span style="color:#e6db74">&#39;userId&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: userid2idx[x])
+ratings_df[<span style="color:#e6db74">&#39;movieId&#39;</span>] <span style="color:#f92672">=</span> ratings_df[<span style="color:#e6db74">&#39;movieId&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: movieid2idx[x])
 
 <span style="color:#75715e"># Split train and test data</span>
-split <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>rand(len(movielens_df)) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.8</span>
+split <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>rand(len(ratings_df)) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.8</span>
 
-train_df <span style="color:#f92672">=</span> movielens_df[split]
-test_df <span style="color:#f92672">=</span> movielens_df[<span style="color:#f92672">~</span>split]
+train_df <span style="color:#f92672">=</span> ratings_df[split]
+test_df <span style="color:#f92672">=</span> ratings_df[<span style="color:#f92672">~</span>split]
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;shape of train data is &#39;</span>,train_df<span style="color:#f92672">.</span>shape)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;shape of test data is &#39;</span>,test_df<span style="color:#f92672">.</span>shape)</code></pre></div>
@@ -1487,8 +1485,8 @@ shape of test data is  (19973, 4)
 </code></pre>
 
 <h4 id="latent-factor-모델링">Latent factor 모델링</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_movies <span style="color:#f92672">=</span> len(movielens_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique())
-n_users <span style="color:#f92672">=</span> len(movielens_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique())
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_movies <span style="color:#f92672">=</span> len(ratings_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique())
+n_users <span style="color:#f92672">=</span> len(ratings_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique())
 n_latent_factors <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span>
 
 movie_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>])
