@@ -45,8 +45,7 @@ body {
 	margin: 0;
 	font-family: "Open Sans", Helvetica, Arial, sans-serif;
 	font-size: 16px;
-	font-size: .875rem;
-	line-height: 1.6;
+	line-height: 1.83em;
 	word-wrap: break-word;
 	background: #f7f7f7;
 	-webkit-font-smoothing: antialiased;
