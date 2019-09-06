@@ -7,7 +7,13 @@
 	<title>뉴럴 네트워크 (Neural Network) - 막돼먹은 엔지니어의 머신런닝 개발</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
-	
+	<meta property="og:title" content="뉴럴 네트워크 (Neural Network)" />
+<meta property="og:description" content="딥러닝의 세계로 들어가기 위해 알아야 하는 세번째 모델인 뉴럴 네트워크(Neural Network)에 대해 알아보고 keras를 이용해서 모델링을 해보자!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/neural_network/" />
+<meta property="article:published_time" content="2019-08-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-08-29T00:00:00+00:00" />
+
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -24,7 +30,7 @@
 		<div class="logo">
 			<a class="logo__link" href="/" title="막돼먹은 엔지니어의 머신런닝 개발" rel="home">
 				<div class="logo__title">막돼먹은 엔지니어의 머신런닝 개발</div>
-				
+				<div class="logo__tagline">딥러닝 모델링</div>
 			</a>
 		</div>
 		<div class="divider"></div>
@@ -37,8 +43,54 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">뉴럴 네트워크 (Neural Network)</h1>
-			
-		</header><div class="content post__content clearfix">
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2019-08-29T00:00:00">2019-08-29</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/deep-learning" rel="category">Deep Learning</a>, <a class="meta__link" href="/categories/neural-network" rel="category">Neural Network</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#문제-problem">문제 (Problem)</a></li>
+<li><a href="#뉴럴-네트워크-neural-network-구성">뉴럴 네트워크(Neural Network) 구성</a>
+<ul>
+<li><a href="#뉴런-모델-neuron-model">뉴런 모델 (Neuron model)</a></li>
+<li><a href="#뉴럴-네트워트-neural-network">뉴럴 네트워트(Neural Network)</a></li>
+</ul></li>
+<li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a></li>
+<li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a>
+<ul>
+<li><a href="#원-핫-인코딩-one-hot-encoding">원-핫 인코딩 (One-hot encoding)</a></li>
+</ul></li>
+<li><a href="#모델링-modeling">모델링 (Modeling)</a>
+<ul>
+<li><a href="#소프트맥스-회귀-softmax-regression">소프트맥스 회귀 (Softmax Regression)</a></li>
+<li><a href="#정리">정리</a></li>
+</ul></li>
+<li><a href="#텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</a>
+<ul>
+<li><a href="#정규화-normalization">정규화 (Normalization)</a></li>
+<li><a href="#keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</a></li>
+<li><a href="#손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</a></li>
+</ul></li>
+<li><a href="#해결-solution">해결 (Solution)</a></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
 			<p>딥러닝의 세계로 들어가기 위해 알아야 하는 세번째 모델인 뉴럴 네트워크(Neural Network)에 대해 알아보고 keras를 이용해서 모델링을 해보자!</p>
 
 <p>실제로 돌려 보고 싶으면 구글 코랩으로 ~</p>
@@ -593,6 +645,14 @@ Hidden(숨은) 레이어 라고 한다.</p>
 </main>
 
 
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/logistic_regression/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">로지스틱 회귀 (Logistic Regression)</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/neural_network_mnist/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">뉴럴 네트워크 (NN) - MNIST</p></a>
+	</div>
+</nav>
 <script src="https://utteranc.es/client.js"
         repo="skettee/blog-comments"
         issue-term="pathname"
@@ -609,11 +669,13 @@ Hidden(숨은) 레이어 라고 한다.</p>
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2019 막돼먹은 엔지니어의 머신런닝 개발.
+			&copy; 2019 skettee.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
-<script async defer src="/js/menu.js"></script></body>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
 </html>

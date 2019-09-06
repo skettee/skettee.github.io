@@ -7,7 +7,13 @@
 	<title>선형 회귀 (Linear Regression) - 막돼먹은 엔지니어의 머신런닝 개발</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
-	
+	<meta property="og:title" content="선형 회귀 (Linear Regression)" />
+<meta property="og:description" content="딥러닝의 세계로 들어가기 위해 알아야 하는 첫번째 모델인 선형 회귀(Linear Regression)에 대해 알아보고 keras를 이용해서 모델링을 해보자!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/linear_regression/" />
+<meta property="article:published_time" content="2019-08-15T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-08-15T00:00:00+00:00" />
+
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -24,7 +30,7 @@
 		<div class="logo">
 			<a class="logo__link" href="/" title="막돼먹은 엔지니어의 머신런닝 개발" rel="home">
 				<div class="logo__title">막돼먹은 엔지니어의 머신런닝 개발</div>
-				
+				<div class="logo__tagline">딥러닝 모델링</div>
 			</a>
 		</div>
 		<div class="divider"></div>
@@ -37,8 +43,49 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">선형 회귀 (Linear Regression)</h1>
-			
-		</header><div class="content post__content clearfix">
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2019-08-15T00:00:00">2019-08-15</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/deep-learning" rel="category">Deep Learning</a>, <a class="meta__link" href="/categories/linear-regression" rel="category">Linear Regression</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#문제-problem">문제 (Problem)</a></li>
+<li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a></li>
+<li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a></li>
+<li><a href="#선형-모델링-linear-modeling">선형 모델링 (Linear Modeling)</a>
+<ul>
+<li><a href="#손실-함수-loss-function">손실 함수 (Loss function)</a></li>
+<li><a href="#경사-하강법-gradient-descent">경사 하강법 (Gradient Descent)</a></li>
+<li><a href="#정리">정리</a></li>
+</ul></li>
+<li><a href="#텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</a>
+<ul>
+<li><a href="#정규화-normalization">정규화(Normalization)</a></li>
+<li><a href="#keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</a></li>
+<li><a href="#손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</a></li>
+<li><a href="#w-와-b-값을-확인">\(w\)와 \(b\)값을 확인</a></li>
+<li><a href="#그래프로-확인">그래프로 확인</a></li>
+</ul></li>
+<li><a href="#해결-solution">해결 (Solution)</a></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
 			<p>딥러닝의 세계로 들어가기 위해 알아야 하는 첫번째 모델인 선형 회귀(Linear Regression)에 대해 알아보고 keras를 이용해서 모델링을 해보자!</p>
 
 <p>실제로 돌려 보고 싶으면 구글 코랩으로 ~</p>
@@ -513,6 +560,11 @@ print('몸짱반에 들어갈 수 있는 몸무게는 {:.2f} kg 입니다'.forma
 </main>
 
 
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/logistic_regression/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">로지스틱 회귀 (Logistic Regression)</p></a>
+	</div>
+</nav>
 <script src="https://utteranc.es/client.js"
         repo="skettee/blog-comments"
         issue-term="pathname"
@@ -529,11 +581,13 @@ print('몸짱반에 들어갈 수 있는 몸무게는 {:.2f} kg 입니다'.forma
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2019 막돼먹은 엔지니어의 머신런닝 개발.
+			&copy; 2019 skettee.
 			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
 		</div>
 	</div>
 </footer>
 	</div>
-<script async defer src="/js/menu.js"></script></body>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
 </html>
