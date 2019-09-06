@@ -222,18 +222,11 @@ y.shape=  (50, 1)</p></li>
 
 <p><strong>손실 함수 (Loss function) 시각화</strong></p>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
 <p>우선 손실 함수(Loss function)가 어떻게 생겨 먹었는지 살펴 보자.<br />
-x축을 \(w\)로 놓고, y축을 \(b\)로 놓고, z축을 손실 함수 \({\large J}(w, b)\)로
-그래프를 그려 보면<br />
-어떻게 최소값을 찾을지 감이 올 것 같다.</p>
+x축을 \(w\)로 놓고, y축을 \(b\)로 놓고, z축을 손실 함수 \({\large J}(w, b)\)로 그래프를 그려 보면 어떻게 최소값을 찾을지 감이 올 것 같다.</p>
 
-<p>일단 \(w\)는<br />
-\(-5\leqq w \leqq 5\) 정도로 잡고,<br />
+<p>\(w\)는 \(-5\leqq w \leqq 5\) 정도로 잡고,<br />
 \(b\)는 \(-5\leqq b \leqq 5\)으로 잡아보자.</p>
-</blockquote>
 
 <pre><code class="language-python">import numpy as np
 from sklearn.metrics import mean_squared_error
