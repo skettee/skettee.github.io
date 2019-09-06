@@ -12,7 +12,7 @@
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/agate.min.css">
+	
 	<link rel="stylesheet" href="/css/style.css">
 	
 	<link rel="shortcut icon" href="/favicon.ico">
@@ -102,9 +102,12 @@
 <li>파일 형식: movieId, title, genres</li>
 <li>movieId: 1 ~ 193609 사이의 정수값<br /></li>
 <li>title: 영화 제목<br /></li>
+<li>genres: 하나 이상의 장르가 &lsquo;|&rsquo; 로 연결되어 표시<br />
+Action, Adventure, Animation, Children&rsquo;s, Comedy, Comedy, Documentary, Drama, Fantasy, Film-Noir, Horror, Musical, Mystery, Romance, Sci-Fi, Thriller, War, Western<br /></li>
+</ul></li>
+</ol>
 
-<li><p>genres: 하나 이상의 장르가 &lsquo;|&rsquo; 로 연결되어 표시<br />
-Action, Adventure, Animation, Children&rsquo;s, Comedy, Comedy, Documentary, Drama, Fantasy, Film-Noir, Horror, Musical, Mystery, Romance, Sci-Fi, Thriller, War, Western</p>
+<p>데이터를 다운로드 하고 <code>/tmp/movielens-data/</code> 에 저장하자</p>
 
 <pre><code class="language-python">import sys
 import time
@@ -116,17 +119,17 @@ from six.moves import urllib
 import tensorflow as tf
 
 def _progresshook(count, block_size, total_size):
-global start_time
-if count == 0:
-start_time = time.time()
-return
-duration = time.time() - start_time
-progress_size = int(count * block_size)
-speed = int(progress_size / (1024 * duration))
-percent = int(count * block_size * 100 / total_size)
-sys.stdout.write(&quot;\r...%d%%, %d MB, %d KB/s, %d seconds passed&quot; %
-            (percent, progress_size / (1024 * 1024), speed, duration))
-sys.stdout.flush()
+    global start_time
+    if count == 0:
+        start_time = time.time()
+        return
+    duration = time.time() - start_time
+    progress_size = int(count * block_size)
+    speed = int(progress_size / (1024 * duration))
+    percent = int(count * block_size * 100 / total_size)
+    sys.stdout.write(&quot;\r...%d%%, %d MB, %d KB/s, %d seconds passed&quot; %
+                    (percent, progress_size / (1024 * 1024), speed, duration))
+    sys.stdout.flush()
 
 DATA_DIR = &quot;/tmp/movielens-data/&quot;
 DATA_SET = 'ml-latest-small'
@@ -139,45 +142,44 @@ expected_files = [&quot;{}.zip&quot;.format(DATA_SET), RATINGS_FILE, MOVIES_FILE
 
 tf.io.gfile.makedirs(data_subdir)
 if set(expected_files).intersection(
-tf.io.gfile.listdir(data_subdir)) == set(expected_files):
-print(&quot;Dataset {} has already been downloaded&quot;.format(DATA_SET))
+    tf.io.gfile.listdir(data_subdir)) == set(expected_files):
+    print(&quot;Dataset {} has already been downloaded&quot;.format(DATA_SET))
 else:
-tf.io.gfile.makedirs(data_subdir)
+    tf.io.gfile.makedirs(data_subdir)
 
-url = &quot;{}{}.zip&quot;.format(DATA_URL, DATA_SET)
-temp_dir = tempfile.mkdtemp()
+    url = &quot;{}{}.zip&quot;.format(DATA_URL, DATA_SET)
+    temp_dir = tempfile.mkdtemp()
 
-try:
-zip_path = os.path.join(temp_dir, &quot;{}.zip&quot;.format(DATA_SET))
-zip_path, _ = urllib.request.urlretrieve(url, zip_path, _progresshook)
-statinfo = os.stat(zip_path)
-print()
-print(&quot;Successfully downloaded {} {} bytes&quot;.format(zip_path, statinfo.st_size))
+    try:
+        zip_path = os.path.join(temp_dir, &quot;{}.zip&quot;.format(DATA_SET))
+        zip_path, _ = urllib.request.urlretrieve(url, zip_path, _progresshook)
+        statinfo = os.stat(zip_path)
+        print()
+        print(&quot;Successfully downloaded {} {} bytes&quot;.format(zip_path, statinfo.st_size))
 
-zipfile.ZipFile(zip_path, &quot;r&quot;).extractall(temp_dir)
+        zipfile.ZipFile(zip_path, &quot;r&quot;).extractall(temp_dir)
 
-working_dir = os.path.join(temp_dir, DATA_SET)
+        working_dir = os.path.join(temp_dir, DATA_SET)
 
-tf.io.gfile.copy(os.path.join(working_dir, &quot;ratings.csv&quot;), os.path.join(temp_dir, RATINGS_FILE))
-tf.io.gfile.copy(os.path.join(working_dir, &quot;movies.csv&quot;), os.path.join(temp_dir, MOVIES_FILE))
+        tf.io.gfile.copy(os.path.join(working_dir, &quot;ratings.csv&quot;), os.path.join(temp_dir, RATINGS_FILE))
+        tf.io.gfile.copy(os.path.join(working_dir, &quot;movies.csv&quot;), os.path.join(temp_dir, MOVIES_FILE))
         
-tf.io.gfile.rmtree(working_dir)
+        tf.io.gfile.rmtree(working_dir)
 
-for fname in tf.io.gfile.listdir(temp_dir):
-    if not tf.io.gfile.exists(os.path.join(data_subdir, fname)):
-        tf.io.gfile.copy(os.path.join(temp_dir, fname),
-                         os.path.join(data_subdir, fname))
-    else:
-        print(&quot;Skipping copy of {}, as it already exists in the &quot;
-                     &quot;destination folder.&quot;.format(fname))
-finally:
-tf.io.gfile.rmtree(temp_dir)
-</code></pre></li>
-</ul>
+        for fname in tf.io.gfile.listdir(temp_dir):
+            if not tf.io.gfile.exists(os.path.join(data_subdir, fname)):
+                tf.io.gfile.copy(os.path.join(temp_dir, fname),
+                                 os.path.join(data_subdir, fname))
+            else:
+                print(&quot;Skipping copy of {}, as it already exists in the &quot;
+                             &quot;destination folder.&quot;.format(fname))
+    finally:
+        tf.io.gfile.rmtree(temp_dir)
+</code></pre>
 
-<p>&hellip;100%, 0 MB, 782 KB/s, 1 seconds passed
-Successfully downloaded /tmp/tmpgpeoa1q0/ml-latest-small.zip 978202 bytes</p></li>
-</ol>
+<pre><code>...100%, 0 MB, 782 KB/s, 1 seconds passed
+Successfully downloaded /tmp/tmpgpeoa1q0/ml-latest-small.zip 978202 bytes
+</code></pre>
 
 <h3 id="ratings-데이터프레임">Ratings 데이터프레임</h3>
 

@@ -12,7 +12,7 @@
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/agate.min.css">
+	
 	<link rel="stylesheet" href="/css/style.css">
 	
 	<link rel="shortcut icon" href="/favicon.ico">
@@ -100,18 +100,8 @@ plt.show()
 <h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
 
 <p>Keras, tensorflow등의 머신런닝 프레임워크를 사용하기 위해서는<br />
-각각이 요구하는 데이터의 형식 및 모양에 맞추어서 변환을 해 주어야 한다.</p>
-
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
-<p>모델링을 하면서 골치 아픈 것 중에 하나는<br />
-입력과 출력의 모양(Shape)를 맞추어 주는 것이다.<br />
-복잡하다 &hellip; 잘못하면 다크-디멘션에 빠진다&hellip;<br />
-뒤에서 더 자세하게 설명할 기회가 있을 것이다.</p>
-</blockquote>
-
-<p>일단 여기서는  키와 몸무게 데이터를 각각 매트릭스로 변환하자</p>
+각각이 요구하는 데이터의 형식 및 모양에 맞추어서 변환을 해 주어야 한다.<br />
+여기서는  키와 몸무게 데이터를 각각 매트릭스로 변환하자</p>
 
 <ul>
 <li>열의 크기는 데이터의 개수<br /></li>
@@ -122,8 +112,17 @@ plt.show()
 
 <ul>
 <li>키 데이터는 50개의 &lsquo;키&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스<br /></li>
+<li>몸무게 데이터는 50개의 &lsquo;몸무게&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스이다.<br /></li>
+</ul>
 
-<li><p>몸무게 데이터는 50개의 &lsquo;몸무게&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스이다.</p>
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>모델링을 하면서 골치 아픈 것 중에 하나는<br />
+입력과 출력의 모양(Shape)를 맞추어 주는 것이다.<br />
+복잡하다 &hellip; 잘못하면 다크-디멘션에 빠진다&hellip;<br />
+뒤에서 더 자세하게 설명할 기회가 있을 것이다.</p>
+</blockquote>
 
 <pre><code class="language-python">import numpy as np
 
@@ -136,7 +135,7 @@ print('\ny = ', y[:10])
 print('y.shape= ', y.shape)
 </code></pre>
 
-<p>x =  [[150. ]
+<pre><code>x =  [[150. ]
  [150.8]
  [151.6]
  [152.4]
@@ -146,9 +145,9 @@ print('y.shape= ', y.shape)
  [155.7]
  [156.5]
  [157.3]]
-x.shape=  (50, 1)</p>
+x.shape=  (50, 1)
 
-<p>y =  [[45.198]
+y =  [[45.198]
  [46.212]
  [45.85 ]
  [47.389]
@@ -158,8 +157,8 @@ x.shape=  (50, 1)</p>
  [50.354]
  [51.694]
  [50.789]]
-y.shape=  (50, 1)</p></li>
-</ul>
+y.shape=  (50, 1)
+</code></pre>
 
 <p>⚙️ 엔지니어</p>
 
