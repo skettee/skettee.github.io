@@ -121,42 +121,36 @@
 
 <p>데이터는 아래에 있어요.</p>
 </blockquote>
-
-<pre><code class="language-python">input_data = [
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">input_data <span style="color:#f92672">=</span> [
+    [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>],
 ]
 
-output_data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-</code></pre>
-
+output_data <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>]</code></pre></div>
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
 <p>이건 제가 코딩해서 바로 만들어 드릴 수 있습니다!</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
 
-<pre><code class="language-python">import numpy as np
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">human_coding</span>(x):
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(x)):
+        <span style="color:#66d9ef">if</span> x[i] <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+            <span style="color:#66d9ef">return</span> i
+    <span style="color:#66d9ef">return</span> None
 
-def human_coding(x):
-    for i in range(len(x)):
-        if x[i] == 1:
-            return i
-    return None
-
-test_data =  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
-result = human_coding(test_data)
-print('input data is {} and ouput is {}'.format(test_data, result))
-</code></pre>
-
+test_data <span style="color:#f92672">=</span>  [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>]
+result <span style="color:#f92672">=</span> human_coding(test_data)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;input data is {} and ouput is {}&#39;</span><span style="color:#f92672">.</span>format(test_data, result))</code></pre></div>
 <pre><code>input data is [0, 0, 0, 0, 0, 1, 0, 0, 0, 0] and ouput is 5
 </code></pre>
 
@@ -224,26 +218,17 @@ print('input data is {} and ouput is {}'.format(test_data, result))
 </ul>
 
 <p><strong>입력 데이터 변환</strong></p>
-
-<pre><code class="language-python">print('batch_size= ', len(input_data))
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;batch_size= &#39;</span>, len(input_data))</code></pre></div>
 <pre><code>batch_size=  10
 </code></pre>
-
-<pre><code class="language-python">print('input_dimension= ', len(input_data[0]))
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;input_dimension= &#39;</span>, len(input_data[<span style="color:#ae81ff">0</span>]))</code></pre></div>
 <pre><code>input_dimension=  10
 </code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
 
-<pre><code class="language-python">import numpy as np
-
-x = np.array(input_data)
-print('x.shape is ', x.shape)
-print('\nx is \n', x)
-</code></pre>
-
+x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(input_data)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;x.shape is &#39;</span>, x<span style="color:#f92672">.</span>shape)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">x is </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, x)</code></pre></div>
 <pre><code>x.shape is  (10, 10)
 
 x is 
@@ -339,14 +324,11 @@ x is
 0에서 9까지의 값을<br />
 원-핫 벡터 (one-hot vector)로 표시하면 되겠군</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras.utils <span style="color:#f92672">import</span> to_categorical
 
-<pre><code class="language-python">from tensorflow.keras.utils import to_categorical
-
-y = to_categorical(output_data)
-print('y.shape is ', y.shape)
-print('\none-hot encoded y is \n', y)
-</code></pre>
-
+y <span style="color:#f92672">=</span> to_categorical(output_data)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;y.shape is &#39;</span>, y<span style="color:#f92672">.</span>shape)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">one-hot encoded y is </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, y)</code></pre></div>
 <pre><code>y.shape is  (10, 10)
 
 one-hot encoded y is 
@@ -412,74 +394,59 @@ sigmoid는<br />
 
 <p>3개로 분류된 아래 데이터를 가지고 10X10 공간을 3개의 클래스로 분류해 보자.<br />
 여기서 <strong>클래스(Class)</strong> 란 &lsquo;공통적인 성질을 가진 종류&rsquo;라는 뜻이다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
 
-<pre><code class="language-python">import numpy as np
-
-x_data = np.array([
-    (1,4), (1,5), (1,6), (1,7), (1,8), (2,5), (2,6), (2,7), (2,8), (2,9), 
-    (3,6), (3,7), (3,8), (3,9), (4,7), (4,8), (4,9), (5,8), (5,9), (6,9),
-    (3,1), (4,1), (4,2), (5,1), (5,2), (5,3), (6,1), (6,2), (7,1), (8,1),
-    (7,5), (8,4), (8,5), (8,6), (9,3), (9,4), (9,5), (9,6), (9,7), (9,8)
+x_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([
+    (<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">5</span>), (<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">6</span>), (<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">7</span>), (<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">8</span>), (<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">5</span>), (<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">6</span>), (<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">7</span>), (<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">8</span>), (<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">9</span>), 
+    (<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">6</span>), (<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">7</span>), (<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">8</span>), (<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">9</span>), (<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">7</span>), (<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">8</span>), (<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">9</span>), (<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">8</span>), (<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">9</span>), (<span style="color:#ae81ff">6</span>,<span style="color:#ae81ff">9</span>),
+    (<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">1</span>), (<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">1</span>), (<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">2</span>), (<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">1</span>), (<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">2</span>), (<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">3</span>), (<span style="color:#ae81ff">6</span>,<span style="color:#ae81ff">1</span>), (<span style="color:#ae81ff">6</span>,<span style="color:#ae81ff">2</span>), (<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">1</span>), (<span style="color:#ae81ff">8</span>,<span style="color:#ae81ff">1</span>),
+    (<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">5</span>), (<span style="color:#ae81ff">8</span>,<span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">8</span>,<span style="color:#ae81ff">5</span>), (<span style="color:#ae81ff">8</span>,<span style="color:#ae81ff">6</span>), (<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">3</span>), (<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">4</span>), (<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">5</span>), (<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">6</span>), (<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">7</span>), (<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">8</span>)
 ])
 
-y_data = np.array([
-    [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], 
-    [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0], [1,0,0],
-    [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0], [0,1,0],
-    [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1], [0,0,1]
+y_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([
+    [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], 
+    [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>],
+    [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>], [<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>]
 ])
 
-label_data = ['red', 'green', 'blue']
-</code></pre>
-
+label_data <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;red&#39;</span>, <span style="color:#e6db74">&#39;green&#39;</span>, <span style="color:#e6db74">&#39;blue&#39;</span>]</code></pre></div>
 <p>x_data를 그래프로 표시하면 아래와 같다.<br />
 y_data에서 [1,0,0]은 빨강, [0,1,0]은 초록, [0,0,1]은 파랑으로 클래스를 구분한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">%</span>matplotlib inline
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
 
-<pre><code class="language-python">%matplotlib inline
-import matplotlib.pyplot as plt
-
-plt.scatter([x[0] for x in x_data ], [x[1] for x in x_data], color=[label_data[i] for i in [np.argmax(x) for x in y_data]])
-plt.show()
-</code></pre>
-
+plt<span style="color:#f92672">.</span>scatter([x[<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> x_data ], [x[<span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> x_data], color<span style="color:#f92672">=</span>[label_data[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> [np<span style="color:#f92672">.</span>argmax(x) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> y_data]])
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_25_0.png" alt="png" /></p>
 
 <p>소프트맥스 회귀 모델은 Keras로 간단하게 모델링할 수 있다.</p>
 
 <p><img src="https://skettee.github.io/post/neural_network/softmax_regression.png" alt="소프트맥스 회귀 모델" /></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> Sequential
+<span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> Dense, Activation
 
-<pre><code class="language-python">from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense, Activation
-
-# 모델을 준비한다.
-model = Sequential()
-# 입력 변수 x가 2개, unit 개수가 3개인 output layer를 생성한다.
-model.add(Dense(3, input_shape=(2,), activation='softmax'))
-# Loss funtion과 Optimizer를 선택한다.
-model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
-# epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.
-hist = model.fit(x_data, y_data, epochs=1000, verbose=0)
-</code></pre>
-
+<span style="color:#75715e"># 모델을 준비한다.</span>
+model <span style="color:#f92672">=</span> Sequential()
+<span style="color:#75715e"># 입력 변수 x가 2개, unit 개수가 3개인 output layer를 생성한다.</span>
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">3</span>, input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">2</span>,), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;softmax&#39;</span>))
+<span style="color:#75715e"># Loss funtion과 Optimizer를 선택한다.</span>
+model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;categorical_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;rmsprop&#39;</span>)
+<span style="color:#75715e"># epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.</span>
+hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(x_data, y_data, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)</code></pre></div>
 <p>반복 학습할 수록 손실 값이 0에 가깝게 줄어 든다.</p>
-
-<pre><code class="language-python">plt.plot(hist.history['loss'])
-plt.xlabel('epoch')
-plt.ylabel('loss')
-plt.show()
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_29_0.png" alt="png" /></p>
 
 <p>첫번째 x 데이터 (1,4)에 대해서 소프트맥스가 예측한 데이터는 다음과 같다.<br />
 예측된 확률을 모두 더하면 1이 되는 것을 확인할 수 있다.</p>
-
-<pre><code class="language-python">predict = model.predict(x_data[0].reshape(1, 2))
-print('y data is ', y_data[0])
-print('predicted y data is ', predict[0])
-print('sum of probability is ', np.sum(predict[0]))
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">predict <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(x_data[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;y data is &#39;</span>, y_data[<span style="color:#ae81ff">0</span>])
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;predicted y data is &#39;</span>, predict[<span style="color:#ae81ff">0</span>])
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;sum of probability is &#39;</span>, np<span style="color:#f92672">.</span>sum(predict[<span style="color:#ae81ff">0</span>]))</code></pre></div>
 <pre><code>y data is  [1 0 0]
 predicted y data is  [0.980123   0.0051288  0.01474817]
 sum of probability is  0.99999994
@@ -487,20 +454,17 @@ sum of probability is  0.99999994
 
 <p>학습이 완료된 소프트맥스 회귀 모델을 이용해서<br />
 10X10 공간을 3개의 클래스로 분류한 그래프를 그려 보자.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x_data <span style="color:#f92672">=</span> []
+y_data <span style="color:#f92672">=</span> []
+c_data <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
+    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
+        x_data<span style="color:#f92672">.</span>append(i)
+        y_data<span style="color:#f92672">.</span>append(j)
+        c_data<span style="color:#f92672">.</span>append(label_data[np<span style="color:#f92672">.</span>argmax(model<span style="color:#f92672">.</span>predict(np<span style="color:#f92672">.</span>array([i, j])<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>))[<span style="color:#ae81ff">0</span>])])
 
-<pre><code class="language-python">x_data = []
-y_data = []
-c_data = []
-for i in range(10):
-    for j in range(10):
-        x_data.append(i)
-        y_data.append(j)
-        c_data.append(label_data[np.argmax(model.predict(np.array([i, j]).reshape(1, 2))[0])])
-
-plt.scatter(x_data, y_data, color=c_data)
-plt.show()
-</code></pre>
-
+plt<span style="color:#f92672">.</span>scatter(x_data, y_data, color<span style="color:#f92672">=</span>c_data)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_33_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
@@ -541,11 +505,8 @@ plt.show()
 <p>정규화 할거 없음!<br />
 0과 1로 되어 있는데 뭔&hellip; 필요???</p>
 </blockquote>
-
-<pre><code class="language-python">X_train = x
-Y_train = y
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_train <span style="color:#f92672">=</span> x
+Y_train <span style="color:#f92672">=</span> y</code></pre></div>
 <h3 id="keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</h3>
 
 <p>⚙️ 엔지니어</p>
@@ -555,30 +516,24 @@ Y_train = y
 
 <p>프랑소와 숄레 만세!</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> Sequential
+<span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> Dense
 
-<pre><code class="language-python">from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense
-
-# 모델을 준비한다.
-model = Sequential()
-# unit 개수가 3이고 입력 변수 x가 10개인  hidden layer를 생성하고 dense하게 연결한다.
-model.add(Dense(3, input_shape=(10,), activation='sigmoid'))
-# unit 개수가 10인 output layer를 생성하고 dense하게 연결한다.
-model.add(Dense(10, activation='softmax'))
-# Loss funtion과 Optimizer를 선택한다.
-model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
-# epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.
-hist = model.fit(X_train, Y_train, epochs=10000, verbose=0)
-</code></pre>
-
+<span style="color:#75715e"># 모델을 준비한다.</span>
+model <span style="color:#f92672">=</span> Sequential()
+<span style="color:#75715e"># unit 개수가 3이고 입력 변수 x가 10개인  hidden layer를 생성하고 dense하게 연결한다.</span>
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">3</span>, input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>,), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;sigmoid&#39;</span>))
+<span style="color:#75715e"># unit 개수가 10인 output layer를 생성하고 dense하게 연결한다.</span>
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;softmax&#39;</span>))
+<span style="color:#75715e"># Loss funtion과 Optimizer를 선택한다.</span>
+model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;categorical_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;rmsprop&#39;</span>)
+<span style="color:#75715e"># epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.</span>
+hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10000</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)</code></pre></div>
 <h3 id="손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</h3>
-
-<pre><code class="language-python">plt.plot(hist.history['loss'])
-plt.xlabel('epoch')
-plt.ylabel('loss')
-plt.show()
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_42_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
@@ -597,17 +552,14 @@ plt.show()
 test_data에 원하시는 값을 입력하시면<br />
 원하시는 결과값이 출력 됩니다.</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">auto_coding</span>(x):
+    input_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(x)<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>)
+    predict <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(input_data)
+    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>argmax(predict[<span style="color:#ae81ff">0</span>])
 
-<pre><code class="language-python">def auto_coding(x):
-    input_data = np.array(x).reshape(1, 10)
-    predict = model.predict(input_data)
-    return np.argmax(predict[0])
-
-test_data =  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
-result = auto_coding(test_data)
-print('input data is {} and ouput is {}'.format(test_data, result))
-</code></pre>
-
+test_data <span style="color:#f92672">=</span>  [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>]
+result <span style="color:#f92672">=</span> auto_coding(test_data)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;input data is {} and ouput is {}&#39;</span><span style="color:#f92672">.</span>format(test_data, result))</code></pre></div>
 <pre><code>input data is [0, 0, 0, 0, 0, 1, 0, 0, 0, 0] and ouput is 5
 </code></pre>
 

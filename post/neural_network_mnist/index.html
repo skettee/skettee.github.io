@@ -148,17 +148,14 @@ C에서의 &lsquo;hello world&rsquo;급이라고 할 수 있다.</p>
 <blockquote>
 <p>찬양하라 Keras!</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">%</span>matplotlib inline
+<span style="color:#f92672">from</span> tensorflow.keras.datasets <span style="color:#f92672">import</span> mnist
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
 
-<pre><code class="language-python">%matplotlib inline
-from tensorflow.keras.datasets import mnist
-import numpy as np
-import matplotlib.pyplot as plt
-
-# train_images, test_images: uint8 array of grayscale image data with shape (num_samples, 28, 28)
-# train_labels, test_labels: uint8 array of digit labels (integers in range 0-9) with shape (num_samples,)
-(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
-</code></pre>
-
+<span style="color:#75715e"># train_images, test_images: uint8 array of grayscale image data with shape (num_samples, 28, 28)</span>
+<span style="color:#75715e"># train_labels, test_labels: uint8 array of digit labels (integers in range 0-9) with shape (num_samples,)</span>
+(train_images, train_labels), (test_images, test_labels) <span style="color:#f92672">=</span> mnist<span style="color:#f92672">.</span>load_data()</code></pre></div>
 <h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
 
 <p>지금까지 본 문제와는 사이즈가 다르다!<br />
@@ -181,11 +178,8 @@ import matplotlib.pyplot as plt
 <p>설명만 들어서는 어떻게 모델링을 해야 할지 감이 오지 않는다. 데이터를 눈으로 확인해 보자</p>
 
 <p><strong>입력(x) 데이터 확인</strong></p>
-
-<pre><code class="language-python"># 모양 (shape) 확인
-print('train_images shape is ', train_images.shape)
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 모양 (shape) 확인</span>
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train_images shape is &#39;</span>, train_images<span style="color:#f92672">.</span>shape)</code></pre></div>
 <pre><code>train_images shape is  (60000, 28, 28)
 </code></pre>
 
@@ -204,22 +198,19 @@ x-y 그래프에서 점을 찍는데 점 색깔이 회색조로 256개가 있다
 
 <p>아래 그림을 보자</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pick_image <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># 0 ~ 59999</span>
 
-<pre><code class="language-python">pick_image = 0 # 0 ~ 59999
-
-plt.figure(figsize=(8,3))
-plt.subplot(1,2,1)
-# 이미지(image) 확인
-plt.imshow(train_images[pick_image], cmap='gray')
-plt.colorbar()
-plt.xlabel('image of {}'.format(train_labels[pick_image]))
-plt.subplot(1,2,2)
-# 픽셀(pixel)값 분포
-plt.plot(train_images[0].flatten())
-plt.xlabel('x')
-plt.show()
-</code></pre>
-
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">8</span>,<span style="color:#ae81ff">3</span>))
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">1</span>)
+<span style="color:#75715e"># 이미지(image) 확인</span>
+plt<span style="color:#f92672">.</span>imshow(train_images[pick_image], cmap<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gray&#39;</span>)
+plt<span style="color:#f92672">.</span>colorbar()
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;image of {}&#39;</span><span style="color:#f92672">.</span>format(train_labels[pick_image]))
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">2</span>)
+<span style="color:#75715e"># 픽셀(pixel)값 분포</span>
+plt<span style="color:#f92672">.</span>plot(train_images[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>flatten())
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;x&#39;</span>)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_9_0.png" alt="png" /></p>
 
 <p>같은 숫자는 픽셀값의 분포가 비슷할 것이라고 가정을 하고 입력 x를 784개의 픽셀값으로 한다.<br />
@@ -244,10 +235,7 @@ plt.show()
 </ul>
 
 <p>0에서 9까지 10개의 클래스(Class)로 분류하면 된다.</p>
-
-<pre><code class="language-python">train_labels
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">train_labels</code></pre></div>
 <pre><code>array([5, 0, 4, ..., 5, 6, 8], dtype=uint8)
 </code></pre>
 
@@ -265,15 +253,12 @@ plt.show()
 이 작업은 keras layer에서 처리해 주면 된다. (나중에 하겠다는 얘기다.)</p>
 
 <p>소프트맥스(Softmax)를 사용할 예정이니까 출력 데이터를 원-핫 인코딩으로 변환해 주자</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras.utils <span style="color:#f92672">import</span> to_categorical
 
-<pre><code class="language-python">from tensorflow.keras.utils import to_categorical
-
-Y_train = to_categorical(train_labels) # one-hot encoding
-Y_test = to_categorical(test_labels)
-print('Y_train.shape is ', Y_train.shape)
-print('one-hot encoded first Y_train is ', Y_train[0])
-</code></pre>
-
+Y_train <span style="color:#f92672">=</span> to_categorical(train_labels) <span style="color:#75715e"># one-hot encoding</span>
+Y_test <span style="color:#f92672">=</span> to_categorical(test_labels)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Y_train.shape is &#39;</span>, Y_train<span style="color:#f92672">.</span>shape)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;one-hot encoded first Y_train is &#39;</span>, Y_train[<span style="color:#ae81ff">0</span>])</code></pre></div>
 <pre><code>Y_train.shape is  (60000, 10)
 one-hot encoded first Y_train is  [0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]
 </code></pre>
@@ -306,17 +291,14 @@ optimizer의 끝판왕인 <strong>Adam</strong></p>
 <h3 id="relu-rectified-linear-unit">ReLU (Rectified Linear Unit)</h3>
 
 <p>\(a=max(0,z)\)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">relu</span>(x):
+    <span style="color:#66d9ef">return</span> max(<span style="color:#ae81ff">0</span>, x)
 
-<pre><code class="language-python">def relu(x):
-    return max(0, x)
+x_list <span style="color:#f92672">=</span> [x <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(<span style="color:#f92672">-</span><span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>)]
+y_list <span style="color:#f92672">=</span> [relu(x) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> x_list]
 
-x_list = [x for x in range(-10, 11)]
-y_list = [relu(x) for x in x_list]
-
-plt.plot(x_list, y_list)
-plt.show()
-</code></pre>
-
+plt<span style="color:#f92672">.</span>plot(x_list, y_list)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_17_0.png" alt="png" /></p>
 
 <p>시그모이드의 단점은  hidden layer가 많아 질 수록 학습이 안되는 문제가 있다. 미분의 미분의 미분의 &hellip; 미분을 하다 보면 미분값이 0에 가깝게 된다. 그리고 \(z\)값이 엄청 크거나 작은 값이 되어도 미분값이 0에 가깝게 된다. 이러면 손실 함수의 최소값을 찾기 위해 \(w\)와 \(b\)를 움직이지 못한다.  이러한 단점을 보완하기 위해서 탄생한 것이 렐루(ReLU) 함수이다. 물론 엔지니어를 갈아서 만들었다&hellip;</p>
@@ -414,31 +396,25 @@ plt.show()
 
 <p><strong>정규값 = (현재값 - 최소값) / (최대값-최소값)</strong> 으로 정규화 한다!<br />
 최소값이 0이고, 최대값이 255이니까 현재값에서 /255 를 해 주면 된다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_train <span style="color:#f92672">=</span> train_images <span style="color:#f92672">/</span> <span style="color:#ae81ff">255.0</span>
+X_test <span style="color:#f92672">=</span> test_images <span style="color:#f92672">/</span> <span style="color:#ae81ff">255.0</span>
 
-<pre><code class="language-python">X_train = train_images / 255.0
-X_test = test_images / 255.0
-
-plt.imshow(X_train[pick_image], cmap='gray')
-plt.colorbar()
-plt.xlabel(np.argmax(Y_train[pick_image]))
-plt.show()
-</code></pre>
-
+plt<span style="color:#f92672">.</span>imshow(X_train[pick_image], cmap<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gray&#39;</span>)
+plt<span style="color:#f92672">.</span>colorbar()
+plt<span style="color:#f92672">.</span>xlabel(np<span style="color:#f92672">.</span>argmax(Y_train[pick_image]))
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_20_0.png" alt="png" /></p>
 
 <h3 id="keras를-가지고-모델링-modeling-하기">Keras를 가지고 모델링(Modeling)하기</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> Sequential
+<span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> Flatten, Dense
 
-<pre><code class="language-python">from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Flatten, Dense
-
-model = Sequential()
-model.add(Flatten(input_shape=(28,28)))
-model.add(Dense(128, activation='relu'))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(10, activation='softmax'))
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-</code></pre>
-
+model <span style="color:#f92672">=</span> Sequential()
+model<span style="color:#f92672">.</span>add(Flatten(input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">28</span>,<span style="color:#ae81ff">28</span>)))
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">128</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">32</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;softmax&#39;</span>))
+model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;categorical_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>, metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])</code></pre></div>
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
 W0906 19:08:54.737059 139909354948416 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
@@ -446,35 +422,26 @@ Call initializer instance with the dtype argument instead of passing it to the c
 </code></pre>
 
 <h3 id="모델-훈련">모델 훈련</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+train_acc <span style="color:#f92672">=</span> hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;acc&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+train_loss <span style="color:#f92672">=</span>  hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
 
-<pre><code class="language-python">hist = model.fit(X_train, Y_train, epochs=10, verbose=0)
-train_acc = hist.history['acc'][-1]
-train_loss =  hist.history['loss'][-1]
-
-print('train accuracy: ', train_acc)
-print('train loss: ', train_loss)
-</code></pre>
-
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train accuracy: &#39;</span>, train_acc)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, train_loss)</code></pre></div>
 <pre><code>train accuracy:  0.9932
 train loss:  0.019363174817231873
 </code></pre>
-
-<pre><code class="language-python">plt.plot(hist.history['loss'])
-plt.xlabel('epoch')
-plt.ylabel('loss')
-plt.show()
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_25_0.png" alt="png" /></p>
 
 <h3 id="정확도-평가">정확도 평가</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test_loss, test_acc <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>evaluate(X_test, Y_test)
 
-<pre><code class="language-python">test_loss, test_acc = model.evaluate(X_test, Y_test)
-
-print('test accuracy: ', test_acc)
-print('test loss: ', test_loss)
-</code></pre>
-
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test accuracy: &#39;</span>, test_acc)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test loss: &#39;</span>, test_loss)</code></pre></div>
 <pre><code>10000/10000 [==============================] - 0s 31us/sample - loss: 0.1025 - acc: 0.9768
 test accuracy:  0.9768
 test loss:  0.1024522928831917
@@ -523,55 +490,43 @@ test loss:  0.1024522928831917
 어느 정도 바보로 만들어 질 것인지는<br />
 \(\lambda\)로 정해진다.</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> regularizers
 
-<pre><code class="language-python">from tensorflow.keras import regularizers
+model_l2 <span style="color:#f92672">=</span> Sequential()
+model_l2<span style="color:#f92672">.</span>add(Flatten(input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">28</span>,<span style="color:#ae81ff">28</span>)))
+model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">128</span>, kernel_regularizer<span style="color:#f92672">=</span>regularizers<span style="color:#f92672">.</span>l2(<span style="color:#ae81ff">0.0001</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">32</span>, kernel_regularizer<span style="color:#f92672">=</span>regularizers<span style="color:#f92672">.</span>l2(<span style="color:#ae81ff">0.0001</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;softmax&#39;</span>))
+model_l2<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;categorical_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>, metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])
 
-model_l2 = Sequential()
-model_l2.add(Flatten(input_shape=(28,28)))
-model_l2.add(Dense(128, kernel_regularizer=regularizers.l2(0.0001), activation='relu'))
-model_l2.add(Dense(32, kernel_regularizer=regularizers.l2(0.0001), activation='relu'))
-model_l2.add(Dense(10, activation='softmax'))
-model_l2.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+hist <span style="color:#f92672">=</span> model_l2<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+train_acc_l2 <span style="color:#f92672">=</span> hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;acc&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+train_loss_l2 <span style="color:#f92672">=</span>  hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
 
-hist = model_l2.fit(X_train, Y_train, epochs=10, verbose=0)
-train_acc_l2 = hist.history['acc'][-1]
-train_loss_l2 =  hist.history['loss'][-1]
-
-print('train accuracy: ', train_acc_l2)
-print('train loss: ', train_loss_l2)
-</code></pre>
-
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train accuracy: &#39;</span>, train_acc_l2)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, train_loss_l2)</code></pre></div>
 <pre><code>train accuracy:  0.9884667
 train loss:  0.07978579129775365
 </code></pre>
-
-<pre><code class="language-python">plt.plot(hist.history['loss'])
-plt.xlabel('epoch')
-plt.ylabel('loss')
-plt.show()
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_31_0.png" alt="png" /></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test_loss_l2, test_acc_l2 <span style="color:#f92672">=</span> model_l2<span style="color:#f92672">.</span>evaluate(X_test, Y_test)
 
-<pre><code class="language-python">test_loss_l2, test_acc_l2 = model_l2.evaluate(X_test, Y_test)
-
-print('test accuracy: ', test_acc_l2)
-print('test loss: ', test_loss_l2)
-</code></pre>
-
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test accuracy: &#39;</span>, test_acc_l2)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test loss: &#39;</span>, test_loss_l2)</code></pre></div>
 <pre><code>10000/10000 [==============================] - 0s 38us/sample - loss: 0.1201 - acc: 0.9777
 test accuracy:  0.9777
 test loss:  0.12008701454401016
 </code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
 
-<pre><code class="language-python">import pandas as pd
-
-df = pd.DataFrame(data=[[train_acc, test_acc], [train_acc_l2, test_acc_l2]], 
-                  index = ['model', 'model_with_l2'], 
-                  columns=['train accuracy', 'test accuracy'])
-df
-</code></pre>
-
+df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data<span style="color:#f92672">=</span>[[train_acc, test_acc], [train_acc_l2, test_acc_l2]], 
+                  index <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;model&#39;</span>, <span style="color:#e6db74">&#39;model_with_l2&#39;</span>], 
+                  columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;train accuracy&#39;</span>, <span style="color:#e6db74">&#39;test accuracy&#39;</span>])
+df</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -620,24 +575,21 @@ df
 <p>test_data에 원하시는 이미지를 입력하시면<br />
 원하시는 결과값이 출력 됩니다.</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pick_image <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span> <span style="color:#75715e"># 0 ~ 9999</span>
 
-<pre><code class="language-python">pick_image = 10 # 0 ~ 9999
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict_handwrittendigits</span>(x):
+    x_data <span style="color:#f92672">=</span>(np<span style="color:#f92672">.</span>expand_dims(x, <span style="color:#ae81ff">0</span>))
+    predict <span style="color:#f92672">=</span> model_l2<span style="color:#f92672">.</span>predict(x_data)
+    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>argmax(predict)
 
-def predict_handwrittendigits(x):
-    x_data =(np.expand_dims(x, 0))
-    predict = model_l2.predict(x_data)
-    return np.argmax(predict)
+test_data <span style="color:#f92672">=</span> test_images[pick_image]
+result <span style="color:#f92672">=</span> predict_handwrittendigits(test_data)
 
-test_data = test_images[pick_image]
-result = predict_handwrittendigits(test_data)
-
-plt.imshow(test_data, cmap='gray')
-plt.xticks([])
-plt.yticks([])
-plt.show()
-print('predicted digit is ', result)
-</code></pre>
-
+plt<span style="color:#f92672">.</span>imshow(test_data, cmap<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gray&#39;</span>)
+plt<span style="color:#f92672">.</span>xticks([])
+plt<span style="color:#f92672">.</span>yticks([])
+plt<span style="color:#f92672">.</span>show()
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;predicted digit is &#39;</span>, result)</code></pre></div>
 <p><img src="output_35_0.png" alt="png" /></p>
 
 <pre><code>predicted digit is  0

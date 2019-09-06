@@ -172,88 +172,82 @@ Action, Adventure, Animation, Children&rsquo;s, Comedy, Comedy, Documentary, Dra
 <blockquote>
 <p>데이터를 다운로드 하고 <code>/tmp/movielens-data/</code> 에 저장하자</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> sys
+<span style="color:#f92672">import</span> time
 
-<pre><code class="language-python">import sys
-import time
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> tempfile
+<span style="color:#f92672">import</span> zipfile
+<span style="color:#f92672">from</span> six.moves <span style="color:#f92672">import</span> urllib
+<span style="color:#f92672">import</span> tensorflow <span style="color:#f92672">as</span> tf
 
-import os
-import tempfile
-import zipfile
-from six.moves import urllib
-import tensorflow as tf
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_progresshook</span>(count, block_size, total_size):
+    <span style="color:#66d9ef">global</span> start_time
+    <span style="color:#66d9ef">if</span> count <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        start_time <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+        <span style="color:#66d9ef">return</span>
+    duration <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time() <span style="color:#f92672">-</span> start_time
+    progress_size <span style="color:#f92672">=</span> int(count <span style="color:#f92672">*</span> block_size)
+    speed <span style="color:#f92672">=</span> int(progress_size <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> duration))
+    percent <span style="color:#f92672">=</span> int(count <span style="color:#f92672">*</span> block_size <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span> <span style="color:#f92672">/</span> total_size)
+    sys<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">...</span><span style="color:#e6db74">%d%%</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> MB, </span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> KB/s, </span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> seconds passed&#34;</span> <span style="color:#f92672">%</span>
+                    (percent, progress_size <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span>), speed, duration))
+    sys<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>flush()
 
-def _progresshook(count, block_size, total_size):
-    global start_time
-    if count == 0:
-        start_time = time.time()
-        return
-    duration = time.time() - start_time
-    progress_size = int(count * block_size)
-    speed = int(progress_size / (1024 * duration))
-    percent = int(count * block_size * 100 / total_size)
-    sys.stdout.write(&quot;\r...%d%%, %d MB, %d KB/s, %d seconds passed&quot; %
-                    (percent, progress_size / (1024 * 1024), speed, duration))
-    sys.stdout.flush()
+DATA_DIR <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/tmp/movielens-data/&#34;</span>
+DATA_SET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ml-latest-small&#39;</span>
+RATINGS_FILE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ratings.csv&#34;</span>
+MOVIES_FILE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;movies.csv&#34;</span>
+DATA_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://files.grouplens.org/datasets/movielens/&#34;</span>
 
-DATA_DIR = &quot;/tmp/movielens-data/&quot;
-DATA_SET = 'ml-latest-small'
-RATINGS_FILE = &quot;ratings.csv&quot;
-MOVIES_FILE = &quot;movies.csv&quot;
-DATA_URL = &quot;http://files.grouplens.org/datasets/movielens/&quot;
+data_subdir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(DATA_DIR, DATA_SET)
+expected_files <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;{}.zip&#34;</span><span style="color:#f92672">.</span>format(DATA_SET), RATINGS_FILE, MOVIES_FILE]
 
-data_subdir = os.path.join(DATA_DIR, DATA_SET)
-expected_files = [&quot;{}.zip&quot;.format(DATA_SET), RATINGS_FILE, MOVIES_FILE]
+tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>makedirs(data_subdir)
+<span style="color:#66d9ef">if</span> set(expected_files)<span style="color:#f92672">.</span>intersection(
+    tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>listdir(data_subdir)) <span style="color:#f92672">==</span> set(expected_files):
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Dataset {} has already been downloaded&#34;</span><span style="color:#f92672">.</span>format(DATA_SET))
+<span style="color:#66d9ef">else</span>:
+    tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>makedirs(data_subdir)
 
-tf.io.gfile.makedirs(data_subdir)
-if set(expected_files).intersection(
-    tf.io.gfile.listdir(data_subdir)) == set(expected_files):
-    print(&quot;Dataset {} has already been downloaded&quot;.format(DATA_SET))
-else:
-    tf.io.gfile.makedirs(data_subdir)
+    url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;{}{}.zip&#34;</span><span style="color:#f92672">.</span>format(DATA_URL, DATA_SET)
+    temp_dir <span style="color:#f92672">=</span> tempfile<span style="color:#f92672">.</span>mkdtemp()
 
-    url = &quot;{}{}.zip&quot;.format(DATA_URL, DATA_SET)
-    temp_dir = tempfile.mkdtemp()
+    <span style="color:#66d9ef">try</span>:
+        zip_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, <span style="color:#e6db74">&#34;{}.zip&#34;</span><span style="color:#f92672">.</span>format(DATA_SET))
+        zip_path, _ <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>urlretrieve(url, zip_path, _progresshook)
+        statinfo <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>stat(zip_path)
+        <span style="color:#66d9ef">print</span>()
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Successfully downloaded {} {} bytes&#34;</span><span style="color:#f92672">.</span>format(zip_path, statinfo<span style="color:#f92672">.</span>st_size))
 
-    try:
-        zip_path = os.path.join(temp_dir, &quot;{}.zip&quot;.format(DATA_SET))
-        zip_path, _ = urllib.request.urlretrieve(url, zip_path, _progresshook)
-        statinfo = os.stat(zip_path)
-        print()
-        print(&quot;Successfully downloaded {} {} bytes&quot;.format(zip_path, statinfo.st_size))
+        zipfile<span style="color:#f92672">.</span>ZipFile(zip_path, <span style="color:#e6db74">&#34;r&#34;</span>)<span style="color:#f92672">.</span>extractall(temp_dir)
 
-        zipfile.ZipFile(zip_path, &quot;r&quot;).extractall(temp_dir)
+        working_dir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, DATA_SET)
 
-        working_dir = os.path.join(temp_dir, DATA_SET)
-
-        tf.io.gfile.copy(os.path.join(working_dir, &quot;ratings.csv&quot;), os.path.join(temp_dir, RATINGS_FILE))
-        tf.io.gfile.copy(os.path.join(working_dir, &quot;movies.csv&quot;), os.path.join(temp_dir, MOVIES_FILE))
+        tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>copy(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(working_dir, <span style="color:#e6db74">&#34;ratings.csv&#34;</span>), os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, RATINGS_FILE))
+        tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>copy(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(working_dir, <span style="color:#e6db74">&#34;movies.csv&#34;</span>), os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, MOVIES_FILE))
         
-        tf.io.gfile.rmtree(working_dir)
+        tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>rmtree(working_dir)
 
-        for fname in tf.io.gfile.listdir(temp_dir):
-            if not tf.io.gfile.exists(os.path.join(data_subdir, fname)):
-                tf.io.gfile.copy(os.path.join(temp_dir, fname),
-                                 os.path.join(data_subdir, fname))
-            else:
-                print(&quot;Skipping copy of {}, as it already exists in the &quot;
-                             &quot;destination folder.&quot;.format(fname))
-    finally:
-        tf.io.gfile.rmtree(temp_dir)
-</code></pre>
-
+        <span style="color:#66d9ef">for</span> fname <span style="color:#f92672">in</span> tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>listdir(temp_dir):
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>exists(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(data_subdir, fname)):
+                tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>copy(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, fname),
+                                 os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(data_subdir, fname))
+            <span style="color:#66d9ef">else</span>:
+                <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Skipping copy of {}, as it already exists in the &#34;</span>
+                             <span style="color:#e6db74">&#34;destination folder.&#34;</span><span style="color:#f92672">.</span>format(fname))
+    <span style="color:#66d9ef">finally</span>:
+        tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>rmtree(temp_dir)</code></pre></div>
 <pre><code>...100%, 0 MB, 782 KB/s, 1 seconds passed
 Successfully downloaded /tmp/tmpgpeoa1q0/ml-latest-small.zip 978202 bytes
 </code></pre>
 
 <h3 id="ratings-데이터프레임">Ratings 데이터프레임</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
 
-<pre><code class="language-python">import pandas as pd
-import numpy as np
-
-ratings_df = pd.read_csv(os.path.join(data_subdir, RATINGS_FILE))
-ratings_df.head()
-</code></pre>
-
+ratings_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(data_subdir, RATINGS_FILE))
+ratings_df<span style="color:#f92672">.</span>head()</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -319,11 +313,8 @@ ratings_df.head()
 </div>
 
 <h3 id="movies-데이터프레임">Movies 데이터프레임</h3>
-
-<pre><code class="language-python">movies_df = pd.read_csv(os.path.join(data_subdir, MOVIES_FILE))
-movies_df.head()
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">movies_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(data_subdir, MOVIES_FILE))
+movies_df<span style="color:#f92672">.</span>head()</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -383,18 +374,15 @@ movies_df.head()
 </div>
 
 <h3 id="번-사용자가-5개-별점을-준-영화-리스트">#번 사용자가 5개 별점을 준 영화 리스트</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">userId <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span> <span style="color:#75715e"># 1~610</span>
+rating <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>  <span style="color:#75715e"># 1 ~ 5</span>
+top_movie_ids <span style="color:#f92672">=</span> ratings_df[(ratings_df[<span style="color:#e6db74">&#39;userId&#39;</span>] <span style="color:#f92672">==</span> userId) 
+                           <span style="color:#f92672">&amp;</span> (ratings_df[<span style="color:#e6db74">&#39;rating&#39;</span>] <span style="color:#f92672">==</span> rating)]<span style="color:#f92672">.</span>movieId
+top_titles <span style="color:#f92672">=</span> movies_df[movies_df[<span style="color:#e6db74">&#39;movieId&#39;</span>]<span style="color:#f92672">.</span>isin(top_movie_ids)]<span style="color:#f92672">.</span>title
 
-<pre><code class="language-python">userId = 100 # 1~610
-rating = 5  # 1 ~ 5
-top_movie_ids = ratings_df[(ratings_df['userId'] == userId) 
-                           &amp; (ratings_df['rating'] == rating)].movieId
-top_titles = movies_df[movies_df['movieId'].isin(top_movie_ids)].title
-
-print('Top rated titles of userId {}:\n'.format(userId))
-for item in top_titles:
-    print(item)
-</code></pre>
-
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Top rated titles of userId {}:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(userId))
+<span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> top_titles:
+    <span style="color:#66d9ef">print</span>(item)</code></pre></div>
 <pre><code>Top rated titles of userId 100:
 
 Top Gun (1986)
@@ -407,23 +395,17 @@ Sweet Home Alabama (2002)
 <h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
 
 <h3 id="데이터-확인-data-visualization">데이터 확인 (Data Visualization)</h3>
-
-<pre><code class="language-python">print('{} Ratings, {} Users, {} Movies'.format(len(ratings_df), 
-                                               len(ratings_df.userId.unique()), 
-                                               len(ratings_df.movieId.unique())))
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;{} Ratings, {} Users, {} Movies&#39;</span><span style="color:#f92672">.</span>format(len(ratings_df), 
+                                               len(ratings_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique()), 
+                                               len(ratings_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique())))</code></pre></div>
 <pre><code>100836 Ratings, 610 Users, 9724 Movies
 </code></pre>
 
 <p>데이터가 구멍이 난 것이 없는지 확인</p>
-
-<pre><code class="language-python"># Check missing data
-print('missing number of userId data is ', ratings_df['userId'].isnull().sum())
-print('missing number of movieId data is ', ratings_df['movieId'].isnull().sum())
-print('missing number of rating data is ', ratings_df['rating'].isnull().sum())
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Check missing data</span>
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;missing number of userId data is &#39;</span>, ratings_df[<span style="color:#e6db74">&#39;userId&#39;</span>]<span style="color:#f92672">.</span>isnull()<span style="color:#f92672">.</span>sum())
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;missing number of movieId data is &#39;</span>, ratings_df[<span style="color:#e6db74">&#39;movieId&#39;</span>]<span style="color:#f92672">.</span>isnull()<span style="color:#f92672">.</span>sum())
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;missing number of rating data is &#39;</span>, ratings_df[<span style="color:#e6db74">&#39;rating&#39;</span>]<span style="color:#f92672">.</span>isnull()<span style="color:#f92672">.</span>sum())</code></pre></div>
 <pre><code>missing number of userId data is  0
 missing number of movieId data is  0
 missing number of rating data is  0
@@ -431,17 +413,11 @@ missing number of rating data is  0
 
 <p><code>userId</code>, <code>movieId</code>, <code>rating</code> 세개만 가지고 피처 벡터(feature vector)를 추출할 예정이다.<br />
 일단 <code>userId</code>를 컬럼(Column), <code>movieId</code>를 열(Row)로 만들어서 <code>rating</code>값을 확인해 보자</p>
-
-<pre><code class="language-python">df_table = ratings_df.set_index([&quot;movieId&quot;, &quot;userId&quot;]).unstack()
-df_table.shape
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_table <span style="color:#f92672">=</span> ratings_df<span style="color:#f92672">.</span>set_index([<span style="color:#e6db74">&#34;movieId&#34;</span>, <span style="color:#e6db74">&#34;userId&#34;</span>])<span style="color:#f92672">.</span>unstack()
+df_table<span style="color:#f92672">.</span>shape</code></pre></div>
 <pre><code>(9724, 1220)
 </code></pre>
-
-<pre><code class="language-python">df_table.iloc[808:817, 212:222].fillna(&quot;&quot;)
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_table<span style="color:#f92672">.</span>iloc[<span style="color:#ae81ff">808</span>:<span style="color:#ae81ff">817</span>, <span style="color:#ae81ff">212</span>:<span style="color:#ae81ff">222</span>]<span style="color:#f92672">.</span>fillna(<span style="color:#e6db74">&#34;&#34;</span>)</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -798,33 +774,27 @@ df_table.shape
 \end{bmatrix}\)</p>
 
 <p>우리는 이제 \(R\) (5X4) 매트릭스를 \(Q\) (5X2)와 \(P^T\) (2X4) 매트릭스로 분해를 할 것이다.</p>
-
-<pre><code class="language-python"># Non-negative matrix factorization
-from sklearn.decomposition import NMF
-R = [
-     [5,5,1,1],
-     [5,4,1,1],
-     [5,5,1,1],
-     [1,1,5,5],
-     [1,1,5,4],
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Non-negative matrix factorization</span>
+<span style="color:#f92672">from</span> sklearn.decomposition <span style="color:#f92672">import</span> NMF
+R <span style="color:#f92672">=</span> [
+     [<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>],
+     [<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>],
+     [<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>],
+     [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">5</span>],
+     [<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">4</span>],
     ]
 
-k = 2 # number of factors
-model = NMF(n_components=k)
-Q = model.fit_transform(np.array(R))
-P = model.components_
-</code></pre>
-
+k <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># number of factors</span>
+model <span style="color:#f92672">=</span> NMF(n_components<span style="color:#f92672">=</span>k)
+Q <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit_transform(np<span style="color:#f92672">.</span>array(R))
+P <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>components_</code></pre></div>
 <p>아래 \(Q\) 매트릭스를 보자.</p>
 
 <p>0번 컬럼(Column)을 &lsquo;로맨틱 영화&rsquo;,<br />
 1번 컬럼(Column)을 &lsquo;공상과학 영화&rsquo; 라고 하면<br />
 \(Q\) 매트릭스는 영화의 특징을 나타내고 있다.</p>
-
-<pre><code class="language-python"># Q (5X2) 매트릭스
-pd.DataFrame(Q, columns=['Romantic', 'Sci-Fi'])
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Q (5X2) 매트릭스</span>
+pd<span style="color:#f92672">.</span>DataFrame(Q, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;Romantic&#39;</span>, <span style="color:#e6db74">&#39;Sci-Fi&#39;</span>])</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -882,11 +852,8 @@ pd.DataFrame(Q, columns=['Romantic', 'Sci-Fi'])
 <p>0번 열(Row)을 &lsquo;로맨틱한 사람&rsquo;,<br />
 1번 열(Row)을 &lsquo;상상력이 풍부한 사람&rsquo; 이라고 하면<br />
 \(P^T\) 매트릭스는 평가자의 특징을 나타내고 있다.</p>
-
-<pre><code class="language-python"># P (2X4) 매트릭스
-pd.DataFrame(P, index=['Romantic Guy', 'Imaginary Guy'])
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># P (2X4) 매트릭스</span>
+pd<span style="color:#f92672">.</span>DataFrame(P, index<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;Romantic Guy&#39;</span>, <span style="color:#e6db74">&#39;Imaginary Guy&#39;</span>])</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -933,11 +900,8 @@ pd.DataFrame(P, index=['Romantic Guy', 'Imaginary Guy'])
 <p>마지막으로 \(Q\)와 \(P^T\) 매트릭스가<br />
 별점을 표현하는 지를 확인하기 위해서<br />
 \(Q\)와 \(P^T\)를 곱해 보자</p>
-
-<pre><code class="language-python">R_hat = np.dot(Q,P)
-pd.DataFrame(R_hat)
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">R_hat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>dot(Q,P)
+pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1057,37 +1021,34 @@ pd.DataFrame(R_hat)
 <blockquote>
 <p>이제 미니 데이터를 가지고 모델링을 해보자!</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
 
-<pre><code class="language-python">import pandas as pd
-import numpy as np
-
-data = [
-    ['Alice', 'Beauty Inside', 5],
-    ['Alice', 'La La Land', 5],
-    ['Alice', 'Love Story', 5],
-    ['Alice', 'Matrix', 1],
-    ['Alice', 'Star Wars', 1], 
-    ['Bob', 'La La Land', 4],
-    ['Bob', 'Love Story', 5],
-    ['Bob', 'Matrix', 1],
-    ['Bob', 'Star Wars', 1],
-    ['Carol', 'Beauty Inside', 1],
-    ['Carol', 'La La Land', 1],
-    ['Carol', 'Matrix', 5],
-    ['Carol', 'Star Wars', 5], 
-    ['Dave', 'Beauty Inside', 1], 
-    ['Dave', 'La La Land', 1],
-    ['Dave', 'Love Story', 1],
-    ['Dave', 'Matrix', 5],
-    ['Dave', 'Star Wars', 4],
+data <span style="color:#f92672">=</span> [
+    [<span style="color:#e6db74">&#39;Alice&#39;</span>, <span style="color:#e6db74">&#39;Beauty Inside&#39;</span>, <span style="color:#ae81ff">5</span>],
+    [<span style="color:#e6db74">&#39;Alice&#39;</span>, <span style="color:#e6db74">&#39;La La Land&#39;</span>, <span style="color:#ae81ff">5</span>],
+    [<span style="color:#e6db74">&#39;Alice&#39;</span>, <span style="color:#e6db74">&#39;Love Story&#39;</span>, <span style="color:#ae81ff">5</span>],
+    [<span style="color:#e6db74">&#39;Alice&#39;</span>, <span style="color:#e6db74">&#39;Matrix&#39;</span>, <span style="color:#ae81ff">1</span>],
+    [<span style="color:#e6db74">&#39;Alice&#39;</span>, <span style="color:#e6db74">&#39;Star Wars&#39;</span>, <span style="color:#ae81ff">1</span>], 
+    [<span style="color:#e6db74">&#39;Bob&#39;</span>, <span style="color:#e6db74">&#39;La La Land&#39;</span>, <span style="color:#ae81ff">4</span>],
+    [<span style="color:#e6db74">&#39;Bob&#39;</span>, <span style="color:#e6db74">&#39;Love Story&#39;</span>, <span style="color:#ae81ff">5</span>],
+    [<span style="color:#e6db74">&#39;Bob&#39;</span>, <span style="color:#e6db74">&#39;Matrix&#39;</span>, <span style="color:#ae81ff">1</span>],
+    [<span style="color:#e6db74">&#39;Bob&#39;</span>, <span style="color:#e6db74">&#39;Star Wars&#39;</span>, <span style="color:#ae81ff">1</span>],
+    [<span style="color:#e6db74">&#39;Carol&#39;</span>, <span style="color:#e6db74">&#39;Beauty Inside&#39;</span>, <span style="color:#ae81ff">1</span>],
+    [<span style="color:#e6db74">&#39;Carol&#39;</span>, <span style="color:#e6db74">&#39;La La Land&#39;</span>, <span style="color:#ae81ff">1</span>],
+    [<span style="color:#e6db74">&#39;Carol&#39;</span>, <span style="color:#e6db74">&#39;Matrix&#39;</span>, <span style="color:#ae81ff">5</span>],
+    [<span style="color:#e6db74">&#39;Carol&#39;</span>, <span style="color:#e6db74">&#39;Star Wars&#39;</span>, <span style="color:#ae81ff">5</span>], 
+    [<span style="color:#e6db74">&#39;Dave&#39;</span>, <span style="color:#e6db74">&#39;Beauty Inside&#39;</span>, <span style="color:#ae81ff">1</span>], 
+    [<span style="color:#e6db74">&#39;Dave&#39;</span>, <span style="color:#e6db74">&#39;La La Land&#39;</span>, <span style="color:#ae81ff">1</span>],
+    [<span style="color:#e6db74">&#39;Dave&#39;</span>, <span style="color:#e6db74">&#39;Love Story&#39;</span>, <span style="color:#ae81ff">1</span>],
+    [<span style="color:#e6db74">&#39;Dave&#39;</span>, <span style="color:#e6db74">&#39;Matrix&#39;</span>, <span style="color:#ae81ff">5</span>],
+    [<span style="color:#e6db74">&#39;Dave&#39;</span>, <span style="color:#e6db74">&#39;Star Wars&#39;</span>, <span style="color:#ae81ff">4</span>],
 ]
 
-mini_df = pd.DataFrame( data = data, columns = ['user', 'item', 'rating'])
-df_table = mini_df.set_index([&quot;item&quot;, &quot;user&quot;]).unstack().fillna('?')
+mini_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame( data <span style="color:#f92672">=</span> data, columns <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;user&#39;</span>, <span style="color:#e6db74">&#39;item&#39;</span>, <span style="color:#e6db74">&#39;rating&#39;</span>])
+df_table <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>set_index([<span style="color:#e6db74">&#34;item&#34;</span>, <span style="color:#e6db74">&#34;user&#34;</span>])<span style="color:#f92672">.</span>unstack()<span style="color:#f92672">.</span>fillna(<span style="color:#e6db74">&#39;?&#39;</span>)
 
-df_table
-</code></pre>
-
+df_table</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1182,13 +1143,10 @@ df_table
 
 <p>다음은 미니 데이터에서 평가자(<code>user</code>)를 인덱싱한 결과이다.<br />
 앨리스는 0, 밥은 1, 캐럴은 2, 데이브는 3으로 변환된 것을 확인할 수 있다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mini_df<span style="color:#f92672">.</span>user <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>user<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;category&#39;</span>)<span style="color:#f92672">.</span>cat<span style="color:#f92672">.</span>codes<span style="color:#f92672">.</span>values
+df_table <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>set_index([<span style="color:#e6db74">&#34;item&#34;</span>, <span style="color:#e6db74">&#34;user&#34;</span>])<span style="color:#f92672">.</span>unstack()<span style="color:#f92672">.</span>fillna(<span style="color:#e6db74">&#39;?&#39;</span>)
 
-<pre><code class="language-python">mini_df.user = mini_df.user.astype('category').cat.codes.values
-df_table = mini_df.set_index([&quot;item&quot;, &quot;user&quot;]).unstack().fillna('?')
-
-df_table
-</code></pre>
-
+df_table</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1270,13 +1228,10 @@ df_table
 
 <p>영화(<code>item</code>)의 경우도 인덱싱을 한다.<br />
 뷰티인사이드가 0, 라라랜드가 1, 러브스토리가 2, 매트릭스가 3, 스타워즈 4로 변환된 것을 확인 할 수 있다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mini_df<span style="color:#f92672">.</span>item <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>item<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;category&#39;</span>)<span style="color:#f92672">.</span>cat<span style="color:#f92672">.</span>codes<span style="color:#f92672">.</span>values
+df_table <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>set_index([<span style="color:#e6db74">&#34;item&#34;</span>, <span style="color:#e6db74">&#34;user&#34;</span>])<span style="color:#f92672">.</span>unstack()<span style="color:#f92672">.</span>fillna(<span style="color:#e6db74">&#39;?&#39;</span>)
 
-<pre><code class="language-python">mini_df.item = mini_df.item.astype('category').cat.codes.values
-df_table = mini_df.set_index([&quot;item&quot;, &quot;user&quot;]).unstack().fillna('?')
-
-df_table
-</code></pre>
-
+df_table</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1364,22 +1319,19 @@ df_table
 
 <p>임베딩(Embedding)은 잠재 인수 (Latent factor)를 생성한다.<br />
 영화(<code>item</code>)의 잠재 인수와 잠재 벡터는 아래와 같이 생성한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> Model
+<span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> Input, Embedding, Flatten, dot
+<span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> regularizers
 
-<pre><code class="language-python">from tensorflow.keras import Model
-from tensorflow.keras.layers import Input, Embedding, Flatten, dot
-from tensorflow.keras import regularizers
+n_items <span style="color:#f92672">=</span> len(mini_df<span style="color:#f92672">.</span>item<span style="color:#f92672">.</span>unique()) <span style="color:#75715e"># 5편의 영화</span>
+n_items_latent_factors <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># 영화의 잠재 인수 개수</span>
 
-n_items = len(mini_df.item.unique()) # 5편의 영화
-n_items_latent_factors = 2 # 영화의 잠재 인수 개수
-
-item_input = Input(shape=[1])
-# Item latent factor
-item_embedding = Embedding(n_items, n_items_latent_factors, # (5X2) Latent factor
-                           name='item_embedding')(item_input)
-# Item latent vector
-item_vec = Flatten()(item_embedding)
-</code></pre>
-
+item_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>])
+<span style="color:#75715e"># Item latent factor</span>
+item_embedding <span style="color:#f92672">=</span> Embedding(n_items, n_items_latent_factors, <span style="color:#75715e"># (5X2) Latent factor</span>
+                           name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;item_embedding&#39;</span>)(item_input)
+<span style="color:#75715e"># Item latent vector</span>
+item_vec <span style="color:#f92672">=</span> Flatten()(item_embedding)</code></pre></div>
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
 W0906 18:42:21.169342 140660089382720 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
@@ -1387,41 +1339,32 @@ Call initializer instance with the dtype argument instead of passing it to the c
 </code></pre>
 
 <p>평가자(<code>user</code>)의 잠재 인수와 잠재 벡터를 생성한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_users <span style="color:#f92672">=</span> len(mini_df<span style="color:#f92672">.</span>user<span style="color:#f92672">.</span>unique()) <span style="color:#75715e"># 4명의 평가자</span>
+n_users_latent_factors <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># 평가자의 잠재 인수 개수</span>
 
-<pre><code class="language-python">n_users = len(mini_df.user.unique()) # 4명의 평가자
-n_users_latent_factors = 2 # 평가자의 잠재 인수 개수
-
-user_input = Input(shape=[1])
-# User latent factor
-user_embedding = Embedding(n_users, n_users_latent_factors, # (4X2) Latent factor
-                           name='user_embedding')(user_input)
-# User latent vector
-user_vec = Flatten()(user_embedding)
-</code></pre>
-
+user_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>])
+<span style="color:#75715e"># User latent factor</span>
+user_embedding <span style="color:#f92672">=</span> Embedding(n_users, n_users_latent_factors, <span style="color:#75715e"># (4X2) Latent factor</span>
+                           name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_embedding&#39;</span>)(user_input)
+<span style="color:#75715e"># User latent vector</span>
+user_vec <span style="color:#f92672">=</span> Flatten()(user_embedding)</code></pre></div>
 <h3 id="미니-데이터를-가지고-modeling">미니 데이터를 가지고 Modeling</h3>
 
 <p>\(\hat R = Q \cdot P^T\)</p>
-
-<pre><code class="language-python">r_hat = dot([item_vec, user_vec], axes=-1)
-mini_model = Model([user_input, item_input], r_hat)
-mini_model.compile(optimizer = 'sgd', loss = 'mean_squared_error')
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">r_hat <span style="color:#f92672">=</span> dot([item_vec, user_vec], axes<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
+mini_model <span style="color:#f92672">=</span> Model([user_input, item_input], r_hat)
+mini_model<span style="color:#f92672">.</span>compile(optimizer <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sgd&#39;</span>, loss <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mean_squared_error&#39;</span>)</code></pre></div>
 <h3 id="모델-훈련">모델 훈련</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> mini_model<span style="color:#f92672">.</span>fit([mini_df<span style="color:#f92672">.</span>user, mini_df<span style="color:#f92672">.</span>item], mini_df<span style="color:#f92672">.</span>rating, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">2000</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) 
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;loss: &#39;</span>, hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
 
-<pre><code class="language-python">hist = mini_model.fit([mini_df.user, mini_df.item], mini_df.rating, epochs=2000, verbose=0) 
-print('loss: ', hist.history['loss'][-1])
+<span style="color:#f92672">%</span>matplotlib inline
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
 
-%matplotlib inline
-import matplotlib.pyplot as plt
-
-plt.plot(hist.history['loss'])
-plt.xlabel('epoch')
-plt.ylabel('loss')
-plt.show()
-</code></pre>
-
+plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <pre><code>loss:  0.03074105642735958
 </code></pre>
 
@@ -1430,15 +1373,12 @@ plt.show()
 <h3 id="예측">예측</h3>
 
 <p>이제 빵꾸난 별점을 예측해 보자</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Q <span style="color:#f92672">=</span> mini_model<span style="color:#f92672">.</span>get_layer(name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;item_embedding&#39;</span>)<span style="color:#f92672">.</span>get_weights()[<span style="color:#ae81ff">0</span>]
+P <span style="color:#f92672">=</span> mini_model<span style="color:#f92672">.</span>get_layer(name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_embedding&#39;</span>)<span style="color:#f92672">.</span>get_weights()[<span style="color:#ae81ff">0</span>]
+P_t <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>transpose(P)
 
-<pre><code class="language-python">Q = mini_model.get_layer(name='item_embedding').get_weights()[0]
-P = mini_model.get_layer(name='user_embedding').get_weights()[0]
-P_t = np.transpose(P)
-
-R_hat = np.dot(Q, P_t)
-pd.DataFrame(R_hat)
-</code></pre>
-
+R_hat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>dot(Q, P_t)
+pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1502,11 +1442,8 @@ pd.DataFrame(R_hat)
   </tbody>
 </table>
 </div>
-
-<pre><code class="language-python">print('뷰티 인사이드에 대한 Bob의 예상 별점은 {:.1f}'.format(R_hat[0][1]))
-print('러브 스토리에 대한 Carol의 예상 별점은 {:.1f} 이다.'.format(R_hat[2][2]))
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;뷰티 인사이드에 대한 Bob의 예상 별점은 {:.1f}&#39;</span><span style="color:#f92672">.</span>format(R_hat[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">1</span>]))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;러브 스토리에 대한 Carol의 예상 별점은 {:.1f} 이다.&#39;</span><span style="color:#f92672">.</span>format(R_hat[<span style="color:#ae81ff">2</span>][<span style="color:#ae81ff">2</span>]))</code></pre></div>
 <pre><code>뷰티 인사이드에 대한 Bob의 예상 별점은 4.5
 러브 스토리에 대한 Carol의 예상 별점은 1.0 이다.
 </code></pre>
@@ -1525,58 +1462,52 @@ print('러브 스토리에 대한 Carol의 예상 별점은 {:.1f} 이다.'.form
 
 <p>훈련 데이터는 <code>ratings_df</code>에서 랜덤하게 80%를 선택하고,<br />
 테스트 데이터는 나머지 20%를 랜덤하게 선택한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">movielens_df <span style="color:#f92672">=</span> ratings_df<span style="color:#f92672">.</span>copy()
 
-<pre><code class="language-python">movielens_df = ratings_df.copy()
+<span style="color:#75715e"># Indexing userId and movieId</span>
+users <span style="color:#f92672">=</span> movielens_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique()
+movies <span style="color:#f92672">=</span> movielens_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique()
 
-# Indexing userId and movieId
-users = movielens_df.userId.unique()
-movies = movielens_df.movieId.unique()
+userid2idx <span style="color:#f92672">=</span> {o:i <span style="color:#66d9ef">for</span> i,o <span style="color:#f92672">in</span> enumerate(users)}
+movieid2idx <span style="color:#f92672">=</span> {o:i <span style="color:#66d9ef">for</span> i,o <span style="color:#f92672">in</span> enumerate(movies)}
 
-userid2idx = {o:i for i,o in enumerate(users)}
-movieid2idx = {o:i for i,o in enumerate(movies)}
+movielens_df[<span style="color:#e6db74">&#39;userId&#39;</span>] <span style="color:#f92672">=</span> movielens_df[<span style="color:#e6db74">&#39;userId&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: userid2idx[x])
+movielens_df[<span style="color:#e6db74">&#39;movieId&#39;</span>] <span style="color:#f92672">=</span> movielens_df[<span style="color:#e6db74">&#39;movieId&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: movieid2idx[x])
 
-movielens_df['userId'] = movielens_df['userId'].apply(lambda x: userid2idx[x])
-movielens_df['movieId'] = movielens_df['movieId'].apply(lambda x: movieid2idx[x])
+<span style="color:#75715e"># Split train and test data</span>
+split <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>rand(len(movielens_df)) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.8</span>
 
-# Split train and test data
-split = np.random.rand(len(movielens_df)) &lt; 0.8
+train_df <span style="color:#f92672">=</span> movielens_df[split]
+test_df <span style="color:#f92672">=</span> movielens_df[<span style="color:#f92672">~</span>split]
 
-train_df = movielens_df[split]
-test_df = movielens_df[~split]
-
-print('shape of train data is ',train_df.shape)
-print('shape of test data is ',test_df.shape)
-</code></pre>
-
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;shape of train data is &#39;</span>,train_df<span style="color:#f92672">.</span>shape)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;shape of test data is &#39;</span>,test_df<span style="color:#f92672">.</span>shape)</code></pre></div>
 <pre><code>shape of train data is  (80863, 4)
 shape of test data is  (19973, 4)
 </code></pre>
 
 <h4 id="latent-factor-모델링">Latent factor 모델링</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_movies <span style="color:#f92672">=</span> len(movielens_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique())
+n_users <span style="color:#f92672">=</span> len(movielens_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique())
+n_latent_factors <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span>
 
-<pre><code class="language-python">n_movies = len(movielens_df.movieId.unique())
-n_users = len(movielens_df.userId.unique())
-n_latent_factors = 64
+movie_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>])
+<span style="color:#75715e"># Item latent factor</span>
+movie_embedding <span style="color:#f92672">=</span> Embedding(n_movies, n_latent_factors,
+                           name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;movie_embedding&#39;</span>)(movie_input)
+<span style="color:#75715e"># Item latent vector</span>
+movie_vec <span style="color:#f92672">=</span> Flatten()(movie_embedding)
 
-movie_input = Input(shape=[1])
-# Item latent factor
-movie_embedding = Embedding(n_movies, n_latent_factors,
-                           name='movie_embedding')(movie_input)
-# Item latent vector
-movie_vec = Flatten()(movie_embedding)
+user_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>])
+<span style="color:#75715e"># User latent factor</span>
+user_embedding <span style="color:#f92672">=</span> Embedding(n_users, n_latent_factors,
+                           name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_embedding&#39;</span>)(user_input)
+<span style="color:#75715e"># User latent vector</span>
+user_vec <span style="color:#f92672">=</span> Flatten()(user_embedding)
 
-user_input = Input(shape=[1])
-# User latent factor
-user_embedding = Embedding(n_users, n_latent_factors,
-                           name='user_embedding')(user_input)
-# User latent vector
-user_vec = Flatten()(user_embedding)
-
-r_hat = dot([movie_vec, user_vec], axes=-1)
-model = Model([user_input, movie_input], r_hat)
-model.compile(optimizer = 'adam', loss = 'mean_squared_error')
-</code></pre>
-
+r_hat <span style="color:#f92672">=</span> dot([movie_vec, user_vec], axes<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
+model <span style="color:#f92672">=</span> Model([user_input, movie_input], r_hat)
+model<span style="color:#f92672">.</span>compile(optimizer <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;adam&#39;</span>, loss <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mean_squared_error&#39;</span>)</code></pre></div>
 <h3 id="모델-훈련-및-평가">모델 훈련 및 평가</h3>
 
 <p>⚙️ 엔지니어</p>
@@ -1584,24 +1515,21 @@ model.compile(optimizer = 'adam', loss = 'mean_squared_error')
 <blockquote>
 <p>돌려놓고 커피 한잔 하세여~</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit([train_df<span style="color:#f92672">.</span>userId, train_df<span style="color:#f92672">.</span>movieId], train_df<span style="color:#f92672">.</span>rating, 
+                 batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">128</span>, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, 
+                 validation_data <span style="color:#f92672">=</span> ([test_df<span style="color:#f92672">.</span>userId, test_df<span style="color:#f92672">.</span>movieId],test_df<span style="color:#f92672">.</span>rating)) 
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test loss: &#39;</span>, hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;val_loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
 
-<pre><code class="language-python">hist = model.fit([train_df.userId, train_df.movieId], train_df.rating, 
-                 batch_size=128, epochs=50, verbose=0, 
-                 validation_data = ([test_df.userId, test_df.movieId],test_df.rating)) 
-print('train loss: ', hist.history['loss'][-1])
-print('test loss: ', hist.history['val_loss'][-1])
+<span style="color:#f92672">%</span>matplotlib inline
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
 
-%matplotlib inline
-import matplotlib.pyplot as plt
-
-plt.plot(hist.history['loss'], 'b')
-plt.plot(hist.history['val_loss'] , 'r')
-plt.xlabel('epoch')
-plt.ylabel('loss')
-plt.legend(['train', 'test'], loc='upper left')
-plt.show()
-</code></pre>
-
+plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>], <span style="color:#e6db74">&#39;b&#39;</span>)
+plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;val_loss&#39;</span>] , <span style="color:#e6db74">&#39;r&#39;</span>)
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
+plt<span style="color:#f92672">.</span>legend([<span style="color:#e6db74">&#39;train&#39;</span>, <span style="color:#e6db74">&#39;test&#39;</span>], loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;upper left&#39;</span>)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <pre><code>train loss:  0.015583596717465682
 test loss:  1.4580945893663293
 </code></pre>
@@ -1626,18 +1554,15 @@ test loss:  1.4580945893663293
 <p>userId, movieId 값을 입력하시면<br />
 예상되는 별점값이 출력 됩니다.</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">userId <span style="color:#f92672">=</span> <span style="color:#ae81ff">214</span>       <span style="color:#75715e"># 1 ~ 610</span>
+movieId <span style="color:#f92672">=</span> <span style="color:#ae81ff">1059</span>  <span style="color:#75715e"># 1 ~ 193609</span>
+movie_title <span style="color:#f92672">=</span> list(movies_df[movies_df[<span style="color:#e6db74">&#39;movieId&#39;</span>]<span style="color:#f92672">==</span>movieId]<span style="color:#f92672">.</span>title)[<span style="color:#ae81ff">0</span>]
 
-<pre><code class="language-python">userId = 214       # 1 ~ 610
-movieId = 1059  # 1 ~ 193609
-movie_title = list(movies_df[movies_df['movieId']==movieId].title)[0]
+user_v <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>expand_dims(userid2idx[userId], <span style="color:#ae81ff">0</span>)
+movie_v <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>expand_dims(movieid2idx[movieId], <span style="color:#ae81ff">0</span>)
+predict <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict([user_v, movie_v])
 
-user_v = np.expand_dims(userid2idx[userId], 0)
-movie_v = np.expand_dims(movieid2idx[movieId], 0)
-predict = model.predict([user_v, movie_v])
-
-print('영화 {} 에 대한 사용자 ID {}님의 예상 별점은 {:.1f} 입니다.'.format(movie_title, userId, predict[0][0]))
-</code></pre>
-
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;영화 {} 에 대한 사용자 ID {}님의 예상 별점은 {:.1f} 입니다.&#39;</span><span style="color:#f92672">.</span>format(movie_title, userId, predict[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))</code></pre></div>
 <pre><code>영화 William Shakespeare's Romeo + Juliet (1996) 에 대한 사용자 ID 214님의 예상 별점은 4.0 입니다.
 </code></pre>
 		</div>
