@@ -6,6 +6,7 @@
     <description>Recent content in Adam on 막돼먹은 엔지니어의 머신런닝 개발</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Fri, 30 Aug 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/adam/index.xml" rel="self" type="application/rss+xml" />
     
@@ -13,7 +14,7 @@
     <item>
       <title>뉴럴 네트워크 (NN) - MNIST</title>
       <link>/post/neural_network_mnist/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/neural_network_mnist/</guid>
       <description>&lt;p&gt;뉴럴 네트워크(NN) 실전 문제! MNIST를 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>

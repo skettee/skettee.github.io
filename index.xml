@@ -6,14 +6,24 @@
     <description>Recent content on 막돼먹은 엔지니어의 머신런닝 개발</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Fri, 06 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>잠재 인수 모델 (Latent Factor Model)</title>
+      <link>/post/latent_factor_model/</link>
+      <pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/latent_factor_model/</guid>
+      <description>&lt;p&gt;영화나 상품 추천에 사용되는 잠재 인수 모델(Latent Factor Model)을 살펴 보고 Keras로 모델링을 해보자!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>뉴럴 네트워크 (NN) - MNIST</title>
       <link>/post/neural_network_mnist/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/neural_network_mnist/</guid>
       <description>&lt;p&gt;뉴럴 네트워크(NN) 실전 문제! MNIST를 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>
@@ -22,7 +32,7 @@
     <item>
       <title>뉴럴 네트워크 (Neural Network)</title>
       <link>/post/neural_network/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 29 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/neural_network/</guid>
       <description>&lt;p&gt;딥러닝의 세계로 들어가기 위해 알아야 하는 세번째 모델인 뉴럴 네트워크(Neural Network)에 대해 알아보고 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>
@@ -31,7 +41,7 @@
     <item>
       <title>로지스틱 회귀 (Logistic Regression)</title>
       <link>/post/logistic_regression/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/logistic_regression/</guid>
       <description>&lt;p&gt;딥러닝의 세계로 들어가기 위해 알아야 하는 두번째 모델인 로지스틱 회귀(Logistic Regression)에 대해 알아보고 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>
@@ -40,19 +50,10 @@
     <item>
       <title>선형 회귀 (Linear Regression)</title>
       <link>/post/linear_regression/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 15 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/linear_regression/</guid>
       <description>&lt;p&gt;딥러닝의 세계로 들어가기 위해 알아야 하는 첫번째 모델인 선형 회귀(Linear Regression)에 대해 알아보고 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>잠재 인수 모델 (Latent Factor Model)</title>
-      <link>/post/latent_factor_model/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/post/latent_factor_model/</guid>
-      <description>&lt;p&gt;영화나 상품 추천에 사용되는 잠재 인수 모델(Latent Factor Model)을 살펴 보고 Keras로 모델링을 해보자!&lt;/p&gt;</description>
     </item>
     
   </channel>

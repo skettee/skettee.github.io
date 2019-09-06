@@ -7,12 +7,7 @@
 	<title>잠재 인수 모델 (Latent Factor Model) - 막돼먹은 엔지니어의 머신런닝 개발</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
-	<meta property="og:title" content="잠재 인수 모델 (Latent Factor Model)" />
-<meta property="og:description" content="영화나 상품 추천에 사용되는 잠재 인수 모델(Latent Factor Model)을 살펴 보고 Keras로 모델링을 해보자!" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/post/latent_factor_model/" />
-
-
+	
 	
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -31,7 +26,7 @@
 		<div class="logo">
 			<a class="logo__link" href="/" title="막돼먹은 엔지니어의 머신런닝 개발" rel="home">
 				<div class="logo__title">막돼먹은 엔지니어의 머신런닝 개발</div>
-				<div class="logo__tagline">딥러닝 모델링</div>
+				
 			</a>
 		</div>
 		<div class="divider"></div>
@@ -44,59 +39,8 @@
 	<article class="post">
 		<header class="post__header">
 			<h1 class="post__title">잠재 인수 모델 (Latent Factor Model)</h1>
-			<div class="post__meta meta">
-<div class="meta__item-categories meta__item">
-	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
-	<span class="meta__text"><a class="meta__link" href="/categories/deep-learning" rel="category">Deep Learning</a>, <a class="meta__link" href="/categories/recommendation" rel="category">Recommendation</a></span>
-</div>
-</div>
-		</header>
-<div class="post__toc toc">
-	<div class="toc__title">Page content</div>
-	<div class="toc__menu">
-		<nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#문제-problem">문제 (Problem)</a></li>
-<li><a href="#데이터-수집-data-collection">데이터 수집 (Data Collection)</a>
-<ul>
-<li><a href="#ratings-데이터프레임">Ratings 데이터프레임</a></li>
-<li><a href="#movies-데이터프레임">Movies 데이터프레임</a></li>
-<li><a href="#번-사용자가-5개-별점을-준-영화-리스트">#번 사용자가 5개 별점을 준 영화 리스트</a></li>
-</ul></li>
-<li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a>
-<ul>
-<li><a href="#데이터-확인-data-visualization">데이터 확인 (Data Visualization)</a></li>
-<li><a href="#데이터-모델링-data-modeling">데이터 모델링 (Data Modeling)</a></li>
-<li><a href="#행렬-인수-분해-matrix-factorization">행렬 인수 분해 (Matrix Factorization)</a></li>
-<li><a href="#잠재-인수-모델-latent-factor-model">잠재 인수 모델 (Latent factor model)</a>
-<ul>
-<li><a href="#손실함수-loss-function">손실함수(Loss function)</a></li>
-<li><a href="#최적화-optimization">최적화(Optimization)</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a></li>
-<li><a href="#모델링-modeling">모델링 (Modeling)</a>
-<ul>
-<li><a href="#embedding">Embedding</a></li>
-<li><a href="#미니-데이터를-가지고-modeling">미니 데이터를 가지고 Modeling</a></li>
-<li><a href="#모델-훈련">모델 훈련</a></li>
-<li><a href="#예측">예측</a></li>
-<li><a href="#movielens를-가지고-모델링-modeling-하기">Movielens를 가지고 모델링(Modeling)하기</a>
-<ul>
-<li><a href="#데이터-변환">데이터 변환</a></li>
-<li><a href="#latent-factor-모델링">Latent factor 모델링</a></li>
-</ul></li>
-<li><a href="#모델-훈련-및-평가">모델 훈련 및 평가</a></li>
-</ul></li>
-<li><a href="#해결-solution">해결 (Solution)</a></li>
-</ul></li>
-</ul>
-</nav>
-	</div>
-</div>
-<div class="content post__content clearfix">
+			
+		</header><div class="content post__content clearfix">
 			<p>영화나 상품 추천에 사용되는 잠재 인수 모델(Latent Factor Model)을 살펴 보고 Keras로 모델링을 해보자!</p>
 
 <p>실제로 돌려 보고 싶으면 구글 코랩으로 ~</p>
@@ -1636,10 +1580,9 @@ print('영화 {} 에 대한 사용자 ID {}님의 예상 별점은 {:.1f} 입니
 <div class="post__tags tags clearfix">
 	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
 	<ul class="tags__list">
-		<li class="tags__item"><a class="tags__link btn" href="/tags/%EB%94%A5%EB%9F%AC%EB%8B%9D/" rel="tag">딥러닝</a></li>
-		<li class="tags__item"><a class="tags__link btn" href="/tags/%EC%9E%A0%EC%9E%AC-%EC%9D%B8%EC%88%98/" rel="tag">잠재 인수</a></li>
-		<li class="tags__item"><a class="tags__link btn" href="/tags/%ED%96%89%EB%A0%AC%EC%9D%B8%EC%88%98%EB%B6%84%ED%95%B4/" rel="tag">행렬인수분해</a></li>
-		<li class="tags__item"><a class="tags__link btn" href="/tags/%EC%B6%94%EC%B2%9C/" rel="tag">추천</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/latent-factor/" rel="tag">Latent factor</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/matrix-factorization/" rel="tag">Matrix Factorization</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/embedding/" rel="tag">Embedding</a></li>
 	</ul>
 </div>
 		</footer>
@@ -1647,11 +1590,6 @@ print('영화 {} 에 대한 사용자 ID {}님의 예상 별점은 {:.1f} 입니
 </main>
 
 
-<nav class="post-nav flex">
-	<div class="post-nav__item post-nav__item--next">
-		<a class="post-nav__link" href="/post/linear_regression/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">선형 회귀 (Linear Regression)</p></a>
-	</div>
-</nav>
 <script src="https://utteranc.es/client.js"
         repo="skettee/blog-comments"
         issue-term="pathname"
@@ -1674,7 +1612,5 @@ print('영화 {} 에 대한 사용자 ID {}님의 예상 별점은 {:.1f} 입니
 	</div>
 </footer>
 	</div>
-<script async defer src="/js/menu.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-</body>
+<script async defer src="/js/menu.js"></script></body>
 </html>

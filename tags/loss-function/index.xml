@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Loss function on 막돼먹은 엔지니어의 머신런닝 개발</title>
+    <link>/tags/loss-function/</link>
+    <description>Recent content in Loss function on 막돼먹은 엔지니어의 머신런닝 개발</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 15 Aug 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/loss-function/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>선형 회귀 (Linear Regression)</title>
+      <link>/post/linear_regression/</link>
+      <pubDate>Thu, 15 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/linear_regression/</guid>
+      <description>&lt;p&gt;딥러닝의 세계로 들어가기 위해 알아야 하는 첫번째 모델인 선형 회귀(Linear Regression)에 대해 알아보고 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

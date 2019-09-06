@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Softmax on 막돼먹은 엔지니어의 머신런닝 개발</title>
+    <link>/tags/softmax/</link>
+    <description>Recent content in Softmax on 막돼먹은 엔지니어의 머신런닝 개발</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 29 Aug 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/softmax/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>뉴럴 네트워크 (Neural Network)</title>
+      <link>/post/neural_network/</link>
+      <pubDate>Thu, 29 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/neural_network/</guid>
+      <description>&lt;p&gt;딥러닝의 세계로 들어가기 위해 알아야 하는 세번째 모델인 뉴럴 네트워크(Neural Network)에 대해 알아보고 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
