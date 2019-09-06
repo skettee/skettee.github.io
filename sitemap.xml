@@ -68,6 +68,12 @@
   </url>
   
   <url>
+    <loc>/tags/feature/</loc>
+    <lastmod>2019-08-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/mnist/</loc>
     <lastmod>2019-08-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -86,13 +92,7 @@
   </url>
   
   <url>
-    <loc>/tags/test-set/</loc>
-    <lastmod>2019-08-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/train-set/</loc>
+    <loc>/tags/train-test/</loc>
     <lastmod>2019-08-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

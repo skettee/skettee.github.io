@@ -48,6 +48,15 @@
     </item>
     
     <item>
+      <title>Feature</title>
+      <link>/tags/feature/</link>
+      <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/feature/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>MNIST</title>
       <link>/tags/mnist/</link>
       <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
@@ -66,20 +75,11 @@
     </item>
     
     <item>
-      <title>Test Set</title>
-      <link>/tags/test-set/</link>
+      <title>Train &amp; Test</title>
+      <link>/tags/train-test/</link>
       <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>/tags/test-set/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Train Set</title>
-      <link>/tags/train-set/</link>
-      <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/train-set/</guid>
+      <guid>/tags/train-test/</guid>
       <description></description>
     </item>
     
