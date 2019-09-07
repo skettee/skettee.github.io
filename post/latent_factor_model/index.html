@@ -1612,14 +1612,13 @@ user_vec <span style="color:#f92672">=</span> Flatten()(user_embedding)</code></
 
 <ul>
 <li>\(\hat R = Q \cdot P^T\)</li>
-<li>손실 함수(Loss function)는 평균 제곱 오차(mean-squared error)를 사용한다.<br /></li>
-
-<li><p>최적화(Optimizer)는 경사하강법(gradient descent)을 사용한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">r_hat <span style="color:#f92672">=</span> dot([item_vec, user_vec], axes<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
-mini_model <span style="color:#f92672">=</span> Model([user_input, item_input], r_hat)
-mini_model<span style="color:#f92672">.</span>compile(optimizer <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sgd&#39;</span>, loss <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mean_squared_error&#39;</span>)</code></pre></div></li>
 </ul>
 
+<p>손실 함수(Loss function)는 평균 제곱 오차(mean-squared error)를 사용한다.<br />
+최적화(Optimizer)는 경사하강법(gradient descent)을 사용한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">r_hat <span style="color:#f92672">=</span> dot([item_vec, user_vec], axes<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
+mini_model <span style="color:#f92672">=</span> Model([user_input, item_input], r_hat)
+mini_model<span style="color:#f92672">.</span>compile(optimizer <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sgd&#39;</span>, loss <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mean_squared_error&#39;</span>)</code></pre></div>
 <h4 id="미니-모델-훈련-train-model">미니 모델 훈련 (Train Model)</h4>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> mini_model<span style="color:#f92672">.</span>fit([mini_df<span style="color:#f92672">.</span>user, mini_df<span style="color:#f92672">.</span>item], mini_df<span style="color:#f92672">.</span>rating, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">2000</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;loss: &#39;</span>, hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
