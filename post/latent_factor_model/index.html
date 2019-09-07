@@ -67,32 +67,39 @@
 <ul>
 <li><a href="#ratings-데이터프레임">Ratings 데이터프레임</a></li>
 <li><a href="#movies-데이터프레임">Movies 데이터프레임</a></li>
-<li><a href="#번-사용자가-5개-별점을-준-영화-리스트">#번 사용자가 5개 별점을 준 영화 리스트</a></li>
 </ul></li>
 <li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a>
 <ul>
 <li><a href="#데이터-확인-data-visualization">데이터 확인 (Data Visualization)</a></li>
-<li><a href="#데이터-모델링-data-modeling">데이터 모델링 (Data Modeling)</a></li>
+</ul></li>
+<li><a href="#미니-데이터-mini-data">미니 데이터 (Mini Data)</a>
+<ul>
+<li><a href="#잠재-인수-latent-factor">잠재 인수 (Latent factor)</a></li>
 <li><a href="#행렬-인수-분해-matrix-factorization">행렬 인수 분해 (Matrix Factorization)</a></li>
-<li><a href="#잠재-인수-모델-latent-factor-model">잠재 인수 모델 (Latent factor model)</a>
+<li><a href="#잠재-인수-찾기">잠재 인수 찾기</a></li>
+<li><a href="#keras를-이용한-미니-모델링">Keras를 이용한 미니 모델링</a>
 <ul>
-<li><a href="#손실함수-loss-function">손실함수(Loss function)</a></li>
-<li><a href="#최적화-optimization">최적화(Optimization)</a></li>
-</ul></li>
-</ul></li>
 <li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a></li>
-<li><a href="#모델링-modeling">모델링 (Modeling)</a>
-<ul>
-<li><a href="#embedding">Embedding</a></li>
-<li><a href="#미니-데이터를-가지고-modeling">미니 데이터를 가지고 Modeling</a></li>
-<li><a href="#모델-훈련">모델 훈련</a></li>
-<li><a href="#예측">예측</a></li>
-<li><a href="#movielens를-가지고-모델링-modeling">Movielens를 가지고 모델링(Modeling)</a>
-<ul>
-<li><a href="#데이터-변환">데이터 변환</a></li>
-<li><a href="#latent-factor-모델링">Latent factor 모델링</a></li>
+<li><a href="#임베딩-embedding">임베딩 (Embedding)</a></li>
+<li><a href="#벡터화-flattern">벡터화 (Flattern)</a></li>
+<li><a href="#미니-모델링-modeling">미니 모델링 (Modeling)</a></li>
+<li><a href="#미니-모델-훈련-train-model">미니 모델 훈련 (Train Model)</a></li>
+<li><a href="#미니-예측-predict">미니 예측 (Predict)</a></li>
 </ul></li>
-<li><a href="#모델-훈련-및-평가">모델 훈련 및 평가</a></li>
+</ul></li>
+<li><a href="#잠재-인수-모델링-latent-factor-modeling">잠재 인수 모델링 (Latent Factor Modeling)</a>
+<ul>
+<li><a href="#손실함수-loss-function">손실함수 (Loss function)</a></li>
+<li><a href="#최적화-optimization">최적화 (Optimization)</a></li>
+<li><a href="#정리">정리</a></li>
+</ul></li>
+<li><a href="#케라스-keras-로-모델링-modeling">케라스(Keras)로 모델링(Modeling)</a>
+<ul>
+<li><a href="#데이터-변환-및-분할">데이터 변환 및 분할</a></li>
+<li><a href="#임베딩-embedding-1">임베딩 (Embedding)</a></li>
+<li><a href="#벡터화-flatten">벡터화 (Flatten)</a></li>
+<li><a href="#모델링-modeling">모델링 (Modeling)</a></li>
+<li><a href="#모델-훈련-및-평가-train-test-model">모델 훈련 및 평가 (Train &amp; Test Model)</a></li>
 </ul></li>
 <li><a href="#해결-solution">해결 (Solution)</a></li>
 </ul></li>
@@ -238,8 +245,8 @@ tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfil
                              <span style="color:#e6db74">&#34;destination folder.&#34;</span><span style="color:#f92672">.</span>format(fname))
     <span style="color:#66d9ef">finally</span>:
         tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>rmtree(temp_dir)</code></pre></div>
-<pre><code>...100%, 0 MB, 782 KB/s, 1 seconds passed
-Successfully downloaded /tmp/tmpgpeoa1q0/ml-latest-small.zip 978202 bytes
+<pre><code>...100%, 0 MB, 733 KB/s, 1 seconds passed
+Successfully downloaded /tmp/tmpstg1o_3y/ml-latest-small.zip 978202 bytes
 </code></pre>
 
 <h3 id="ratings-데이터프레임">Ratings 데이터프레임</h3>
@@ -373,7 +380,7 @@ movies_df<span style="color:#f92672">.</span>head()</code></pre></div>
 </table>
 </div>
 
-<h3 id="번-사용자가-5개-별점을-준-영화-리스트">#번 사용자가 5개 별점을 준 영화 리스트</h3>
+<p><strong>#번 사용자가 5개 별점을 준 영화 리스트</strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">userId <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span> <span style="color:#75715e"># 1~610</span>
 rating <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>  <span style="color:#75715e"># 1 ~ 5</span>
 top_movie_ids <span style="color:#f92672">=</span> ratings_df[(ratings_df[<span style="color:#e6db74">&#39;userId&#39;</span>] <span style="color:#f92672">==</span> userId) 
@@ -602,7 +609,7 @@ df_table<span style="color:#f92672">.</span>shape</code></pre></div>
 <p>어떻게?</p>
 </blockquote>
 
-<h3 id="데이터-모델링-data-modeling">데이터 모델링 (Data Modeling)</h3>
+<h2 id="미니-데이터-mini-data">미니 데이터 (Mini Data)</h2>
 
 <p>데이터가 크고 불완전하면 이해하기도 어렵고 다루기도 어렵다.<br />
 미니 데이터를 만들어서 솔루션을 찾아보자!</p>
@@ -612,7 +619,7 @@ df_table<span style="color:#f92672">.</span>shape</code></pre></div>
 <table>
 <thead>
 <tr>
-<th>영화 \ 평가자</th>
+<th>영화 \ 사용자</th>
 <th>Alice</th>
 <th>Bob</th>
 <th>Carol</th>
@@ -663,9 +670,10 @@ df_table<span style="color:#f92672">.</span>shape</code></pre></div>
 </tbody>
 </table>
 
-<p>우리는 여기서 앨리스(Alice), 밥(Bob), 캐롤(Carol), 데이브(Dave)를 분류할 수 있는 특징과 뷰티 인사이드, 라라랜드, 러브 스토리, 매트릭스, 스타워즈를 분류 할 수 있는 특징을 발견할 것이다.</p>
+<p>우리는 여기서 앨리스(Alice), 밥(Bob), 캐롤(Carol), 데이브(Dave)를 분류할 수 있는 특징과<br />
+뷰티 인사이드, 라라랜드, 러브 스토리, 매트릭스, 스타워즈를 분류 할 수 있는 특징을 발견할 것이다.</p>
 
-<p>우선 영화를 보자<br />
+<p>영화를 보자<br />
 뷰티 인사이드, 라라랜드, 러브 스토리는 &lsquo;로맨틱 영화&rsquo;로 분류할 수 있고,<br />
 매트릭스와 스타워즈는 &lsquo;공상과학 영화&rsquo;로 분류할 수 있다.</p>
 
@@ -718,7 +726,7 @@ df_table<span style="color:#f92672">.</span>shape</code></pre></div>
 <table>
 <thead>
 <tr>
-<th>특징 \ 평가자</th>
+<th>특징 \ 사용자</th>
 <th>Alice</th>
 <th>Bob</th>
 <th>Carol</th>
@@ -745,7 +753,7 @@ df_table<span style="color:#f92672">.</span>shape</code></pre></div>
 </tbody>
 </table>
 
-<p><strong>잠재 인수(Latent factor)</strong></p>
+<h3 id="잠재-인수-latent-factor">잠재 인수 (Latent factor)</h3>
 
 <p>&lsquo;로맨틱 영화&rsquo;, &lsquo;상상력이 풍부한 사람&rsquo;과 같은 피처(feature)는 데이터에서는 보이지 않는다.<br />
 이와같이 데이터들 속에 숨어있는 특징을 <strong>잠재 인수(Latent factor)</strong> 라고 한다.</p>
@@ -851,7 +859,7 @@ pd<span style="color:#f92672">.</span>DataFrame(Q, columns<span style="color:#f9
 
 <p>0번 열(Row)을 &lsquo;로맨틱한 사람&rsquo;,<br />
 1번 열(Row)을 &lsquo;상상력이 풍부한 사람&rsquo; 이라고 하면<br />
-\(P^T\) 매트릭스는 평가자의 특징을 나타내고 있다.</p>
+\(P^T\) 매트릭스는 사용자의 특징을 나타내고 있다.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># P (2X4) 매트릭스</span>
 pd<span style="color:#f92672">.</span>DataFrame(P, index<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;Romantic Guy&#39;</span>, <span style="color:#e6db74">&#39;Imaginary Guy&#39;</span>])</code></pre></div>
 <div>
@@ -980,8 +988,8 @@ pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
 영화의 잠재 인수(latent factor)를<br />
 추출할 수 있다.</p>
 
-<p>여러분&hellip; 수학이 이렇게 신기하고<br />
-재미있습니다.</p>
+<p>수학이 이렇게 신기하고<br />
+재미있다니&hellip;</p>
 
 <p>학생때<br />
 열심히 할걸&hellip;</p>
@@ -992,34 +1000,32 @@ pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
 잠재 인수(Latent factor)를 어떻게 찾을까?</p>
 </blockquote>
 
-<h3 id="잠재-인수-모델-latent-factor-model">잠재 인수 모델 (Latent factor model)</h3>
+<h3 id="잠재-인수-찾기">잠재 인수 찾기</h3>
 
-<p>알고 있는 데이터세트(\(X, Y\))를 학습하여 새로운 입력값(\(X_{new}\))에 대해 출력값(\(\hat Y\))을 예측하는 모델이 선형 회귀 모델이다. 잠재 인수 모델도 선형 회귀 모델과 비슷하게 손실함수를 정의하고 손실함수가 최소가 되는 \(P\)와 \(Q\)를 찾는 모델이다.</p>
+<p>앞에서 배운 선형회귀(Linear regression)를 기억해 보자</p>
 
-<h4 id="손실함수-loss-function">손실함수(Loss function)</h4>
+<ol>
+<li>\(\hat y=wx+b\)를 정의하고<br /></li>
+<li>손실함수(Loss function) \(J(w,b)\)를 정의하고<br /></li>
+<li>경사하강법(Gradient descent)으로 손실값이 최저가 되는 \(w, b\)를 찾았다.<br /></li>
+</ol>
 
-<p>잠재 인수 모델(Latent factor model)에서의 손실 함수(Loss function)는 <strong>SSE(Sum of Squared Error)</strong> 를 사용한다.</p>
+<p>이것을 잠재 인수 찾기에 활용해 보자</p>
 
-<p>\(J(p, q) = {1 \over 2}\sum_{(i,j) \in R} (r_{ij} - q_i \cdot p_{j}^T)^2\)</p>
+<ol>
+<li>\(\hat r=q \cdot p^T\)를 정의하고<br /></li>
+<li>손실함수(Loss function) \(J(p,q)\)를 정의하고<br /></li>
+<li>경사하강법(Gradient descent)으로 손실값이 최저가 되는 \(p, q\)를 찾으면 되지 않을까?<br /></li>
+</ol>
 
-<p>여기에 과대적합(Overfitting)을 방지하기 위해서 <strong>L2 Regularization</strong> 을 추가한다.</p>
-
-<p>\(J(p, q) = {1 \over 2}\sum_{(i,j) \in R} (r_{ij} - q_i \cdot p_{j}^T)^2 + {1 \over 2}\lambda \sum_{i} ||q_i||^2 + {1 \over 2}\lambda \sum_{j} ||p_j||^2\)</p>
-
-<h4 id="최적화-optimization">최적화(Optimization)</h4>
-
-<p>손실함수의 최소값을 찾기 위해서 <strong>경사 하강법(Gradient Descent)</strong> 을 적용한다.</p>
-
-<p>REPEAT(epoch) {<br />
-\(p:=p-\alpha {\partial {J(p,q)}\over \partial p}\)</p>
-
-<p>\(q:=q-\alpha {\partial{J(p,q)}\over \partial q}\) , \(\alpha\): learining rate<br />
-}</p>
+<h3 id="keras를-이용한-미니-모델링">Keras를 이용한 미니 모델링</h3>
 
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>이제 미니 데이터를 가지고 모델링을 해보자!</p>
+<p>좋았어!</p>
+
+<p>미니 데이터를 가지고 확인 해보자</p>
 </blockquote>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
 <span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
@@ -1046,8 +1052,145 @@ data <span style="color:#f92672">=</span> [
 ]
 
 mini_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame( data <span style="color:#f92672">=</span> data, columns <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;user&#39;</span>, <span style="color:#e6db74">&#39;item&#39;</span>, <span style="color:#e6db74">&#39;rating&#39;</span>])
-df_table <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>set_index([<span style="color:#e6db74">&#34;item&#34;</span>, <span style="color:#e6db74">&#34;user&#34;</span>])<span style="color:#f92672">.</span>unstack()<span style="color:#f92672">.</span>fillna(<span style="color:#e6db74">&#39;?&#39;</span>)
+mini_df</code></pre></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>item</th>
+      <th>rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>Alice</td>
+      <td>Beauty Inside</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Alice</td>
+      <td>La La Land</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Alice</td>
+      <td>Love Story</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Alice</td>
+      <td>Matrix</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Alice</td>
+      <td>Star Wars</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Bob</td>
+      <td>La La Land</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Bob</td>
+      <td>Love Story</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Bob</td>
+      <td>Matrix</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Bob</td>
+      <td>Star Wars</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Carol</td>
+      <td>Beauty Inside</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Carol</td>
+      <td>La La Land</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Carol</td>
+      <td>Matrix</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Carol</td>
+      <td>Star Wars</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Dave</td>
+      <td>Beauty Inside</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Dave</td>
+      <td>La La Land</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>Dave</td>
+      <td>Love Story</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>Dave</td>
+      <td>Matrix</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>Dave</td>
+      <td>Star Wars</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>영화 제목을 열(Row)로 하고 사용자 이름을 컬럼(Column)으로 테이블을 만들자</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_table <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>pivot_table(mini_df, values<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;rating&#39;</span>, index<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;item&#39;</span>, columns<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user&#39;</span>, fill_value<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>)
 df_table</code></pre></div>
 <div>
 <style scoped>
@@ -1059,21 +1202,13 @@ df_table</code></pre></div>
         vertical-align: top;
     }
 
-    .dataframe thead tr th {
-        text-align: left;
-    }
-
-    .dataframe thead tr:last-of-type th {
+    .dataframe thead th {
         text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
   <thead>
-    <tr>
-      <th></th>
-      <th colspan="4" halign="left">rating</th>
-    </tr>
-    <tr>
+    <tr style="text-align: right;">
       <th>user</th>
       <th>Alice</th>
       <th>Bob</th>
@@ -1092,7 +1227,7 @@ df_table</code></pre></div>
     <tr>
       <td>Beauty Inside</td>
       <td>5.0</td>
-      <td>?</td>
+      <td></td>
       <td>1</td>
       <td>1.0</td>
     </tr>
@@ -1107,7 +1242,7 @@ df_table</code></pre></div>
       <td>Love Story</td>
       <td>5.0</td>
       <td>5</td>
-      <td>?</td>
+      <td></td>
       <td>1.0</td>
     </tr>
     <tr>
@@ -1128,25 +1263,14 @@ df_table</code></pre></div>
 </table>
 </div>
 
-<h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
+<h4 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h4>
 
-<p>잠재 인수 모델(Latent factor model)에서 데이터 훈련을 위한 입력 값은 &lsquo;평가자&rsquo;와 &lsquo;영화&rsquo;의 인덱스 값, 그리고 별점이다.<br />
-미니 데이터로 예를 들면 &lsquo;라라랜드&rsquo;를 평가한 &lsquo;Alice&rsquo;의 평점이 &lsquo;5.0&rsquo; 이므로 모델에 입력하는 값은 다음과 같다.</p>
+<p>사용자 이름과 영화 제목은 Keras가 입력을 받을 수 있도록 숫자로 변환이 되어야 한다.<br />
+사용자(<code>user</code>)를 숫자로 변환해 보자</p>
 
-<ul>
-<li>라라랜드를 인덱싱한 값: 1</li>
-<li>앨리스를 인덱싱한 값: 0</li>
-<li>별점 5.0</li>
-</ul>
-
-<p>따라서 영화 리스트와 평가자 리스트를 겹치지 않게 인덱싱 값으로 변환해야 한다.</p>
-
-<p>다음은 미니 데이터에서 평가자(<code>user</code>)를 인덱싱한 결과이다.<br />
-앨리스는 0, 밥은 1, 캐럴은 2, 데이브는 3으로 변환된 것을 확인할 수 있다.</p>
+<p>Alice가 0번, Bob이 1번, Carol이 3번, Dave가 4번으로 변환 되었다.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mini_df<span style="color:#f92672">.</span>user <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>user<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;category&#39;</span>)<span style="color:#f92672">.</span>cat<span style="color:#f92672">.</span>codes<span style="color:#f92672">.</span>values
-df_table <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>set_index([<span style="color:#e6db74">&#34;item&#34;</span>, <span style="color:#e6db74">&#34;user&#34;</span>])<span style="color:#f92672">.</span>unstack()<span style="color:#f92672">.</span>fillna(<span style="color:#e6db74">&#39;?&#39;</span>)
-
-df_table</code></pre></div>
+mini_df</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1157,204 +1281,346 @@ df_table</code></pre></div>
         vertical-align: top;
     }
 
-    .dataframe thead tr th {
-        text-align: left;
-    }
-
-    .dataframe thead tr:last-of-type th {
+    .dataframe thead th {
         text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
   <thead>
-    <tr>
+    <tr style="text-align: right;">
       <th></th>
-      <th colspan="4" halign="left">rating</th>
-    </tr>
-    <tr>
       <th>user</th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-    </tr>
-    <tr>
       <th>item</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Beauty Inside</td>
-      <td>5.0</td>
-      <td>?</td>
-      <td>1</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <td>La La Land</td>
-      <td>5.0</td>
-      <td>4</td>
-      <td>1</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <td>Love Story</td>
-      <td>5.0</td>
-      <td>5</td>
-      <td>?</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <td>Matrix</td>
-      <td>1.0</td>
-      <td>1</td>
-      <td>5</td>
-      <td>5.0</td>
-    </tr>
-    <tr>
-      <td>Star Wars</td>
-      <td>1.0</td>
-      <td>1</td>
-      <td>5</td>
-      <td>4.0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-<p>영화(<code>item</code>)의 경우도 인덱싱을 한다.<br />
-뷰티인사이드가 0, 라라랜드가 1, 러브스토리가 2, 매트릭스가 3, 스타워즈 4로 변환된 것을 확인 할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mini_df<span style="color:#f92672">.</span>item <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>item<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;category&#39;</span>)<span style="color:#f92672">.</span>cat<span style="color:#f92672">.</span>codes<span style="color:#f92672">.</span>values
-df_table <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>set_index([<span style="color:#e6db74">&#34;item&#34;</span>, <span style="color:#e6db74">&#34;user&#34;</span>])<span style="color:#f92672">.</span>unstack()<span style="color:#f92672">.</span>fillna(<span style="color:#e6db74">&#39;?&#39;</span>)
-
-df_table</code></pre></div>
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead tr th {
-        text-align: left;
-    }
-
-    .dataframe thead tr:last-of-type th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr>
-      <th></th>
-      <th colspan="4" halign="left">rating</th>
-    </tr>
-    <tr>
-      <th>user</th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-    </tr>
-    <tr>
-      <th>item</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th>rating</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>0</td>
-      <td>5.0</td>
-      <td>?</td>
-      <td>1</td>
-      <td>1.0</td>
+      <td>0</td>
+      <td>Beauty Inside</td>
+      <td>5</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>5.0</td>
-      <td>4</td>
-      <td>1</td>
-      <td>1.0</td>
+      <td>0</td>
+      <td>La La Land</td>
+      <td>5</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>5.0</td>
+      <td>0</td>
+      <td>Love Story</td>
       <td>5</td>
-      <td>?</td>
-      <td>1.0</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>1.0</td>
+      <td>0</td>
+      <td>Matrix</td>
       <td>1</td>
-      <td>5</td>
-      <td>5.0</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>1.0</td>
+      <td>0</td>
+      <td>Star Wars</td>
       <td>1</td>
+    </tr>
+    <tr>
       <td>5</td>
-      <td>4.0</td>
+      <td>1</td>
+      <td>La La Land</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>1</td>
+      <td>Love Story</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>1</td>
+      <td>Matrix</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>1</td>
+      <td>Star Wars</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2</td>
+      <td>Beauty Inside</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2</td>
+      <td>La La Land</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>2</td>
+      <td>Matrix</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>2</td>
+      <td>Star Wars</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>3</td>
+      <td>Beauty Inside</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>3</td>
+      <td>La La Land</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>3</td>
+      <td>Love Story</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>3</td>
+      <td>Matrix</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>3</td>
+      <td>Star Wars</td>
+      <td>4</td>
     </tr>
   </tbody>
 </table>
 </div>
 
-<h2 id="모델링-modeling">모델링 (Modeling)</h2>
+<p>영화 제목(<code>item</code>)을 숫자로 변환한다.<br />
+뷰티인사이드가 0, 라라랜드가 1, 러브스토리가 2, 매트릭스가 3, 스타워즈 4로 변환된 것을 확인 할 수 있다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mini_df<span style="color:#f92672">.</span>item <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>item<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;category&#39;</span>)<span style="color:#f92672">.</span>cat<span style="color:#f92672">.</span>codes<span style="color:#f92672">.</span>values
+mini_df</code></pre></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<p>잠재 인수 모델에서 필요한 Embedding에 대해서 알아보자.</p>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-<h3 id="embedding">Embedding</h3>
-
-<p>임베딩(Embedding)은 잠재 인수 (Latent factor)를 생성한다.<br />
-영화(<code>item</code>)의 잠재 인수와 잠재 벡터는 아래와 같이 생성한다.</p>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>user</th>
+      <th>item</th>
+      <th>rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0</td>
+      <td>4</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>1</td>
+      <td>2</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>1</td>
+      <td>4</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>2</td>
+      <td>3</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>2</td>
+      <td>4</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>3</td>
+      <td>3</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>3</td>
+      <td>4</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> Model
 <span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> Input, Embedding, Flatten, dot
 <span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> regularizers
 
-n_items <span style="color:#f92672">=</span> len(mini_df<span style="color:#f92672">.</span>item<span style="color:#f92672">.</span>unique()) <span style="color:#75715e"># 5편의 영화</span>
+item_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>]) <span style="color:#75715e"># mini_df.item</span>
+user_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>]) <span style="color:#75715e"># mini_df.user</span></code></pre></div>
+<h4 id="임베딩-embedding">임베딩 (Embedding)</h4>
+
+<p>잠재 인수(Latent factor)의 모양(Shape)를 정의하고 모델에 삽입하는 것을 <strong>임베딩(Embedding)</strong> 이라고 한다.<br />
+영화(<code>item</code>)에 대한 잠재 인수의 모양(Shape)을 다음과 같이 정의하자.</p>
+
+<ul>
+<li>열(Row)의 길이는 영화의 개수</li>
+<li>컬럼(Column)의 길이는 잠재 인수의 개수</li>
+</ul>
+
+<p>\(Q = \begin{bmatrix}
+q_{00} &amp; q_{01} \\
+q_{10} &amp; q_{11} \\
+q_{20} &amp; q_{21} \\
+q_{30} &amp; q_{31} \\
+q_{40} &amp; q_{41}
+\end{bmatrix} \)</p>
+
+<p>사용자(<code>user</code>)에 대한 잠재 인수의 모양(Shape)을 다음과 같이 정의하자.</p>
+
+<ul>
+<li>열(Row)의 길이는 사용자의 수</li>
+<li>컬럼(Column)의 길이는 잠재 인수의 개수</li>
+</ul>
+
+<p>\(P = \begin{bmatrix}
+p_{00} &amp; p_{01} \\
+p_{10} &amp; p_{11} \\
+p_{20} &amp; p_{21} \\
+p_{30} &amp; p_{31}
+\end{bmatrix} \)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_items <span style="color:#f92672">=</span> len(mini_df<span style="color:#f92672">.</span>item<span style="color:#f92672">.</span>unique()) <span style="color:#75715e"># 영화 5편</span>
 n_items_latent_factors <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># 영화의 잠재 인수 개수</span>
 
-item_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>])
+n_users <span style="color:#f92672">=</span> len(mini_df<span style="color:#f92672">.</span>user<span style="color:#f92672">.</span>unique()) <span style="color:#75715e"># 사용자 4명 </span>
+n_users_latent_factors <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># 사용자의 잠재 인수 개수</span>
+
 <span style="color:#75715e"># Item latent factor</span>
 item_embedding <span style="color:#f92672">=</span> Embedding(n_items, n_items_latent_factors, <span style="color:#75715e"># (5X2) Latent factor</span>
                            name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;item_embedding&#39;</span>)(item_input)
-<span style="color:#75715e"># Item latent vector</span>
-item_vec <span style="color:#f92672">=</span> Flatten()(item_embedding)</code></pre></div>
+<span style="color:#75715e"># User latent factor</span>
+user_embedding <span style="color:#f92672">=</span> Embedding(n_users, n_users_latent_factors, <span style="color:#75715e"># (4X2) Latent factor</span>
+                           name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_embedding&#39;</span>)(user_input)</code></pre></div>
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0906 18:42:21.169342 140660089382720 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0908 01:29:27.181608 140414091106112 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
 
-<p>평가자(<code>user</code>)의 잠재 인수와 잠재 벡터를 생성한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_users <span style="color:#f92672">=</span> len(mini_df<span style="color:#f92672">.</span>user<span style="color:#f92672">.</span>unique()) <span style="color:#75715e"># 4명의 평가자</span>
-n_users_latent_factors <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># 평가자의 잠재 인수 개수</span>
+<h4 id="벡터화-flattern">벡터화 (Flattern)</h4>
 
-user_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>])
-<span style="color:#75715e"># User latent factor</span>
-user_embedding <span style="color:#f92672">=</span> Embedding(n_users, n_users_latent_factors, <span style="color:#75715e"># (4X2) Latent factor</span>
-                           name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_embedding&#39;</span>)(user_input)
+<p>2D로 되어 있는 임베딩(Embedding)을 1D로 변환한다.  이것을 <strong>잠재 벡터(Latent vector)</strong> 라고 한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Item latent vector</span>
+item_vec <span style="color:#f92672">=</span> Flatten()(item_embedding)
 <span style="color:#75715e"># User latent vector</span>
 user_vec <span style="color:#f92672">=</span> Flatten()(user_embedding)</code></pre></div>
-<h3 id="미니-데이터를-가지고-modeling">미니 데이터를 가지고 Modeling</h3>
+<h4 id="미니-모델링-modeling">미니 모델링 (Modeling)</h4>
 
-<p>\(\hat R = Q \cdot P^T\)</p>
+<ul>
+<li>\(\hat R = Q \cdot P^T\)</li>
+<li>손실 함수(Loss function)는 평균 제곱 오차(mean-squared error)를 사용한다.<br /></li>
+
+<li><p>최적화(Optimizer)는 경사하강법(gradient descent)을 사용한다.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">r_hat <span style="color:#f92672">=</span> dot([item_vec, user_vec], axes<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
 mini_model <span style="color:#f92672">=</span> Model([user_input, item_input], r_hat)
-mini_model<span style="color:#f92672">.</span>compile(optimizer <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sgd&#39;</span>, loss <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mean_squared_error&#39;</span>)</code></pre></div>
-<h3 id="모델-훈련">모델 훈련</h3>
+mini_model<span style="color:#f92672">.</span>compile(optimizer <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;sgd&#39;</span>, loss <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mean_squared_error&#39;</span>)</code></pre></div></li>
+</ul>
+
+<h4 id="미니-모델-훈련-train-model">미니 모델 훈련 (Train Model)</h4>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> mini_model<span style="color:#f92672">.</span>fit([mini_df<span style="color:#f92672">.</span>user, mini_df<span style="color:#f92672">.</span>item], mini_df<span style="color:#f92672">.</span>rating, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">2000</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;loss: &#39;</span>, hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
 
@@ -1365,12 +1631,12 @@ plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</s
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<pre><code>loss:  0.03074105642735958
+<pre><code>loss:  0.030799411237239838
 </code></pre>
 
-<p><img src="output_44_1.png" alt="png" /></p>
+<p><img src="output_49_1.png" alt="png" /></p>
 
-<h3 id="예측">예측</h3>
+<h4 id="미니-예측-predict">미니 예측 (Predict)</h4>
 
 <p>이제 빵꾸난 별점을 예측해 보자</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Q <span style="color:#f92672">=</span> mini_model<span style="color:#f92672">.</span>get_layer(name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;item_embedding&#39;</span>)<span style="color:#f92672">.</span>get_weights()[<span style="color:#ae81ff">0</span>]
@@ -1406,38 +1672,38 @@ pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
   <tbody>
     <tr>
       <td>0</td>
-      <td>4.999927</td>
-      <td>4.525294</td>
-      <td>1.004016</td>
-      <td>0.994853</td>
+      <td>4.999641</td>
+      <td>4.521753</td>
+      <td>1.011094</td>
+      <td>0.982110</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>4.739066</td>
-      <td>4.290169</td>
-      <td>1.003192</td>
-      <td>0.989438</td>
+      <td>4.742187</td>
+      <td>4.289894</td>
+      <td>1.008932</td>
+      <td>0.976598</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>5.235585</td>
-      <td>4.737882</td>
-      <td>1.014246</td>
-      <td>1.008297</td>
+      <td>5.234704</td>
+      <td>4.734329</td>
+      <td>1.057725</td>
+      <td>1.027466</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>1.002523</td>
-      <td>1.002334</td>
-      <td>5.235493</td>
-      <td>4.738781</td>
+      <td>0.999859</td>
+      <td>1.003756</td>
+      <td>5.234326</td>
+      <td>4.740231</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>1.001823</td>
-      <td>0.992321</td>
-      <td>4.738204</td>
-      <td>4.290364</td>
+      <td>1.001166</td>
+      <td>0.995094</td>
+      <td>4.736576</td>
+      <td>4.290798</td>
     </tr>
   </tbody>
 </table>
@@ -1445,20 +1711,69 @@ pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;뷰티 인사이드에 대한 Bob의 예상 별점은 {:.1f}&#39;</span><span style="color:#f92672">.</span>format(R_hat[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">1</span>]))
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;러브 스토리에 대한 Carol의 예상 별점은 {:.1f} 이다.&#39;</span><span style="color:#f92672">.</span>format(R_hat[<span style="color:#ae81ff">2</span>][<span style="color:#ae81ff">2</span>]))</code></pre></div>
 <pre><code>뷰티 인사이드에 대한 Bob의 예상 별점은 4.5
-러브 스토리에 대한 Carol의 예상 별점은 1.0 이다.
+러브 스토리에 대한 Carol의 예상 별점은 1.1 이다.
 </code></pre>
 
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>우리가 예상한 별점과 가깝게 예측을 하고 있다!</p>
-
-<p>이제 Movielens의 별점 정보를 가지고 모델링을 하자</p>
+<p>실제 값과 가깝게 예측을 하고 있다!</p>
 </blockquote>
 
-<h3 id="movielens를-가지고-모델링-modeling">Movielens를 가지고 모델링(Modeling)</h3>
+<h2 id="잠재-인수-모델링-latent-factor-modeling">잠재 인수 모델링 (Latent Factor Modeling)</h2>
 
-<h4 id="데이터-변환">데이터 변환</h4>
+<p>알고 있는 데이터세트(\(X, Y\))를 학습하여 새로운 입력값(\(X_{new}\))에 대해 출력값(\(\hat Y\))을 예측하는 모델이 선형 회귀 모델이다. 잠재 인수 모델도 선형 회귀 모델과 비슷하게 손실함수를 정의하고 손실함수가 최소가 되는 \(P\)와 \(Q\)를 찾는 모델이다.</p>
+
+<h3 id="손실함수-loss-function">손실함수 (Loss function)</h3>
+
+<p>잠재 인수 모델(Latent factor model)에서의 손실 함수(Loss function)는 <strong>SSE(Sum of Squared Error)</strong> 를 사용한다.</p>
+
+<p>\(J(p, q) = {1 \over 2}\sum_{(i,j) \in R} (r_{ij} - q_i \cdot p_{j}^T)^2\)</p>
+
+<p>여기에 과대적합(Overfitting)을 방지하기 위해서 <strong>L2 Regularization</strong> 을 추가한다.</p>
+
+<p>\(J(p, q) = {1 \over 2}\sum_{(i,j) \in R} (r_{ij} - q_i \cdot p_{j}^T)^2
+\\
+\hspace{3.9em} + {1 \over 2}\lambda \sum_{i} ||q_i||^2 + {1 \over 2}\lambda \sum_{j} ||p_j||^2\)</p>
+
+<h3 id="최적화-optimization">최적화 (Optimization)</h3>
+
+<p>손실함수의 최소값을 찾기 위해서 <strong>경사 하강법(Gradient Descent)</strong> 을 적용한다.</p>
+
+<p>REPEAT(epoch) {<br />
+\(p:=p-\alpha {\partial {J(p,q)}\over \partial p}\)</p>
+
+<p>\(q:=q-\alpha {\partial{J(p,q)}\over \partial q}\) , \(\alpha\): learining rate<br />
+}</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>실제 Keras로 구현 할 경우에는<br />
+SSE 대신에 MSE를<br />
+GD 대신에 Adam을 사용한다.<br />
+L2 규제도 생략한다.</p>
+</blockquote>
+
+<h3 id="정리">정리</h3>
+
+<p>잠재 인수 모델 (Latent factor model)을 만드는 방법을 정리해 보자.</p>
+
+<ol>
+<li>Item, User 값을 인덱스 값으로 변환한다.<br /></li>
+<li>잠재 인수(Latent factor)의 개수를 정한다.<br /></li>
+<li>잠재 인수(Latent factor)를 <strong>임베딩(Embedding)</strong> 한다.<br /></li>
+<li><strong>벡터화(Flatten)</strong> 해서 잠재 벡터(Latent vector)로 변환한다.<br /></li>
+<li>\(\hat R\)를 Item과 User의 잠재 벡터의 <strong>내적(dot)</strong> 으로 설정한다.<br /></li>
+<li>손실 함수 (Loss function)를 정의한다. 여기서는 <strong>평균 제곱 오차(mean squared error)</strong> 를 사용한다.<br /></li>
+<li>옵티마이저(Optimizer)를 정의한다. 여기서는 <strong>Adam</strong> 을 사용한다.<br /></li>
+<li>반복할 회수(epoch)를 결정한다.<br /></li>
+<li>주어진 조건으로 모델을 최적화(fit) 시킨다.<br /></li>
+</ol>
+
+<h2 id="케라스-keras-로-모델링-modeling">케라스(Keras)로 모델링(Modeling)</h2>
+
+<h3 id="데이터-변환-및-분할">데이터 변환 및 분할</h3>
 
 <p>훈련 데이터는 <code>ratings_df</code>에서 랜덤하게 80%를 선택하고,<br />
 테스트 데이터는 나머지 20%를 랜덤하게 선택한다.</p>
@@ -1480,11 +1795,13 @@ test_df <span style="color:#f92672">=</span> ratings_df[<span style="color:#f926
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;shape of train data is &#39;</span>,train_df<span style="color:#f92672">.</span>shape)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;shape of test data is &#39;</span>,test_df<span style="color:#f92672">.</span>shape)</code></pre></div>
-<pre><code>shape of train data is  (80863, 4)
-shape of test data is  (19973, 4)
+<pre><code>shape of train data is  (80619, 4)
+shape of test data is  (20217, 4)
 </code></pre>
 
-<h4 id="latent-factor-모델링">Latent factor 모델링</h4>
+<h3 id="임베딩-embedding-1">임베딩 (Embedding)</h3>
+
+<p>잠재 인수 개수를 64개로 하자.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_movies <span style="color:#f92672">=</span> len(ratings_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique())
 n_users <span style="color:#f92672">=</span> len(ratings_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique())
 n_latent_factors <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span>
@@ -1493,20 +1810,21 @@ movie_input <span style="color:#f92672">=</span> Input(shape<span style="color:#
 <span style="color:#75715e"># Item latent factor</span>
 movie_embedding <span style="color:#f92672">=</span> Embedding(n_movies, n_latent_factors,
                            name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;movie_embedding&#39;</span>)(movie_input)
-<span style="color:#75715e"># Item latent vector</span>
-movie_vec <span style="color:#f92672">=</span> Flatten()(movie_embedding)
 
 user_input <span style="color:#f92672">=</span> Input(shape<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>])
 <span style="color:#75715e"># User latent factor</span>
 user_embedding <span style="color:#f92672">=</span> Embedding(n_users, n_latent_factors,
-                           name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_embedding&#39;</span>)(user_input)
+                           name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_embedding&#39;</span>)(user_input)</code></pre></div>
+<h3 id="벡터화-flatten">벡터화 (Flatten)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Item latent vector</span>
+movie_vec <span style="color:#f92672">=</span> Flatten()(movie_embedding)
 <span style="color:#75715e"># User latent vector</span>
-user_vec <span style="color:#f92672">=</span> Flatten()(user_embedding)
-
-r_hat <span style="color:#f92672">=</span> dot([movie_vec, user_vec], axes<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
+user_vec <span style="color:#f92672">=</span> Flatten()(user_embedding)</code></pre></div>
+<h3 id="모델링-modeling">모델링 (Modeling)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">r_hat <span style="color:#f92672">=</span> dot([movie_vec, user_vec], axes<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
 model <span style="color:#f92672">=</span> Model([user_input, movie_input], r_hat)
 model<span style="color:#f92672">.</span>compile(optimizer <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;adam&#39;</span>, loss <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mean_squared_error&#39;</span>)</code></pre></div>
-<h3 id="모델-훈련-및-평가">모델 훈련 및 평가</h3>
+<h3 id="모델-훈련-및-평가-train-test-model">모델 훈련 및 평가 (Train &amp; Test Model)</h3>
 
 <p>⚙️ 엔지니어</p>
 
@@ -1528,11 +1846,11 @@ plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;e
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
 plt<span style="color:#f92672">.</span>legend([<span style="color:#e6db74">&#39;train&#39;</span>, <span style="color:#e6db74">&#39;test&#39;</span>], loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;upper left&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<pre><code>train loss:  0.015583596717465682
-test loss:  1.4580945893663293
+<pre><code>train loss:  0.015208676693554088
+test loss:  1.4508242225378092
 </code></pre>
 
-<p><img src="output_54_1.png" alt="png" /></p>
+<p><img src="output_64_1.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -1561,7 +1879,7 @@ movie_v <span style="color:#f92672">=</span> np<span style="color:#f92672">.</sp
 predict <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict([user_v, movie_v])
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;영화 {} 에 대한 사용자 ID {}님의 예상 별점은 {:.1f} 입니다.&#39;</span><span style="color:#f92672">.</span>format(movie_title, userId, predict[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))</code></pre></div>
-<pre><code>영화 William Shakespeare's Romeo + Juliet (1996) 에 대한 사용자 ID 214님의 예상 별점은 4.0 입니다.
+<pre><code>영화 William Shakespeare's Romeo + Juliet (1996) 에 대한 사용자 ID 214님의 예상 별점은 3.9 입니다.
 </code></pre>
 		</div>
 		<footer class="post__footer">

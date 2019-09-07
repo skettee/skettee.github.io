@@ -66,22 +66,22 @@
 <li><a href="#뉴럴-네트워크-neural-network-구성">뉴럴 네트워크(Neural Network) 구성</a>
 <ul>
 <li><a href="#뉴런-모델-neuron-model">뉴런 모델 (Neuron model)</a></li>
-<li><a href="#뉴럴-네트워트-neural-network">뉴럴 네트워트(Neural Network)</a></li>
+<li><a href="#뉴럴-네트워트-neural-network">뉴럴 네트워트 (Neural Network)</a></li>
 </ul></li>
 <li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a></li>
 <li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a>
 <ul>
 <li><a href="#원-핫-인코딩-one-hot-encoding">원-핫 인코딩 (One-hot encoding)</a></li>
 </ul></li>
-<li><a href="#모델링-modeling">모델링 (Modeling)</a>
+<li><a href="#뉴럴-네트워크-모델링-nn-modeling">뉴럴 네트워크 모델링 (NN Modeling)</a>
 <ul>
 <li><a href="#소프트맥스-회귀-softmax-regression">소프트맥스 회귀 (Softmax Regression)</a></li>
 <li><a href="#정리">정리</a></li>
 </ul></li>
-<li><a href="#텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</a>
+<li><a href="#케라스-keras-로-모델링-modeling">케라스(Keras)로 모델링(Modeling)</a>
 <ul>
 <li><a href="#정규화-normalization">정규화 (Normalization)</a></li>
-<li><a href="#keras를-이용한-모델링-modeling">Keras를 이용한 모델링(Modeling)</a></li>
+<li><a href="#모델링-modeling">모델링 (Modeling)</a></li>
 <li><a href="#손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</a></li>
 </ul></li>
 <li><a href="#해결-solution">해결 (Solution)</a></li>
@@ -181,7 +181,7 @@ result <span style="color:#f92672">=</span> human_coding(test_data)
 
 <p><img src="https://skettee.github.io/post/neural_network/neuron_model.png" alt="뉴런 모델" /></p>
 
-<h3 id="뉴럴-네트워트-neural-network">뉴럴 네트워트(Neural Network)</h3>
+<h3 id="뉴럴-네트워트-neural-network">뉴럴 네트워트 (Neural Network)</h3>
 
 <p>뉴럴 네트워트(Neural Network)는<br />
 하나의 뉴런, 즉 로지스틱 모델을 <strong>유닛(Unit)</strong> 이라고 하고<br />
@@ -350,7 +350,7 @@ one-hot encoded y is
 <p>엇&hellip; 어어&hellip; 입력 데이터와 출력 데이터가 ???</p>
 </blockquote>
 
-<h2 id="모델링-modeling">모델링 (Modeling)</h2>
+<h2 id="뉴럴-네트워크-모델링-nn-modeling">뉴럴 네트워크 모델링 (NN Modeling)</h2>
 
 <p>입력 레이어(input layer)는 \(x_1\)에서 \(x_{10}\)까지 10개로 되어 있다.<br />
 히든 레이어(hidden layer)는 3개의 units로 구성 한다.<br />
@@ -477,23 +477,35 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <h3 id="정리">정리</h3>
 
-<p>뉴럴 네트워크 모델(Neural Network model)을 만드는 방법을 정리해 보자.<br />
-1. 데이터를 변환한다.<br />
-     1. 입력 데이터의 형식과 모양을 변환한다.<br />
-     2. 출력 데이터의 형식과 모양을 변환한다. <strong>원-핫 인코딩(one-hot encoding)</strong> 을 사용한다.<br />
-2. <strong>히든 레이어(hidden layer)</strong>  정의<br />
-     1. 히든 레이어 개수를 정의한다. 여기서는 1-hidden layer를 사용한다.<br />
-     2. 히든 레이어 유닛 개수를 정의한다. 여기서는 3개이 유닛을 사용한다.<br />
-     3. 활성 함수(activation function)를 정의한다. 여기서는 <strong>시그모이드(sigmoid)</strong> 를 사용한다.<br />
-3. <strong>출력 레이어(output layer)</strong>  정의<br />
-     1. 출력 레이어 유닛 개수를 정의한다. 여기서는 10개의 클래스로 분류해야 되니까 10개의 유닛을 사용한다.<br />
-     2. 활성 함수(activation function)를 정의한다. 여기서는 <strong>소프트맥스(softmax)</strong> 를 사용한다.
-4. 손실 함수 (Loss function)를 정의한다. 여기서는 <strong>크로스-엔트로피 손실(cross-entropy loss)</strong> 를 사용한다.<br />
-5. 옵티마이저(Optimizer)를 정의한다. 여기서는 <strong>RMSProp</strong> 을 사용한다.<br />
-6. 반복할 회수(epoch)를 결정한다.<br />
-7. 주어진 조건으로 모델을 최적화(fit) 시킨다.</p>
+<p>뉴럴 네트워크 모델(Neural Network model)을 만드는 방법을 정리해 보자.</p>
 
-<h2 id="텐서플로우-tensorflow-로-모델링-modeling">텐서플로우(Tensorflow)로 모델링(Modeling)</h2>
+<ol>
+<li>데이터를 변환한다.<br />
+
+<ol>
+<li>입력 데이터의 형식과 모양을 변환한다.<br /></li>
+<li>출력 데이터의 형식과 모양을 변환한다. <strong>원-핫 인코딩(one-hot encoding)</strong> 을 사용한다.<br /></li>
+</ol></li>
+<li><strong>히든 레이어(hidden layer)</strong>  정의<br />
+
+<ol>
+<li>히든 레이어 개수를 정의한다. 여기서는 1-hidden layer를 사용한다.<br /></li>
+<li>히든 레이어 유닛 개수를 정의한다. 여기서는 3개이 유닛을 사용한다.<br /></li>
+<li>활성 함수(activation function)를 정의한다. 여기서는 <strong>시그모이드(sigmoid)</strong> 를 사용한다.<br /></li>
+</ol></li>
+<li><strong>출력 레이어(output layer)</strong>  정의<br />
+
+<ol>
+<li>출력 레이어 유닛 개수를 정의한다. 여기서는 10개의 클래스로 분류해야 되니까 10개의 유닛을 사용한다.<br /></li>
+<li>활성 함수(activation function)를 정의한다. 여기서는 <strong>소프트맥스(softmax)</strong> 를 사용한다.</li>
+</ol></li>
+<li>손실 함수 (Loss function)를 정의한다. 여기서는 <strong>크로스-엔트로피 손실(cross-entropy loss)</strong> 를 사용한다.<br /></li>
+<li>옵티마이저(Optimizer)를 정의한다. 여기서는 <strong>RMSProp</strong> 을 사용한다.<br /></li>
+<li>반복할 회수(epoch)를 결정한다.<br /></li>
+<li>주어진 조건으로 모델을 최적화(fit) 시킨다.<br /></li>
+</ol>
+
+<h2 id="케라스-keras-로-모델링-modeling">케라스(Keras)로 모델링(Modeling)</h2>
 
 <p><strong>케라스(Keras)</strong> 를 이용해서 구현을 해보자!</p>
 
@@ -507,7 +519,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 </blockquote>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_train <span style="color:#f92672">=</span> x
 Y_train <span style="color:#f92672">=</span> y</code></pre></div>
-<h3 id="keras를-이용한-모델링-modeling">Keras를 이용한 모델링(Modeling)</h3>
+<h3 id="모델링-modeling">모델링 (Modeling)</h3>
 
 <p>⚙️ 엔지니어</p>
 

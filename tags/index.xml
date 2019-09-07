@@ -66,11 +66,29 @@
     </item>
     
     <item>
+      <title>Overfitting</title>
+      <link>/tags/overfitting/</link>
+      <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/overfitting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>ReLU</title>
       <link>/tags/relu/</link>
       <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/relu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Regularization</title>
+      <link>/tags/regularization/</link>
+      <pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/regularization/</guid>
       <description></description>
     </item>
     
