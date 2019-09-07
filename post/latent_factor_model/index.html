@@ -1268,7 +1268,7 @@ df_table</code></pre></div>
 <p>사용자 이름과 영화 제목은 Keras가 입력을 받을 수 있도록 숫자로 변환이 되어야 한다.<br />
 사용자(<code>user</code>)를 숫자로 변환해 보자</p>
 
-<p>Alice가 0번, Bob이 1번, Carol이 3번, Dave가 4번으로 변환 되었다.</p>
+<p>Alice가 0번, Bob이 1번, Carol이 2번, Dave가 3번으로 변환 되었다.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mini_df<span style="color:#f92672">.</span>user <span style="color:#f92672">=</span> mini_df<span style="color:#f92672">.</span>user<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;category&#39;</span>)<span style="color:#f92672">.</span>cat<span style="color:#f92672">.</span>codes<span style="color:#f92672">.</span>values
 mini_df</code></pre></div>
 <div>
