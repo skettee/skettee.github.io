@@ -186,10 +186,8 @@ C에서의 &lsquo;hello world&rsquo;급이라고 할 수 있다.</p>
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>keras가 좋아하는 모양으로 되어 있다.<br />
-(batch_size, input_dimension) 기억하는가?<br />
-batch_size = 60000<br />
-imput_dimension = 784 (28X28)</p>
+<p>batch_size 는 60000<br />
+imput_dimension 은 (28X28)로 2D로 되어 있다.</p>
 
 <p>2D라고 쫄지말자&hellip;<br />
 x-y 그래프에서 점을 찍는데 점 색깔이 회색조로 256개가 있다고 생각하면 된다.<br />
@@ -249,7 +247,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
 
-<p>입력 데이터의 shape (28,28)를 (784, )로 변환해 주어야 한다.<br />
+<p>입력 데이터의 2D shape (28,28)를 1D (784, )로 변환해 주는 작업을 <strong>벡터화(Flattern)</strong> 라고 한다.<br />
 이 작업은 keras layer에서 처리해 주면 된다. (나중에 하겠다는 얘기다.)</p>
 
 <p>소프트맥스(Softmax)를 사용할 예정이니까 출력 데이터를 원-핫 인코딩으로 변환해 주자</p>
@@ -271,7 +269,7 @@ one-hot encoded first Y_train is  [0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]
 <ul>
 <li>input layer는 2D(28X28)를 1D로 변환해서 784개의 x로 만든다.<br /></li>
 <li>hidden layer 1은 128-unit으로 구성하자<br /></li>
-<li>hiddem layer 2는 32-unit으로 구성하자<br /></li>
+<li>hiddem layer 2는 84-unit으로 구성하자<br /></li>
 <li>output layer는 당연히 10-unit으로 구성, softmax를 activation function으로 사용한다.<br /></li>
 <li>loss는 cross-entropy loss를 사용<br /></li>
 </ul>
@@ -385,7 +383,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <ol>
 <li>히든 레이어 개수를 정의한다. 여기서는 2-hidden layer를 사용한다.<br /></li>
-<li>히든 레이어 유닛 개수를 정의한다. 여기서는 128개, 32개 유닛을 사용한다.<br /></li>
+<li>히든 레이어 유닛 개수를 정의한다. 여기서는 128개, 84개 유닛을 사용한다.<br /></li>
 <li>활성 함수(activation function)를 정의한다. 여기서는 <strong>ReLU</strong> 를 사용한다.<br /></li>
 </ol></li>
 <li><strong>출력 레이어(output layer)</strong>  정의<br />
@@ -424,11 +422,11 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 model <span style="color:#f92672">=</span> Sequential()
 model<span style="color:#f92672">.</span>add(Flatten(input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">28</span>,<span style="color:#ae81ff">28</span>)))
 model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">128</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
-model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">32</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">84</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
 model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;softmax&#39;</span>))
 model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;categorical_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>, metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])</code></pre></div>
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0906 19:08:54.737059 139909354948416 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0908 14:09:13.760802 139991716501312 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
@@ -440,8 +438,8 @@ train_loss <span style="color:#f92672">=</span>  hist<span style="color:#f92672"
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train accuracy: &#39;</span>, train_acc)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, train_loss)</code></pre></div>
-<pre><code>train accuracy:  0.9932
-train loss:  0.019363174817231873
+<pre><code>train accuracy:  0.99338335
+train loss:  0.020009287602726546
 </code></pre>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
@@ -454,9 +452,9 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test accuracy: &#39;</span>, test_acc)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test loss: &#39;</span>, test_loss)</code></pre></div>
-<pre><code>10000/10000 [==============================] - 0s 31us/sample - loss: 0.1025 - acc: 0.9768
-test accuracy:  0.9768
-test loss:  0.1024522928831917
+<pre><code>10000/10000 [==============================] - 0s 33us/sample - loss: 0.1065 - acc: 0.9749
+test accuracy:  0.9749
+test loss:  0.10645339069099137
 </code></pre>
 
 <p>대충 만들었는데도 정확도가 상당히 높다.<br />
@@ -507,7 +505,7 @@ test loss:  0.1024522928831917
 model_l2 <span style="color:#f92672">=</span> Sequential()
 model_l2<span style="color:#f92672">.</span>add(Flatten(input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">28</span>,<span style="color:#ae81ff">28</span>)))
 model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">128</span>, kernel_regularizer<span style="color:#f92672">=</span>regularizers<span style="color:#f92672">.</span>l2(<span style="color:#ae81ff">0.0001</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
-model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">32</span>, kernel_regularizer<span style="color:#f92672">=</span>regularizers<span style="color:#f92672">.</span>l2(<span style="color:#ae81ff">0.0001</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">84</span>, kernel_regularizer<span style="color:#f92672">=</span>regularizers<span style="color:#f92672">.</span>l2(<span style="color:#ae81ff">0.0001</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
 model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;softmax&#39;</span>))
 model_l2<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;categorical_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>, metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])
 
@@ -517,8 +515,8 @@ train_loss_l2 <span style="color:#f92672">=</span>  hist<span style="color:#f926
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train accuracy: &#39;</span>, train_acc_l2)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, train_loss_l2)</code></pre></div>
-<pre><code>train accuracy:  0.9884667
-train loss:  0.07978579129775365
+<pre><code>train accuracy:  0.98798335
+train loss:  0.07904902546405793
 </code></pre>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
@@ -529,9 +527,9 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test accuracy: &#39;</span>, test_acc_l2)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test loss: &#39;</span>, test_loss_l2)</code></pre></div>
-<pre><code>10000/10000 [==============================] - 0s 38us/sample - loss: 0.1201 - acc: 0.9777
-test accuracy:  0.9777
-test loss:  0.12008701454401016
+<pre><code>10000/10000 [==============================] - 0s 41us/sample - loss: 0.1209 - acc: 0.9776
+test accuracy:  0.9776
+test loss:  0.12088210636377335
 </code></pre>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
 
@@ -564,13 +562,13 @@ df</code></pre></div>
   <tbody>
     <tr>
       <td>model</td>
-      <td>0.993200</td>
-      <td>0.9768</td>
+      <td>0.993383</td>
+      <td>0.9749</td>
     </tr>
     <tr>
       <td>model_with_l2</td>
-      <td>0.988467</td>
-      <td>0.9777</td>
+      <td>0.987983</td>
+      <td>0.9776</td>
     </tr>
   </tbody>
 </table>
