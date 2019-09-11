@@ -6,7 +6,7 @@
     <description>Recent content in Categories on 막돼먹은 엔지니어의 머신런닝 개발</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 09 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Deep Learning</title>
       <link>/categories/deep-learning/</link>
-      <pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/deep-learning/</guid>
       <description></description>
@@ -23,9 +23,18 @@
     <item>
       <title>Recommendation</title>
       <link>/categories/recommendation/</link>
-      <pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/recommendation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Convolutional Neural Network</title>
+      <link>/categories/convolutional-neural-network/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/convolutional-neural-network/</guid>
       <description></description>
     </item>
     

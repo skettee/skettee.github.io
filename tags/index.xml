@@ -6,7 +6,7 @@
     <description>Recent content in Tags on 막돼먹은 엔지니어의 머신런닝 개발</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 09 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Embedding</title>
       <link>/tags/embedding/</link>
-      <pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/embedding/</guid>
       <description></description>
@@ -23,7 +23,7 @@
     <item>
       <title>Latent factor</title>
       <link>/tags/latent-factor/</link>
-      <pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/latent-factor/</guid>
       <description></description>
@@ -32,9 +32,45 @@
     <item>
       <title>Matrix Factorization</title>
       <link>/tags/matrix-factorization/</link>
-      <pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/matrix-factorization/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Convolution</title>
+      <link>/tags/convolution/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/convolution/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dropout</title>
+      <link>/tags/dropout/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/dropout/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Padding</title>
+      <link>/tags/padding/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/padding/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Pooling</title>
+      <link>/tags/pooling/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pooling/</guid>
       <description></description>
     </item>
     

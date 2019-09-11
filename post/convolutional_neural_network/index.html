@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Convolutional Neural Network - 막돼먹은 엔지니어의 머신런닝 개발</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Convolutional Neural Network" />
+<meta property="og:description" content="영상 인식의 혁명!  컨볼루션 뉴럴 네트워크(Convolutional Neural Network) 에 대해 알아보고 keras를 이용해서 모델링을 해보자!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/convolutional_neural_network/" />
+<meta property="article:published_time" content="2019-09-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-09-08T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="막돼먹은 엔지니어의 머신런닝 개발" rel="home">
+				<div class="logo__title">막돼먹은 엔지니어의 머신런닝 개발</div>
+				<div class="logo__tagline">딥러닝 모델링</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Convolutional Neural Network</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2019-09-08T00:00:00">2019-09-08</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/deep-learning" rel="category">Deep Learning</a>, <a class="meta__link" href="/categories/convolutional-neural-network" rel="category">Convolutional Neural Network</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#문제-problem">문제 (Problem)</a></li>
+<li><a href="#데이터-수집-data-collection">데이터 수집 (Data Collection)</a></li>
+<li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a>
+<ul>
+<li><a href="#edge-detection">Edge Detection</a></li>
+</ul></li>
+<li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a>
+<ul>
+<li><a href="#정규화-normalization">정규화 (Normalization)</a></li>
+<li><a href="#이진-분류-binary-classification">이진 분류 (Binary Classification)</a></li>
+</ul></li>
+<li><a href="#cnn-모델링-cnn-modeling">CNN 모델링 (CNN Modeling)</a>
+<ul>
+<li><a href="#convolutional-layer">Convolutional Layer</a>
+<ul>
+<li><a href="#필터-filter">필터 (Filter)</a></li>
+<li><a href="#패딩-padding">패딩 (Padding)</a></li>
+</ul></li>
+<li><a href="#activation-layer">Activation Layer</a></li>
+<li><a href="#pooling-layer">Pooling Layer</a>
+<ul>
+<li><a href="#dropout">Dropout</a></li>
+</ul></li>
+<li><a href="#fc-layer">FC Layer</a></li>
+<li><a href="#output-layer">Output Layer</a></li>
+<li><a href="#정리">정리</a></li>
+</ul></li>
+<li><a href="#케라스-keras-로-모델링-modeling">케라스(Keras)로 모델링(Modeling)</a>
+<ul>
+<li><a href="#모델링-modeling">모델링 (Modeling)</a></li>
+<li><a href="#모델-훈련-train-model">모델 훈련 (Train Model)</a></li>
+<li><a href="#정확도-평가-test-model">정확도 평가 (Test Model)</a></li>
+</ul></li>
+<li><a href="#해결-solution">해결 (Solution)</a></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
+			<p>영상 인식의 혁명!  컨볼루션 뉴럴 네트워크(Convolutional Neural Network) 에 대해 알아보고 keras를 이용해서 모델링을 해보자!</p>
+
+<p>실제로 돌려 보고 싶으면 구글 코랩으로 ~</p>
+
+<p><a href="https://colab.research.google.com/github/skettee/notebooks/blob/master/convolutional_neural_network.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" /></a></p>
+
+<h2 id="문제-problem">문제 (Problem)</h2>
+
+<p>💰 고객</p>
+
+<blockquote>
+<p>고양이와 강아지 사진을 구분하는 프로그램이 필요해요~</p>
+</blockquote>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>네~ 고객님</p>
+
+<p>CNN모델링으로 문제를 해결하자!</p>
+</blockquote>
+
+<h2 id="데이터-수집-data-collection">데이터 수집 (Data Collection)</h2>
+
+<p>모델 훈련을 위해서 CIFAR10에서 고양이와 강아지의 이미지를 골라서 사용한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras.datasets <span style="color:#f92672">import</span> cifar10
+
+(train_image, train_label), (test_image, test_label) <span style="color:#f92672">=</span> cifar10<span style="color:#f92672">.</span>load_data()</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+
+CAT_VALUE <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+DOG_VALUE <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+
+condition_train <span style="color:#f92672">=</span> (train_label[:,<span style="color:#ae81ff">0</span>]<span style="color:#f92672">==</span>CAT_VALUE) <span style="color:#f92672">|</span> (train_label[:,<span style="color:#ae81ff">0</span>]<span style="color:#f92672">==</span>DOG_VALUE)
+condition_test <span style="color:#f92672">=</span> (test_label[:,<span style="color:#ae81ff">0</span>]<span style="color:#f92672">==</span>CAT_VALUE) <span style="color:#f92672">|</span> (test_label[:,<span style="color:#ae81ff">0</span>]<span style="color:#f92672">==</span>DOG_VALUE)
+
+x_train <span style="color:#f92672">=</span> train_image[condition_train]
+y_train <span style="color:#f92672">=</span> train_label[condition_train]
+x_test <span style="color:#f92672">=</span> test_image[condition_test]
+y_test <span style="color:#f92672">=</span> test_label[condition_test]
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;x_train shape is &#39;</span>, x_train<span style="color:#f92672">.</span>shape)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;y_train shape is &#39;</span>, y_train<span style="color:#f92672">.</span>shape)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">x_test shape is &#39;</span>, x_test<span style="color:#f92672">.</span>shape)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;y_test shape is &#39;</span>, y_test<span style="color:#f92672">.</span>shape)</code></pre></div>
+<pre><code>x_train shape is  (10000, 32, 32, 3)
+y_train shape is  (10000, 1)
+
+x_test shape is  (2000, 32, 32, 3)
+y_test shape is  (2000, 1)
+</code></pre>
+
+<h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
+
+<p>고양이와 강아지의 데이터셋은 다음과 같다.</p>
+
+<ul>
+<li>x_train: 32x32x3(RGB), 10,000개의 훈련을 위한 고양이와 강아지의 이미지<br /></li>
+<li>y_train: 10,000개의 이미지를 고양이(3), 강아지(5)의 두가지 정수 값으로 라벨링</li>
+<li>x_test: 32x32x3(RGB), 2,000개의 테스트를 위한 고양이와 개의 이미지</li>
+
+<li><p>y_test:  2,000개의 이미지를 고양이(3), 강아지(5)의 두가지 정수 값으로 라벨링</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">%</span>matplotlib inline
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">90</span>))
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">10</span>,i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+plt<span style="color:#f92672">.</span>imshow(x_train[i])
+plt<span style="color:#f92672">.</span>xticks([])
+plt<span style="color:#f92672">.</span>yticks([])
+plt<span style="color:#f92672">.</span>show()</code></pre></div></li>
+</ul>
+
+<p><img src="output_7_0.png" alt="png" /></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_train[:<span style="color:#ae81ff">10</span>]</code></pre></div>
+<pre><code>array([[3],
+       [3],
+       [3],
+       [3],
+       [5],
+       [3],
+       [3],
+       [3],
+       [3],
+       [5]], dtype=uint8)
+</code></pre>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>컬러(RGB)이미지의 모든 픽셀값을 피쳐(특징값)로 사용하는 것은 무리다.<br />
+예를 들어서 1000X1000의 컬러 이미지의 입력 피쳐 개수는 무려<br />
+3,000,000개가 된다.<br />
+컴퓨터가 싫어한다&hellip;<br />
+그래서 엔지니어들은<br />
+피쳐 개수를 줄이면서도<br />
+이미지의 특징을 잘 보여주는<br />
+엣지(Edge) 있는 방법을 찾아 냈다.<br />
+그것은 바로&hellip;</p>
+</blockquote>
+
+<h3 id="edge-detection">Edge Detection</h3>
+
+<p>엔지니어들은 이미지의 특징을 추출하기 위해서 컨벌루션(Convolution)이라는 기법을 개발했다.<br />
+컨벌루션은 이미지에 3X3이나 5X5 필터를 오른쪽과 아래로 이동하며 적용하는 기술이다.<br />
+<img src="http://deeplearning.stanford.edu/wiki/images/6/6c/Convolution_schematic.gif" alt="컨벌루션" />
+출처: <a href="http://deeplearning.stanford.edu/wiki">Stanford Deep Learning</a></p>
+
+<p>필터에 들어가는 값에 따라서 다양한 이미지의 특징들을 보여준다.</p>
+
+<p>아래는 sobel_h, sobel_v 필터링 적용 예다.</p>
+
+<p>\(sobel_h = \begin{bmatrix}
+1 &amp; 2 &amp; 1  \\
+0 &amp; 0 &amp; 0  \\
+-1 &amp; -2 &amp; -1
+\end{bmatrix}
+\quad
+sobel_v =  \begin{bmatrix}
+1 &amp; 0 &amp; -1  \\
+2 &amp; 0 &amp; -2  \\
+1 &amp; 0 &amp; -1
+\end{bmatrix}\)</p>
+
+<p>왼쪽은 원본 이미지, 중간은 물체의 가로 경계선이 강조되는 sobel_h 필터를 적용한 이미지, 오른쪽은 물체의 세로 경계선이 강조되는 sobel_v 필터를 적용한 이미지다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> skimage.data <span style="color:#f92672">import</span> chelsea
+<span style="color:#f92672">from</span> skimage.filters <span style="color:#f92672">import</span> sobel_h, sobel_v
+<span style="color:#f92672">from</span> skimage.color <span style="color:#f92672">import</span> rgb2gray
+
+<span style="color:#75715e"># INPUT</span>
+image <span style="color:#f92672">=</span> chelsea()
+grey_image <span style="color:#f92672">=</span> rgb2gray(image)
+
+<span style="color:#75715e"># CONV</span>
+edge_h <span style="color:#f92672">=</span> sobel_h(grey_image)
+edge_v <span style="color:#f92672">=</span> sobel_v(grey_image)
+
+<span style="color:#75715e"># ReLU</span>
+edge_h <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>where(edge_h <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, edge_h)
+edge_v <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>where(edge_v <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, edge_v)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>,<span style="color:#ae81ff">4</span>))
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">1</span>)
+plt<span style="color:#f92672">.</span>imshow(image)
+plt<span style="color:#f92672">.</span>xticks([])
+plt<span style="color:#f92672">.</span>yticks([])
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">2</span>)
+plt<span style="color:#f92672">.</span>imshow(edge_h, cmap<span style="color:#f92672">=</span>plt<span style="color:#f92672">.</span>cm<span style="color:#f92672">.</span>gray)
+plt<span style="color:#f92672">.</span>xticks([])
+plt<span style="color:#f92672">.</span>yticks([])
+plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">3</span>)
+plt<span style="color:#f92672">.</span>imshow(edge_v, cmap<span style="color:#f92672">=</span>plt<span style="color:#f92672">.</span>cm<span style="color:#f92672">.</span>gray)
+plt<span style="color:#f92672">.</span>xticks([])
+plt<span style="color:#f92672">.</span>yticks([])
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
+<p><img src="output_10_0.png" alt="png" /></p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>뉴럴 네트워크를 이용하면<br />
+여러개의 필터 껍데기를 준비하고<br />
+필터에 들어가는 값을 \(w\) 로 놓으면<br />
+학습을 하면서<br />
+다른 사물과 구분되는<br />
+고양이만의 특징을 나타내는<br />
+필터 값들을<br />
+스스로 최적화 하지 않을까?</p>
+</blockquote>
+
+<h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
+
+<h3 id="정규화-normalization">정규화 (Normalization)</h3>
+
+<p>입력 이미지에 대해서 <code>정규값 = (현재값 - 최소값) / (최대값-최소값)</code> 으로 정규화 한다!<br />
+최소값이 0이고, 최대값이 255이니까 현재값에서 /255 를 해 주면 된다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x_train <span style="color:#f92672">=</span> x_train<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;float32&#39;</span>)
+x_test <span style="color:#f92672">=</span> x_test<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;float32&#39;</span>)
+x_train <span style="color:#f92672">/=</span> <span style="color:#ae81ff">255</span>
+x_test <span style="color:#f92672">/=</span> <span style="color:#ae81ff">255</span></code></pre></div>
+<h3 id="이진-분류-binary-classification">이진 분류 (Binary Classification)</h3>
+
+<p>고양이냐 강아지냐를 선택하는 0과 1의 문제다. 따라서 출력 레이어(output layer)의 활성화 함수(activation function)는 당근 시그모이드(Sigmoid)를 사용한다. 따라서 고양이를 0, 강아지를 1로 변환한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_train <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>where(y_train<span style="color:#f92672">==</span><span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>)
+y_test <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>where(y_test<span style="color:#f92672">==</span><span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>)
+y_train[:<span style="color:#ae81ff">10</span>]</code></pre></div>
+<pre><code>array([[0],
+       [0],
+       [0],
+       [0],
+       [1],
+       [0],
+       [0],
+       [0],
+       [0],
+       [1]])
+</code></pre>
+
+<h2 id="cnn-모델링-cnn-modeling">CNN 모델링 (CNN Modeling)</h2>
+
+<h3 id="convolutional-layer">Convolutional Layer</h3>
+
+<p>이미지에 컨벌루션(Convolution)을 수행하는 레이어다.<br />
+필터의 개수, 필터의 크기, 패딩 방법을 정의한다.<br />
+예를 들어서 (32, 32, 3) 이미지에 (3, 3) 필터 64개를 적용하면 (30, 30, 64)의 이미지가 출력 된다.<br />
+입력 이미지와 출력 이미지의 해상도가 달라지는 것을 방지하기 위해서 패딩(Padding)을 입력 이미지에 적용한다.</p>
+
+<h4 id="필터-filter">필터 (Filter)</h4>
+
+<p>일반적으로 3X3, 5X5 필터를 사용한다.<br />
+보통 필터의 개수는 레이어가 추가될 때마다 두배로 늘린다.</p>
+
+<h4 id="패딩-padding">패딩 (Padding)</h4>
+
+<p>입력 이미지 매트릭스의 상하, 좌우로 &lsquo;0&rsquo;을 추가하는 것을 패딩이라고 한다.<br />
+\(f\)를 필터 사이즈라고 하고 \(p\)를 패딩 사이즈라고 하면, 입력 이미지와 출력 이미지의 해상도를 같게 해 주기 위해서는<br />
+\(p= {{f-1} \over 2}\) 로 한다.</p>
+
+<p>예를 들어서 (32, 32, 3) 이미지에 (3, 3) 필터 64개를 적용하고 패딩을 1로 하면 (32, 32, 64)의 이미지가 출력 된다.</p>
+
+<h3 id="activation-layer">Activation Layer</h3>
+
+<p>0보다 작은 값은 0으로 만들어서 사물의 경계선만을 특징으로 선택한다. 따라서 렐루(ReLU)를 사용한다.</p>
+
+<h3 id="pooling-layer">Pooling Layer</h3>
+
+<p>보통 레이어가 추가될 때마다 필터 개수는 두배로 늘리고 해상도는 반으로 줄이도록 설계를 한다.
+사물의 특징을 보존하면서 해상도를 줄이는 역활을 수행한다.<br />
+Max pooling은 필터값이 없는 윈도우가 이미지 위에서 이동하면서 내부의 값들 중에 최대값을 선택하는 방식이다.</p>
+
+<p><img src="http://cs231n.github.io/assets/cnn/maxpool.jpeg" alt="Pooling" />
+출처: <a href="http://cs231n.github.io/convolutional-networks/">cs231n Convolutional Neural Networks</a></p>
+
+<h4 id="dropout">Dropout</h4>
+
+<p>과대적합(Overfitting)을 방지하기 위한 방법으로서 주어진 확률로 랜덤하게 유닛(unit)을 선택해서 꺼버린다.<br />
+예를 들어 레이어의 유닛 수가 32개이고 Dropout의 확률이 0.25이면 입력이 들어올 때마다 8개의 유닛을 랜덤하게 선택해서 꺼버린다.<br />
+훈련 과정에서만 적용해야 한다.</p>
+
+<h3 id="fc-layer">FC Layer</h3>
+
+<p>히든 레이어(Hidden layer)로서 모든 유닛이 빠짐없이 연결되어 있다.<br />
+Fully Connected Layer로서 덴스(Dense)하게 연결 되어 있다는 뜻.</p>
+
+<h3 id="output-layer">Output Layer</h3>
+
+<p>고양이냐 강아지냐, 0과 1의 문제임으로 시그모이드 함수를 사용한다.</p>
+
+<h3 id="정리">정리</h3>
+
+<ol>
+<li>CONV = 3X3 filter, padding = &lsquo;same&rsquo;, activation=&lsquo;relu&rsquo; 로 정의한다.</li>
+<li>[CONV 32] X2 : 32개의 필터로 CONV를 두번 수행한다.<br /></li>
+<li>POOL = 2X2 window, dropout = 0.25 로 정의한다.<br /></li>
+<li>[POOL] : POOL을 수행한다. <sup>1</sup>&frasl;<sub>4</sub> 확률로 랜덤하게 유닛을 꺼버린다.<br /></li>
+<li>[CONV 64] X2 : 64개의 필터로 CONV를 두번 수행한다.<br /></li>
+<li>[POOL] : POOL을 수행한다. <sup>1</sup>&frasl;<sub>4</sub> 확률로 랜덤하게 유닛을 꺼버린다.</li>
+<li>FC = activation=&lsquo;relu&rsquo;, 3. dropout = 0.25 로 정의한다.<br /></li>
+<li>[FC 512] : 512개의 units로 뉴럴 네트워크 레이어를 정의한다. <sup>1</sup>&frasl;<sub>4</sub> 확률로 랜덤하게 유닛을 꺼버린다.</li>
+<li>[OUTPUT] : 시그모이드(Sigmoid)로 출력 레이어를 정의한다.</li>
+</ol>
+
+<h2 id="케라스-keras-로-모델링-modeling">케라스(Keras)로 모델링(Modeling)</h2>
+
+<h3 id="모델링-modeling">모델링 (Modeling)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow <span style="color:#f92672">import</span> keras
+<span style="color:#f92672">from</span> tensorflow.keras.models <span style="color:#f92672">import</span> Sequential
+<span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> Dense, Dropout, Activation, Flatten
+<span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> Conv2D, MaxPooling2D
+
+<span style="color:#f92672">import</span> os
+
+save_dir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getcwd()
+model_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;keras_catdog_trained_model.h5&#39;</span>
+
+batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">32</span>
+epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>
+
+model <span style="color:#f92672">=</span> Sequential()
+<span style="color:#75715e"># CONV 32 X2</span>
+model<span style="color:#f92672">.</span>add(Conv2D(<span style="color:#ae81ff">32</span>, (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>), padding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;same&#39;</span>,
+                 input_shape<span style="color:#f92672">=</span>x_train<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>:]))
+model<span style="color:#f92672">.</span>add(Activation(<span style="color:#e6db74">&#39;relu&#39;</span>))
+model<span style="color:#f92672">.</span>add(Conv2D(<span style="color:#ae81ff">32</span>, (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)))
+model<span style="color:#f92672">.</span>add(Activation(<span style="color:#e6db74">&#39;relu&#39;</span>))
+<span style="color:#75715e"># POOL</span>
+model<span style="color:#f92672">.</span>add(MaxPooling2D(pool_size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)))
+model<span style="color:#f92672">.</span>add(Dropout(<span style="color:#ae81ff">0.25</span>))
+
+<span style="color:#75715e"># CONV 64 X2</span>
+model<span style="color:#f92672">.</span>add(Conv2D(<span style="color:#ae81ff">64</span>, (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>), padding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;same&#39;</span>))
+model<span style="color:#f92672">.</span>add(Activation(<span style="color:#e6db74">&#39;relu&#39;</span>))
+model<span style="color:#f92672">.</span>add(Conv2D(<span style="color:#ae81ff">64</span>, (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>)))
+model<span style="color:#f92672">.</span>add(Activation(<span style="color:#e6db74">&#39;relu&#39;</span>))
+<span style="color:#75715e"># POOL</span>
+model<span style="color:#f92672">.</span>add(MaxPooling2D(pool_size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)))
+model<span style="color:#f92672">.</span>add(Dropout(<span style="color:#ae81ff">0.25</span>))
+
+<span style="color:#75715e"># Vectorize</span>
+model<span style="color:#f92672">.</span>add(Flatten())
+<span style="color:#75715e"># FC 512</span>
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">512</span>))
+model<span style="color:#f92672">.</span>add(Activation(<span style="color:#e6db74">&#39;relu&#39;</span>))
+model<span style="color:#f92672">.</span>add(Dropout(<span style="color:#ae81ff">0.5</span>))
+<span style="color:#75715e"># OUTPUT</span>
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">1</span>))
+model<span style="color:#f92672">.</span>add(Activation(<span style="color:#e6db74">&#39;sigmoid&#39;</span>))
+
+model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;binary_crossentropy&#39;</span>,
+              optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>,
+              metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])</code></pre></div>
+<pre><code>WARNING: Logging before flag parsing goes to stderr.
+W0911 13:45:49.768144 140002765248320 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+W0911 13:45:49.971888 140002765248320 deprecation.py:323] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.&lt;locals&gt;.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+</code></pre>
+
+<h3 id="모델-훈련-train-model">모델 훈련 (Train Model)</h3>
+
+<p>모델의 훈련 결과를 파일로 저장해서 필요할 때 재훈련 없이 불러서 사용할 수 있다.</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>아&hellip;<br />
+GPU 없으면 한시간 이상 걸린다&hellip;<br />
+커피 한잔 하고 오세여~</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(x_train, y_train,
+              batch_size<span style="color:#f92672">=</span>batch_size,
+              epochs<span style="color:#f92672">=</span>epochs,
+              shuffle<span style="color:#f92672">=</span>True,
+              verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+
+<span style="color:#75715e"># Save model and weights</span>
+model_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(save_dir, model_name)
+model<span style="color:#f92672">.</span>save(model_path)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Saved trained model at </span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> &#39;</span> <span style="color:#f92672">%</span> model_path)
+
+train_acc <span style="color:#f92672">=</span> hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;acc&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+train_loss <span style="color:#f92672">=</span>  hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train accuracy: &#39;</span>, train_acc)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, train_loss)</code></pre></div>
+<pre><code>Saved trained model at /home/dataman/myWork/deeplearning/keras_catdog_trained_model.h5 
+train accuracy:  0.9818
+train loss:  0.05223268212089315
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
+plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
+plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
+<p><img src="output_22_0.png" alt="png" /></p>
+
+<h3 id="정확도-평가-test-model">정확도 평가 (Test Model)</h3>
+
+<p>훈련 정확도와 테스트 정확도의 차이가 많이 난다.<br />
+과대적합(Overfitting) 현상이다.</p>
+
+<p>그래도 10마리 중 8마리는 맞춘다는&hellip;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test_loss, test_acc <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>evaluate(x_test, y_test, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Test loss:&#39;</span>, test_loss)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Test accuracy:&#39;</span>, test_acc)</code></pre></div>
+<pre><code>Test loss: 0.7301398019790649
+Test accuracy: 0.807
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+
+df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(data<span style="color:#f92672">=</span>[[train_acc, test_acc]], 
+                  index <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;CNN&#39;</span>],
+                  columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;train accuracy&#39;</span>, <span style="color:#e6db74">&#39;test accuracy&#39;</span>])
+df</code></pre></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>train accuracy</th>
+      <th>test accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CNN</td>
+      <td>0.9818</td>
+      <td>0.807</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="해결-solution">해결 (Solution)</h2>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>고객님~ 원하시는 솔루션입니다.<br />
+test_image에 이미지를 입력하시면<br />
+고양이, 강아지를 인식해서 알려 드립니다</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span>  tensorflow.keras.models <span style="color:#f92672">import</span> load_model
+<span style="color:#f92672">import</span> os
+
+load_dir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getcwd()
+model_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;keras_catdog_trained_model.h5&#39;</span>
+model_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(load_dir, model_name)
+
+pick_image <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span> <span style="color:#75715e"># 0 ~ 9,999</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict_catdog</span>(x, model):
+    x_data <span style="color:#f92672">=</span>(np<span style="color:#f92672">.</span>expand_dims(x, <span style="color:#ae81ff">0</span>))
+    predict <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(x_data)
+    <span style="color:#75715e">#print(predict)</span>
+    <span style="color:#66d9ef">if</span> predict <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.5</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;cat&#39;</span>
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;dog&#39;</span>
+
+test_data <span style="color:#f92672">=</span> x_test[pick_image]
+model <span style="color:#f92672">=</span> load_model(model_path)
+
+result <span style="color:#f92672">=</span> predict_catdog(test_data, model)
+
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">2</span>))
+plt<span style="color:#f92672">.</span>imshow(test_data)
+plt<span style="color:#f92672">.</span>xticks([])
+plt<span style="color:#f92672">.</span>yticks([])
+plt<span style="color:#f92672">.</span>show()
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;This is a &#39;</span>, result)</code></pre></div>
+<p><img src="output_28_0.png" alt="png" /></p>
+
+<pre><code>This is a  dog
+</code></pre>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/convolution/" rel="tag">Convolution</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/padding/" rel="tag">Padding</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/pooling/" rel="tag">Pooling</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/dropout/" rel="tag">Dropout</a></li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/neural_network_mnist/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">뉴럴 네트워크 (NN) - MNIST</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/latent_factor_model/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">잠재 인수 모델 (Latent Factor Model)</p></a>
+	</div>
+</nav>
+<script src="https://utteranc.es/client.js"
+        repo="skettee/blog-comments"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 skettee.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

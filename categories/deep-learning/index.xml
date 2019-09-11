@@ -6,7 +6,7 @@
     <description>Recent content in Deep Learning on 막돼먹은 엔지니어의 머신런닝 개발</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 09 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/deep-learning/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,10 +14,19 @@
     <item>
       <title>잠재 인수 모델 (Latent Factor Model)</title>
       <link>/post/latent_factor_model/</link>
-      <pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/latent_factor_model/</guid>
       <description>&lt;p&gt;영화나 상품 추천에 사용되는 잠재 인수 모델(Latent Factor Model)을 살펴 보고 Keras로 모델링을 해보자!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Convolutional Neural Network</title>
+      <link>/post/convolutional_neural_network/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/convolutional_neural_network/</guid>
+      <description>&lt;p&gt;영상 인식의 혁명!  컨볼루션 뉴럴 네트워크(Convolutional Neural Network) 에 대해 알아보고 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>
     </item>
     
     <item>
