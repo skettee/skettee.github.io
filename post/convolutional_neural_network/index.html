@@ -518,7 +518,7 @@ df</code></pre></div>
 
 <blockquote>
 <p>고객님~ 원하시는 솔루션입니다.<br />
-test_image에 이미지를 입력하시면<br />
+pick_image에  이미지 번호를 입력하시면<br />
 고양이, 강아지를 인식해서 알려 드립니다<br />
 정확도는 80%입니다~</p>
 </blockquote>
@@ -529,7 +529,7 @@ load_dir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</s
 model_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;keras_catdog_trained_model.h5&#39;</span>
 model_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(load_dir, model_name)
 
-pick_image <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span> <span style="color:#75715e"># 0 ~ 9,999</span>
+pick_image <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span> <span style="color:#75715e"># 0 ~ 1,999</span>
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict_catdog</span>(x, model):
     x_data <span style="color:#f92672">=</span>(np<span style="color:#f92672">.</span>expand_dims(x, <span style="color:#ae81ff">0</span>))
