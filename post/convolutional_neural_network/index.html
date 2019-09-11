@@ -162,20 +162,20 @@ y_test shape is  (2000, 1)
 <li>x_train: 32x32x3(RGB), 10,000개의 훈련을 위한 고양이와 강아지의 이미지<br /></li>
 <li>y_train: 10,000개의 이미지를 고양이(3), 강아지(5)의 두가지 정수 값으로 라벨링</li>
 <li>x_test: 32x32x3(RGB), 2,000개의 테스트를 위한 고양이와 개의 이미지</li>
+<li>y_test:  2,000개의 이미지를 고양이(3), 강아지(5)의 두가지 정수 값으로 라벨링</li>
+</ul>
 
-<li><p>y_test:  2,000개의 이미지를 고양이(3), 강아지(5)의 두가지 정수 값으로 라벨링</p>
+<p>10개의 훈련 이미지와 레이블은 아래와 같다.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">%</span>matplotlib inline
 <span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
 
 plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">90</span>))
 <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
-plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">10</span>,i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
-plt<span style="color:#f92672">.</span>imshow(x_train[i])
-plt<span style="color:#f92672">.</span>xticks([])
-plt<span style="color:#f92672">.</span>yticks([])
-plt<span style="color:#f92672">.</span>show()</code></pre></div></li>
-</ul>
-
+    plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">10</span>,i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+    plt<span style="color:#f92672">.</span>imshow(x_train[i])
+    plt<span style="color:#f92672">.</span>xticks([])
+    plt<span style="color:#f92672">.</span>yticks([])
+plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p><img src="output_7_0.png" alt="png" /></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_train[:<span style="color:#ae81ff">10</span>]</code></pre></div>
 <pre><code>array([[3],
@@ -208,8 +208,9 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div></li>
 
 <p>엔지니어들은 이미지의 특징을 추출하기 위해서 컨벌루션(Convolution)이라는 기법을 개발했다.<br />
 컨벌루션은 이미지에 3X3이나 5X5 필터를 오른쪽과 아래로 이동하며 적용하는 기술이다.<br />
-<img src="http://deeplearning.stanford.edu/wiki/images/6/6c/Convolution_schematic.gif" alt="컨벌루션" />
-출처: <a href="http://deeplearning.stanford.edu/wiki">Stanford Deep Learning</a></p>
+<img src="http://deeplearning.stanford.edu/wiki/images/6/6c/Convolution_schematic.gif" alt="컨벌루션" /></p>
+
+<p>출처: <a href="http://deeplearning.stanford.edu/wiki">Stanford Deep Learning</a></p>
 
 <p>필터에 들어가는 값에 따라서 다양한 이미지의 특징들을 보여준다.</p>
 
@@ -333,8 +334,9 @@ y_train[:<span style="color:#ae81ff">10</span>]</code></pre></div>
 사물의 특징을 보존하면서 해상도를 줄이는 역활을 수행한다.<br />
 Max pooling은 필터값이 없는 윈도우가 이미지 위에서 이동하면서 내부의 값들 중에 최대값을 선택하는 방식이다.</p>
 
-<p><img src="http://cs231n.github.io/assets/cnn/maxpool.jpeg" alt="Pooling" />
-출처: <a href="http://cs231n.github.io/convolutional-networks/">cs231n Convolutional Neural Networks</a></p>
+<p><img src="http://cs231n.github.io/assets/cnn/maxpool.jpeg" alt="Pooling" /></p>
+
+<p>출처: <a href="http://cs231n.github.io/convolutional-networks/">cs231n Convolutional Neural Networks</a></p>
 
 <h4 id="dropout">Dropout</h4>
 
@@ -432,7 +434,7 @@ Use tf.where in 2.0, which has the same broadcast rule as np.where
 <blockquote>
 <p>아&hellip;<br />
 GPU 없으면 한시간 이상 걸린다&hellip;<br />
-커피 한잔 하고 오세여~</p>
+커피 두잔 하고 오세여~  ☕️☕️</p>
 </blockquote>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(x_train, y_train,
               batch_size<span style="color:#f92672">=</span>batch_size,
@@ -517,7 +519,8 @@ df</code></pre></div>
 <blockquote>
 <p>고객님~ 원하시는 솔루션입니다.<br />
 test_image에 이미지를 입력하시면<br />
-고양이, 강아지를 인식해서 알려 드립니다</p>
+고양이, 강아지를 인식해서 알려 드립니다<br />
+정확도는 80%입니다~</p>
 </blockquote>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span>  tensorflow.keras.models <span style="color:#f92672">import</span> load_model
 <span style="color:#f92672">import</span> os
