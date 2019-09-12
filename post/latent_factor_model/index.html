@@ -136,8 +136,7 @@
 
 <h2 id="데이터-수집-data-collection">데이터 수집 (Data Collection)</h2>
 
-<p>이제는 데이터 수집도 일이 되었다.<br />
-데이터를 다운로드하고 파일로 저장하고 데이터프레임으로 변환하는 작업이 필요하다.</p>
+<p>데이터를 다운로드하고 파일로 저장하고 데이터프레임으로 변환하는 작업이 필요하다.</p>
 
 <p>우리가 사용할 무비렌즈 데이터셋은 다음과 같다.</p>
 
@@ -177,83 +176,33 @@ Action, Adventure, Animation, Children&rsquo;s, Comedy, Comedy, Documentary, Dra
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
-<p>데이터를 다운로드 하고 <code>/tmp/movielens-data/</code> 에 저장하자</p>
+<p>데이터를 다운로드 하고 데이터프레임으로 변환하자</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> sys
-<span style="color:#f92672">import</span> time
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras.utils <span style="color:#f92672">import</span> get_file
 <span style="color:#f92672">import</span> os
-<span style="color:#f92672">import</span> tempfile
-<span style="color:#f92672">import</span> zipfile
-<span style="color:#f92672">from</span> six.moves <span style="color:#f92672">import</span> urllib
-<span style="color:#f92672">import</span> tensorflow <span style="color:#f92672">as</span> tf
 
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_progresshook</span>(count, block_size, total_size):
-    <span style="color:#66d9ef">global</span> start_time
-    <span style="color:#66d9ef">if</span> count <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
-        start_time <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
-        <span style="color:#66d9ef">return</span>
-    duration <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time() <span style="color:#f92672">-</span> start_time
-    progress_size <span style="color:#f92672">=</span> int(count <span style="color:#f92672">*</span> block_size)
-    speed <span style="color:#f92672">=</span> int(progress_size <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> duration))
-    percent <span style="color:#f92672">=</span> int(count <span style="color:#f92672">*</span> block_size <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span> <span style="color:#f92672">/</span> total_size)
-    sys<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">...</span><span style="color:#e6db74">%d%%</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> MB, </span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> KB/s, </span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> seconds passed&#34;</span> <span style="color:#f92672">%</span>
-                    (percent, progress_size <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1024</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span>), speed, duration))
-    sys<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>flush()
+zip_fname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ml-latest-small.zip&#39;</span>
+data_dir <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ml-latest-small&#39;</span>
+ratings_fname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ratings.csv&#39;</span>
+movies_fname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;movies.csv&#39;</span>
+origin <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://files.grouplens.org/datasets/movielens/ml-latest-small.zip&#39;</span>
+path <span style="color:#f92672">=</span> get_file(zip_fname, origin, extract<span style="color:#f92672">=</span>True)
 
-DATA_DIR <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/tmp/movielens-data/&#34;</span>
-DATA_SET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ml-latest-small&#39;</span>
-RATINGS_FILE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ratings.csv&#34;</span>
-MOVIES_FILE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;movies.csv&#34;</span>
-DATA_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://files.grouplens.org/datasets/movielens/&#34;</span>
+path <span style="color:#f92672">=</span> path<span style="color:#f92672">.</span>replace(zip_fname, data_dir)
+ratings_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(path, ratings_fname)
+movies_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(path, movies_fname)
 
-data_subdir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(DATA_DIR, DATA_SET)
-expected_files <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;{}.zip&#34;</span><span style="color:#f92672">.</span>format(DATA_SET), RATINGS_FILE, MOVIES_FILE]
-
-tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>makedirs(data_subdir)
-<span style="color:#66d9ef">if</span> set(expected_files)<span style="color:#f92672">.</span>intersection(
-    tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>listdir(data_subdir)) <span style="color:#f92672">==</span> set(expected_files):
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Dataset {} has already been downloaded&#34;</span><span style="color:#f92672">.</span>format(DATA_SET))
-<span style="color:#66d9ef">else</span>:
-    tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>makedirs(data_subdir)
-
-    url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;{}{}.zip&#34;</span><span style="color:#f92672">.</span>format(DATA_URL, DATA_SET)
-    temp_dir <span style="color:#f92672">=</span> tempfile<span style="color:#f92672">.</span>mkdtemp()
-
-    <span style="color:#66d9ef">try</span>:
-        zip_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, <span style="color:#e6db74">&#34;{}.zip&#34;</span><span style="color:#f92672">.</span>format(DATA_SET))
-        zip_path, _ <span style="color:#f92672">=</span> urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>urlretrieve(url, zip_path, _progresshook)
-        statinfo <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>stat(zip_path)
-        <span style="color:#66d9ef">print</span>()
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Successfully downloaded {} {} bytes&#34;</span><span style="color:#f92672">.</span>format(zip_path, statinfo<span style="color:#f92672">.</span>st_size))
-
-        zipfile<span style="color:#f92672">.</span>ZipFile(zip_path, <span style="color:#e6db74">&#34;r&#34;</span>)<span style="color:#f92672">.</span>extractall(temp_dir)
-
-        working_dir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, DATA_SET)
-
-        tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>copy(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(working_dir, <span style="color:#e6db74">&#34;ratings.csv&#34;</span>), os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, RATINGS_FILE))
-        tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>copy(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(working_dir, <span style="color:#e6db74">&#34;movies.csv&#34;</span>), os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, MOVIES_FILE))
-        
-        tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>rmtree(working_dir)
-
-        <span style="color:#66d9ef">for</span> fname <span style="color:#f92672">in</span> tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>listdir(temp_dir):
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>exists(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(data_subdir, fname)):
-                tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>copy(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(temp_dir, fname),
-                                 os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(data_subdir, fname))
-            <span style="color:#66d9ef">else</span>:
-                <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Skipping copy of {}, as it already exists in the &#34;</span>
-                             <span style="color:#e6db74">&#34;destination folder.&#34;</span><span style="color:#f92672">.</span>format(fname))
-    <span style="color:#66d9ef">finally</span>:
-        tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>rmtree(temp_dir)</code></pre></div>
-<pre><code>...100%, 0 MB, 733 KB/s, 1 seconds passed
-Successfully downloaded /tmp/tmpstg1o_3y/ml-latest-small.zip 978202 bytes
+<span style="color:#66d9ef">print</span>(ratings_path)
+<span style="color:#66d9ef">print</span>(movies_path)</code></pre></div>
+<pre><code>/home/dataman/.keras/datasets/ml-latest-small/ratings.csv
+/home/dataman/.keras/datasets/ml-latest-small/movies.csv
 </code></pre>
 
 <h3 id="ratings-데이터프레임">Ratings 데이터프레임</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
 <span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
 
-ratings_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(data_subdir, RATINGS_FILE))
+ratings_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(ratings_path)
 ratings_df<span style="color:#f92672">.</span>head()</code></pre></div>
 <div>
 <style scoped>
@@ -320,7 +269,7 @@ ratings_df<span style="color:#f92672">.</span>head()</code></pre></div>
 </div>
 
 <h3 id="movies-데이터프레임">Movies 데이터프레임</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">movies_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(data_subdir, MOVIES_FILE))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">movies_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(movies_path)
 movies_df<span style="color:#f92672">.</span>head()</code></pre></div>
 <div>
 <style scoped>
@@ -1597,7 +1546,7 @@ item_embedding <span style="color:#f92672">=</span> Embedding(n_items, n_items_l
 user_embedding <span style="color:#f92672">=</span> Embedding(n_users, n_users_latent_factors, <span style="color:#75715e"># (4X2) Latent factor</span>
                            name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_embedding&#39;</span>)(user_input)</code></pre></div>
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0908 01:29:27.181608 140414091106112 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0913 01:34:07.430426 139839168730944 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
@@ -1631,7 +1580,7 @@ plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</s
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<pre><code>loss:  0.030799411237239838
+<pre><code>loss:  0.030767172574996948
 </code></pre>
 
 <p><img src="output_49_1.png" alt="png" /></p>
@@ -1672,38 +1621,38 @@ pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
   <tbody>
     <tr>
       <td>0</td>
-      <td>4.999641</td>
-      <td>4.521753</td>
-      <td>1.011094</td>
-      <td>0.982110</td>
+      <td>4.999623</td>
+      <td>4.522830</td>
+      <td>1.008499</td>
+      <td>0.986881</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>4.742187</td>
-      <td>4.289894</td>
-      <td>1.008932</td>
-      <td>0.976598</td>
+      <td>4.741117</td>
+      <td>4.289957</td>
+      <td>1.006786</td>
+      <td>0.981370</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>5.234704</td>
-      <td>4.734329</td>
-      <td>1.057725</td>
-      <td>1.027466</td>
+      <td>5.235123</td>
+      <td>4.735589</td>
+      <td>1.041489</td>
+      <td>1.020268</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.999859</td>
-      <td>1.003756</td>
-      <td>5.234326</td>
-      <td>4.740231</td>
+      <td>1.000833</td>
+      <td>1.003219</td>
+      <td>5.234733</td>
+      <td>4.739758</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>1.001166</td>
-      <td>0.995094</td>
-      <td>4.736576</td>
-      <td>4.290798</td>
+      <td>1.001417</td>
+      <td>0.994072</td>
+      <td>4.737130</td>
+      <td>4.290676</td>
     </tr>
   </tbody>
 </table>
@@ -1711,7 +1660,7 @@ pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;뷰티 인사이드에 대한 Bob의 예상 별점은 {:.1f}&#39;</span><span style="color:#f92672">.</span>format(R_hat[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">1</span>]))
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;러브 스토리에 대한 Carol의 예상 별점은 {:.1f} 이다.&#39;</span><span style="color:#f92672">.</span>format(R_hat[<span style="color:#ae81ff">2</span>][<span style="color:#ae81ff">2</span>]))</code></pre></div>
 <pre><code>뷰티 인사이드에 대한 Bob의 예상 별점은 4.5
-러브 스토리에 대한 Carol의 예상 별점은 1.1 이다.
+러브 스토리에 대한 Carol의 예상 별점은 1.0 이다.
 </code></pre>
 
 <p>⚙️ 엔지니어</p>
@@ -1794,8 +1743,8 @@ test_df <span style="color:#f92672">=</span> ratings_df[<span style="color:#f926
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;shape of train data is &#39;</span>,train_df<span style="color:#f92672">.</span>shape)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;shape of test data is &#39;</span>,test_df<span style="color:#f92672">.</span>shape)</code></pre></div>
-<pre><code>shape of train data is  (80619, 4)
-shape of test data is  (20217, 4)
+<pre><code>shape of train data is  (80544, 4)
+shape of test data is  (20292, 4)
 </code></pre>
 
 <h3 id="임베딩-embedding-1">임베딩 (Embedding)</h3>
@@ -1845,8 +1794,8 @@ plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;e
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
 plt<span style="color:#f92672">.</span>legend([<span style="color:#e6db74">&#39;train&#39;</span>, <span style="color:#e6db74">&#39;test&#39;</span>], loc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;upper left&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<pre><code>train loss:  0.015208676693554088
-test loss:  1.4508242225378092
+<pre><code>train loss:  0.015632702463206954
+test loss:  1.4420501856603685
 </code></pre>
 
 <p><img src="output_64_1.png" alt="png" /></p>
@@ -1878,7 +1827,7 @@ movie_v <span style="color:#f92672">=</span> np<span style="color:#f92672">.</sp
 predict <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict([user_v, movie_v])
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;영화 {} 에 대한 사용자 ID {}님의 예상 별점은 {:.1f} 입니다.&#39;</span><span style="color:#f92672">.</span>format(movie_title, userId, predict[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))</code></pre></div>
-<pre><code>영화 William Shakespeare's Romeo + Juliet (1996) 에 대한 사용자 ID 214님의 예상 별점은 3.9 입니다.
+<pre><code>영화 William Shakespeare's Romeo + Juliet (1996) 에 대한 사용자 ID 214님의 예상 별점은 4.0 입니다.
 </code></pre>
 		</div>
 		<footer class="post__footer">
