@@ -63,6 +63,8 @@
 <li>
 <ul>
 <li><a href="#문제-problem">문제 (Problem)</a></li>
+<li><a href="#데이터-수집-data-collection">데이터 수집 (Data Collection)</a></li>
+<li><a href="#데이터-클렌징-data-cleansing">데이터 클렌징 (Data Cleansing)</a></li>
 <li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a></li>
 <li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a></li>
 <li><a href="#로지스틱-모델링-logistic-modeling">로지스틱 모델링 (Logistic Modeling)</a>
@@ -106,10 +108,152 @@
 이 여학생이 친추한 사람의 키와 거절한 사람의 키 데이터를 가지고<br />
 그 여학생이 나를 친추할지 거절할지 예측하는 프로그램을 만들어 주세요.</p>
 
-<p>데이터는 아래에 있어요.</p>
+<p>데이터는 아래에 있어요.<br />
+<a href="https://skettee.github.io/post/linear_regression/chinchu_data.csv">https://skettee.github.io/post/linear_regression/chinchu_data.csv</a></p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">height_data <span style="color:#f92672">=</span> [<span style="color:#ae81ff">150.0</span>, <span style="color:#ae81ff">150.8</span>, <span style="color:#ae81ff">151.6</span>, <span style="color:#ae81ff">152.4</span>, <span style="color:#ae81ff">153.2</span>, <span style="color:#ae81ff">154.0</span>, <span style="color:#ae81ff">154.8</span>, <span style="color:#ae81ff">155.7</span>, <span style="color:#ae81ff">156.5</span>, <span style="color:#ae81ff">157.3</span>, <span style="color:#ae81ff">158.1</span>, <span style="color:#ae81ff">158.9</span>, <span style="color:#ae81ff">159.7</span>, <span style="color:#ae81ff">160.6</span>, <span style="color:#ae81ff">161.4</span>, <span style="color:#ae81ff">162.2</span>, <span style="color:#ae81ff">163.0</span>, <span style="color:#ae81ff">163.8</span>, <span style="color:#ae81ff">164.6</span>, <span style="color:#ae81ff">165.5</span>, <span style="color:#ae81ff">166.3</span>, <span style="color:#ae81ff">167.1</span>, <span style="color:#ae81ff">167.9</span>, <span style="color:#ae81ff">168.7</span>, <span style="color:#ae81ff">169.5</span>, <span style="color:#ae81ff">170.4</span>, <span style="color:#ae81ff">171.2</span>, <span style="color:#ae81ff">172.0</span>, <span style="color:#ae81ff">172.8</span>, <span style="color:#ae81ff">173.6</span>, <span style="color:#ae81ff">174.4</span>, <span style="color:#ae81ff">175.3</span>, <span style="color:#ae81ff">176.1</span>, <span style="color:#ae81ff">176.9</span>, <span style="color:#ae81ff">177.7</span>, <span style="color:#ae81ff">178.5</span>, <span style="color:#ae81ff">179.3</span>, <span style="color:#ae81ff">180.2</span>, <span style="color:#ae81ff">181.0</span>, <span style="color:#ae81ff">181.8</span>, <span style="color:#ae81ff">182.6</span>, <span style="color:#ae81ff">183.4</span>, <span style="color:#ae81ff">184.2</span>, <span style="color:#ae81ff">185.1</span>, <span style="color:#ae81ff">185.9</span>, <span style="color:#ae81ff">186.7</span>, <span style="color:#ae81ff">187.5</span>, <span style="color:#ae81ff">188.3</span>, <span style="color:#ae81ff">189.1</span>, <span style="color:#ae81ff">190.0</span>]
-chinchu_data <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>]</code></pre></div>
+
+<h2 id="데이터-수집-data-collection">데이터 수집 (Data Collection)</h2>
+
+<p>데이터를 다운로드하고 데이터프레임으로 변환한다.</p>
+
+<p>Keras의 get_file을 이용해서 데이터를 다운로드 한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras.utils <span style="color:#f92672">import</span> get_file
+
+fname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;chinchu_data.csv&#39;</span>
+origin <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://skettee.github.io/post/logistic_regression/chinchu_data.csv&#39;</span>
+path <span style="color:#f92672">=</span> get_file(fname, origin)</code></pre></div>
+<p>CSV파일을 읽어서 데이터프레임으로 변환한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+
+df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(path, index_col<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+
+df<span style="color:#f92672">.</span>head()</code></pre></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>height</th>
+      <th>chinchu</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>158.9</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>152.4</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>161.4</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>168.7</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>167.9</td>
+      <td>no</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="데이터-클렌징-data-cleansing">데이터 클렌징 (Data Cleansing)</h2>
+
+<p>데이터가 빵꾸난 것이 없는지 확인한다. 빵꾸난 데이터는 제거한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Check nan</span>
+df<span style="color:#f92672">.</span>isnull()<span style="color:#f92672">.</span>any()</code></pre></div>
+<pre><code>height     True
+chinchu    True
+dtype: bool
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Remove row with nan</span>
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>dropna(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>sort_values(<span style="color:#e6db74">&#39;height&#39;</span>)<span style="color:#f92672">.</span>reset_index(drop<span style="color:#f92672">=</span>True)
+
+df<span style="color:#f92672">.</span>head()</code></pre></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>height</th>
+      <th>chinchu</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>150.0</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>150.8</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>151.6</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>152.4</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>153.2</td>
+      <td>no</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">height_data <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>height
+chinchu_data <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>chinchu
+
+<span style="color:#66d9ef">print</span>(height_data<span style="color:#f92672">.</span>shape)
+<span style="color:#66d9ef">print</span>(chinchu_data<span style="color:#f92672">.</span>shape)</code></pre></div>
+<pre><code>(50,)
+(50,)
+</code></pre>
+
 <p>⚙️ 엔지니어</p>
 
 <blockquote>
@@ -140,7 +284,7 @@ plt<span style="color:#f92672">.</span>scatter(height_data, chinchu_data)
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;height (cm)&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;chinchu (yes or no)&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_6_0.png" alt="png" /></p>
+<p><img src="output_13_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -180,7 +324,7 @@ plt<span style="color:#f92672">.</span>scatter(x, y)
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;height (cm)&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;chinchu&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_9_0.png" alt="png" /></p>
+<p><img src="output_16_0.png" alt="png" /></p>
 
 <h2 id="로지스틱-모델링-logistic-modeling">로지스틱 모델링 (Logistic Modeling)</h2>
 
@@ -206,7 +350,7 @@ s_{c}(x) =
 \end{cases}\)</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>step(x, y)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_12_0.png" alt="png" /></p>
+<p><img src="output_19_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -254,7 +398,7 @@ ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#3
 ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#39;d&#39;</span>)
 ax<span style="color:#f92672">.</span>set_zlabel(<span style="color:#e6db74">&#39;J&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_14_0.png" alt="png" /></p>
+<p><img src="output_21_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -285,7 +429,7 @@ xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>li
 
 plt<span style="color:#f92672">.</span>plot(xx, sigmoid(xx))
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_17_0.png" alt="png" /></p>
+<p><img src="output_24_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -374,7 +518,7 @@ ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#3
 ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#39;b&#39;</span>)
 ax<span style="color:#f92672">.</span>set_zlabel(<span style="color:#e6db74">&#39;J&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_21_0.png" alt="png" /></p>
+<p><img src="output_28_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -431,14 +575,6 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <h2 id="케라스-keras-로-모델링-modeling">케라스(Keras)로 모델링(Modeling)</h2>
 
-<p>⚙️ 엔지니어</p>
-
-<blockquote>
-<p>좋았어!</p>
-
-<p><strong>케라스(Keras)</strong>를 이용해서 구현을 해보자!</p>
-</blockquote>
-
 <h3 id="정규화-normalization">정규화 (Normalization)</h3>
 
 <p><code>정규값 = (현재값 - 최소값) / (최대값-최소값)</code> 으로 정규화 한다!</p>
@@ -462,7 +598,7 @@ plt<span style="color:#f92672">.</span>scatter(X_train, Y_train)
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;scaled-height&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;chinchu&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_27_0.png" alt="png" /></p>
+<p><img src="output_33_0.png" alt="png" /></p>
 
 <h3 id="모델링-modeling">모델링 (Modeling)</h3>
 
@@ -488,10 +624,10 @@ model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672"
 <span style="color:#75715e"># epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.</span>
 hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10000</span>, batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) </code></pre></div>
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0901 10:08:24.463013 140371975219008 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0914 02:12:17.257588 140325522511680 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
-W0901 10:08:24.482560 140371975219008 deprecation.py:323] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.&lt;locals&gt;.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+W0914 02:12:17.276001 140325522511680 deprecation.py:323] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.&lt;locals&gt;.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
 Instructions for updating:
 Use tf.where in 2.0, which has the same broadcast rule as np.where
 </code></pre>
@@ -501,7 +637,7 @@ Use tf.where in 2.0, which has the same broadcast rule as np.where
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_31_0.png" alt="png" /></p>
+<p><img src="output_37_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -516,8 +652,8 @@ w <span style="color:#f92672">=</span>  w[<span style="color:#ae81ff">0</span>][
 b <span style="color:#f92672">=</span> b[<span style="color:#ae81ff">0</span>]
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;w: &#39;</span>, w)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;b: &#39;</span>, b)</code></pre></div>
-<pre><code>w:  14.712823
-b:  -7.5659995
+<pre><code>w:  14.625153
+b:  -7.5220504
 </code></pre>
 
 <h3 id="그래프로-확인">그래프로 확인</h3>
@@ -527,7 +663,7 @@ plt<span style="color:#f92672">.</span>plot(x_scale, sigmoid(w<span style="color
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;scaled-height&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;chinchu&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_36_0.png" alt="png" /></p>
+<p><img src="output_42_0.png" alt="png" /></p>
 
 <h2 id="해결-solution">해결 (Solution)</h2>
 
@@ -544,7 +680,7 @@ input_x <span style="color:#f92672">=</span> mm_scaler<span style="color:#f92672
 predict <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(input_x)
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;친추가 될 확률은 {:.1f}% 입니다.&#39;</span><span style="color:#f92672">.</span>format(predict[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]<span style="color:#f92672">*</span><span style="color:#ae81ff">100</span>))</code></pre></div>
-<pre><code>친추가 될 확률은 93.9% 입니다.
+<pre><code>친추가 될 확률은 93.8% 입니다.
 </code></pre>
 		</div>
 		<footer class="post__footer">

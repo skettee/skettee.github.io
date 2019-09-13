@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SimpleRNN on 막돼먹은 엔지니어의 머신런닝 개발</title>
+    <link>/tags/simplernn/</link>
+    <description>Recent content in SimpleRNN on 막돼먹은 엔지니어의 머신런닝 개발</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 11 Sep 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/simplernn/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Recurrent Neural Network</title>
+      <link>/post/recurrent_neural_network/</link>
+      <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/recurrent_neural_network/</guid>
+      <description>&lt;p&gt;시퀀스 모델링(Sequence Modeling)을 위한  리커런트 뉴럴 네트워크(Recurrent Neural Network) 에 대해 알아보고 keras를 이용해서 모델링을 해보자!&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -69,7 +69,11 @@
 <li><a href="#훈련-세트와-테스트-세트-train-and-test-set">훈련 세트와 테스트 세트 (Train and Test set)</a></li>
 <li><a href="#데이터-확인-data-visualization">데이터 확인 (Data Visualization)</a></li>
 </ul></li>
-<li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a></li>
+<li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a>
+<ul>
+<li><a href="#벡터화-flatten">벡터화 (Flatten)</a></li>
+<li><a href="#원-핫-인코딩-one-hot-encoding">원-핫 인코딩 (One-hot encoding)</a></li>
+</ul></li>
 <li><a href="#뉴럴-네트워크-모델링-nn-modeling">뉴럴 네트워크 모델링 (NN Modeling)</a>
 <ul>
 <li><a href="#relu-rectified-linear-unit">ReLU (Rectified Linear Unit)</a></li>
@@ -238,8 +242,24 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <h2 id="데이터-변환-data-transformation">데이터 변환 (Data Transformation)</h2>
 
-<p>입력 데이터의 2D shape (28,28)를 1D (784, )로 변환해 주는 작업을 <strong>벡터화(Flattern)</strong> 라고 한다.<br />
-이 작업은 keras layer에서 처리해 주면 된다. (나중에 하겠다는 얘기다.)</p>
+<h3 id="벡터화-flatten">벡터화 (Flatten)</h3>
+
+<p>입력 데이터의 2D shape (28,28)를 1D (784, )로 변환해 주는 작업을 <strong>벡터화(Flatten)</strong> 라고 한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Train</span>
+batch_size <span style="color:#f92672">=</span> train_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
+flatten_vector <span style="color:#f92672">=</span> train_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span>  train_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>]
+X_train <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(train_images, (batch_size,flatten_vector))
+<span style="color:#66d9ef">print</span>(X_train<span style="color:#f92672">.</span>shape)
+<span style="color:#75715e"># Test</span>
+batch_size <span style="color:#f92672">=</span> test_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
+flatten_vector <span style="color:#f92672">=</span> test_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span>  test_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>]
+X_test <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(test_images, (batch_size,flatten_vector))
+<span style="color:#66d9ef">print</span>(X_test<span style="color:#f92672">.</span>shape)</code></pre></div>
+<pre><code>(60000, 784)
+(10000, 784)
+</code></pre>
+
+<h3 id="원-핫-인코딩-one-hot-encoding">원-핫 인코딩 (One-hot encoding)</h3>
 
 <p>소프트맥스(Softmax)를 사용할 예정이니까 출력 데이터를 원-핫 인코딩으로 변환해 주자</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras.utils <span style="color:#f92672">import</span> to_categorical
@@ -288,7 +308,7 @@ y_list <span style="color:#f92672">=</span> [relu(x) <span style="color:#66d9ef"
 
 plt<span style="color:#f92672">.</span>plot(x_list, y_list)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_17_0.png" alt="png" /></p>
+<p><img src="output_19_0.png" alt="png" /></p>
 
 <p>시그모이드의 단점은  hidden layer가 많아 질 수록 학습이 안되는 문제가 있다. 미분의 미분의 미분의 &hellip; 미분을 하다 보면 미분값이 0에 가깝게 된다. 그리고 \(z\)값이 엄청 크거나 작은 값이 되어도 미분값이 0에 가깝게 된다. 이러면 손실 함수의 최소값을 찾기 위해 \(w\)와 \(b\)를 움직이지 못한다.  이러한 단점을 보완하기 위해서 탄생한 것이 렐루(ReLU) 함수이다. 물론 엔지니어를 갈아서 만들었다&hellip;</p>
 
@@ -391,61 +411,59 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <h2 id="케라스-keras-로-모델링-modeling">케라스(Keras)로 모델링(Modeling)</h2>
 
-<p><strong>케라스(Keras)</strong> 를 이용해서 구현을 해보자!</p>
-
 <h3 id="정규화-normalization">정규화 (Normalization)</h3>
 
 <p><code>정규값 = (현재값 - 최소값) / (최대값-최소값)</code> 으로 정규화 한다!<br />
 최소값이 0이고, 최대값이 255이니까 현재값에서 /255 를 해 주면 된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_train <span style="color:#f92672">=</span> train_images <span style="color:#f92672">/</span> <span style="color:#ae81ff">255.0</span>
-X_test <span style="color:#f92672">=</span> test_images <span style="color:#f92672">/</span> <span style="color:#ae81ff">255.0</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">X_train <span style="color:#f92672">=</span> X_train <span style="color:#f92672">/</span> <span style="color:#ae81ff">255.0</span>
+X_test <span style="color:#f92672">=</span> X_test <span style="color:#f92672">/</span> <span style="color:#ae81ff">255.0</span>
 
-plt<span style="color:#f92672">.</span>imshow(X_train[pick_image], cmap<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gray&#39;</span>)
+image <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(X_train[pick_image], (<span style="color:#ae81ff">28</span>, <span style="color:#ae81ff">28</span>))
+plt<span style="color:#f92672">.</span>imshow(image, cmap<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gray&#39;</span>)
 plt<span style="color:#f92672">.</span>colorbar()
 plt<span style="color:#f92672">.</span>xlabel(np<span style="color:#f92672">.</span>argmax(Y_train[pick_image]))
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_20_0.png" alt="png" /></p>
+<p><img src="output_22_0.png" alt="png" /></p>
 
 <h3 id="모델링-modeling">모델링 (Modeling)</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> Sequential
 <span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> Flatten, Dense
 
 model <span style="color:#f92672">=</span> Sequential()
-model<span style="color:#f92672">.</span>add(Flatten(input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">28</span>,<span style="color:#ae81ff">28</span>)))
-model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">128</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">128</span>, input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">784</span>,), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
 model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">84</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
 model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;softmax&#39;</span>))
 model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;categorical_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>, metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])</code></pre></div>
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0908 14:09:13.760802 139991716501312 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0913 23:46:37.737540 140087928641344 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
 
 <h3 id="모델-훈련-train-model">모델 훈련 (Train Model)</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
 train_acc <span style="color:#f92672">=</span> hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;acc&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
 train_loss <span style="color:#f92672">=</span>  hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train accuracy: &#39;</span>, train_acc)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, train_loss)</code></pre></div>
-<pre><code>train accuracy:  0.99338335
-train loss:  0.020009287602726546
+<pre><code>train accuracy:  0.99663335
+train loss:  0.011095259626388673
 </code></pre>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_25_0.png" alt="png" /></p>
+<p><img src="output_27_0.png" alt="png" /></p>
 
 <h3 id="정확도-평가-test-model">정확도 평가 (Test Model)</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test_loss, test_acc <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>evaluate(X_test, Y_test)
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test accuracy: &#39;</span>, test_acc)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test loss: &#39;</span>, test_loss)</code></pre></div>
-<pre><code>10000/10000 [==============================] - 0s 33us/sample - loss: 0.1065 - acc: 0.9749
-test accuracy:  0.9749
-test loss:  0.10645339069099137
+<pre><code>10000/10000 [==============================] - 0s 31us/sample - loss: 0.1314 - acc: 0.9750
+test accuracy:  0.975
+test loss:  0.1314390505407006
 </code></pre>
 
 <p>대충 만들었는데도 정확도가 상당히 높다.<br />
@@ -494,33 +512,32 @@ test loss:  0.10645339069099137
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> regularizers
 
 model_l2 <span style="color:#f92672">=</span> Sequential()
-model_l2<span style="color:#f92672">.</span>add(Flatten(input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">28</span>,<span style="color:#ae81ff">28</span>)))
-model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">128</span>, kernel_regularizer<span style="color:#f92672">=</span>regularizers<span style="color:#f92672">.</span>l2(<span style="color:#ae81ff">0.0001</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">128</span>, input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">784</span>,), kernel_regularizer<span style="color:#f92672">=</span>regularizers<span style="color:#f92672">.</span>l2(<span style="color:#ae81ff">0.0001</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
 model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">84</span>, kernel_regularizer<span style="color:#f92672">=</span>regularizers<span style="color:#f92672">.</span>l2(<span style="color:#ae81ff">0.0001</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
 model_l2<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;softmax&#39;</span>))
 model_l2<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;categorical_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>, metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])
 
-hist <span style="color:#f92672">=</span> model_l2<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+hist <span style="color:#f92672">=</span> model_l2<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
 train_acc_l2 <span style="color:#f92672">=</span> hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;acc&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
 train_loss_l2 <span style="color:#f92672">=</span>  hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train accuracy: &#39;</span>, train_acc_l2)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, train_loss_l2)</code></pre></div>
-<pre><code>train accuracy:  0.98798335
-train loss:  0.07904902546405793
+<pre><code>train accuracy:  0.9906833
+train loss:  0.0694867668012778
 </code></pre>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_31_0.png" alt="png" /></p>
+<p><img src="output_33_0.png" alt="png" /></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test_loss_l2, test_acc_l2 <span style="color:#f92672">=</span> model_l2<span style="color:#f92672">.</span>evaluate(X_test, Y_test)
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test accuracy: &#39;</span>, test_acc_l2)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test loss: &#39;</span>, test_loss_l2)</code></pre></div>
-<pre><code>10000/10000 [==============================] - 0s 41us/sample - loss: 0.1209 - acc: 0.9776
-test accuracy:  0.9776
-test loss:  0.12088210636377335
+<pre><code>10000/10000 [==============================] - 0s 36us/sample - loss: 0.1049 - acc: 0.9813
+test accuracy:  0.9813
+test loss:  0.10486903595924378
 </code></pre>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
 
@@ -553,13 +570,13 @@ df</code></pre></div>
   <tbody>
     <tr>
       <td>model</td>
-      <td>0.993383</td>
-      <td>0.9749</td>
+      <td>0.996633</td>
+      <td>0.9750</td>
     </tr>
     <tr>
       <td>model_with_l2</td>
-      <td>0.987983</td>
-      <td>0.9776</td>
+      <td>0.990683</td>
+      <td>0.9813</td>
     </tr>
   </tbody>
 </table>
@@ -571,7 +588,7 @@ df</code></pre></div>
 
 <blockquote>
 <p>보스~ 원하시는 솔루션입니다.<br />
-정확도는 97% 이상입니다.</p>
+정확도는 98% 이상입니다.</p>
 
 <p>test_data에 원하시는 이미지를 입력하시면<br />
 원하시는 결과값이 출력 됩니다.</p>
@@ -579,7 +596,7 @@ df</code></pre></div>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pick_image <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span> <span style="color:#75715e"># 0 ~ 9999</span>
 
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict_handwrittendigits</span>(x):
-    x_data <span style="color:#f92672">=</span>(np<span style="color:#f92672">.</span>expand_dims(x, <span style="color:#ae81ff">0</span>))
+    x_data <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(x, (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">784</span>))
     predict <span style="color:#f92672">=</span> model_l2<span style="color:#f92672">.</span>predict(x_data)
     <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>argmax(predict)
 
@@ -591,7 +608,7 @@ plt<span style="color:#f92672">.</span>xticks([])
 plt<span style="color:#f92672">.</span>yticks([])
 plt<span style="color:#f92672">.</span>show()
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;predicted digit is &#39;</span>, result)</code></pre></div>
-<p><img src="output_35_0.png" alt="png" /></p>
+<p><img src="output_37_0.png" alt="png" /></p>
 
 <pre><code>predicted digit is  0
 </code></pre>

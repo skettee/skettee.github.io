@@ -63,6 +63,8 @@
 <li>
 <ul>
 <li><a href="#문제-problem">문제 (Problem)</a></li>
+<li><a href="#데이터-수집-data-collection">데이터 수집 (Data Collection)</a></li>
+<li><a href="#데이터-클렌징-data-cleansing">데이터 클렌징 (Data Cleansing)</a></li>
 <li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a></li>
 <li><a href="#데이터-변환-data-transformation">데이터 변환 (Data Transformation)</a></li>
 <li><a href="#선형-모델링-linear-modeling">선형 모델링 (Linear Modeling)</a>
@@ -110,10 +112,159 @@
 
 <p>만들어 줄 수 있지요?</p>
 
-<p>데이터는 아래에 있어요</p>
+<p>데이터는 아래에 있어요<br />
+<a href="https://skettee.github.io/post/linear_regression/momjjangban_data.csv">https://skettee.github.io/post/linear_regression/momjjangban_data.csv</a></p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">height_data<span style="color:#f92672">=</span>  [<span style="color:#ae81ff">150.0</span>, <span style="color:#ae81ff">150.8</span>, <span style="color:#ae81ff">151.6</span>, <span style="color:#ae81ff">152.4</span>, <span style="color:#ae81ff">153.2</span>, <span style="color:#ae81ff">154.0</span>, <span style="color:#ae81ff">154.8</span>, <span style="color:#ae81ff">155.7</span>, <span style="color:#ae81ff">156.5</span>, <span style="color:#ae81ff">157.3</span>, <span style="color:#ae81ff">158.1</span>, <span style="color:#ae81ff">158.9</span>, <span style="color:#ae81ff">159.7</span>, <span style="color:#ae81ff">160.6</span>, <span style="color:#ae81ff">161.4</span>, <span style="color:#ae81ff">162.2</span>, <span style="color:#ae81ff">163.0</span>, <span style="color:#ae81ff">163.8</span>, <span style="color:#ae81ff">164.6</span>, <span style="color:#ae81ff">165.5</span>, <span style="color:#ae81ff">166.3</span>, <span style="color:#ae81ff">167.1</span>, <span style="color:#ae81ff">167.9</span>, <span style="color:#ae81ff">168.7</span>, <span style="color:#ae81ff">169.5</span>, <span style="color:#ae81ff">170.4</span>, <span style="color:#ae81ff">171.2</span>, <span style="color:#ae81ff">172.0</span>, <span style="color:#ae81ff">172.8</span>, <span style="color:#ae81ff">173.6</span>, <span style="color:#ae81ff">174.4</span>, <span style="color:#ae81ff">175.3</span>, <span style="color:#ae81ff">176.1</span>, <span style="color:#ae81ff">176.9</span>, <span style="color:#ae81ff">177.7</span>, <span style="color:#ae81ff">178.5</span>, <span style="color:#ae81ff">179.3</span>, <span style="color:#ae81ff">180.2</span>, <span style="color:#ae81ff">181.0</span>, <span style="color:#ae81ff">181.8</span>, <span style="color:#ae81ff">182.6</span>, <span style="color:#ae81ff">183.4</span>, <span style="color:#ae81ff">184.2</span>, <span style="color:#ae81ff">185.1</span>, <span style="color:#ae81ff">185.9</span>, <span style="color:#ae81ff">186.7</span>, <span style="color:#ae81ff">187.5</span>, <span style="color:#ae81ff">188.3</span>, <span style="color:#ae81ff">189.1</span>, <span style="color:#ae81ff">190.0</span>]
-weight_data<span style="color:#f92672">=</span>  [<span style="color:#ae81ff">45.198</span>, <span style="color:#ae81ff">46.212</span>, <span style="color:#ae81ff">45.850</span>, <span style="color:#ae81ff">47.389</span>, <span style="color:#ae81ff">46.920</span>, <span style="color:#ae81ff">49.275</span>, <span style="color:#ae81ff">49.790</span>, <span style="color:#ae81ff">50.354</span>, <span style="color:#ae81ff">51.694</span>, <span style="color:#ae81ff">50.789</span>, <span style="color:#ae81ff">52.301</span>, <span style="color:#ae81ff">52.015</span>, <span style="color:#ae81ff">54.277</span>, <span style="color:#ae81ff">54.879</span>, <span style="color:#ae81ff">56.066</span>, <span style="color:#ae81ff">55.140</span>, <span style="color:#ae81ff">55.808</span>, <span style="color:#ae81ff">56.516</span>, <span style="color:#ae81ff">57.401</span>, <span style="color:#ae81ff">59.633</span>, <span style="color:#ae81ff">59.815</span>, <span style="color:#ae81ff">59.843</span>, <span style="color:#ae81ff">61.265</span>, <span style="color:#ae81ff">61.569</span>, <span style="color:#ae81ff">62.276</span>, <span style="color:#ae81ff">63.741</span>, <span style="color:#ae81ff">64.764</span>, <span style="color:#ae81ff">64.674</span>, <span style="color:#ae81ff">65.149</span>, <span style="color:#ae81ff">66.910</span>, <span style="color:#ae81ff">66.000</span>, <span style="color:#ae81ff">67.076</span>, <span style="color:#ae81ff">69.120</span>, <span style="color:#ae81ff">69.940</span>, <span style="color:#ae81ff">69.820</span>, <span style="color:#ae81ff">69.971</span>, <span style="color:#ae81ff">70.625</span>, <span style="color:#ae81ff">71.856</span>, <span style="color:#ae81ff">73.483</span>, <span style="color:#ae81ff">73.709</span>, <span style="color:#ae81ff">74.028</span>, <span style="color:#ae81ff">75.685</span>, <span style="color:#ae81ff">76.123</span>, <span style="color:#ae81ff">76.346</span>, <span style="color:#ae81ff">76.917</span>, <span style="color:#ae81ff">78.641</span>, <span style="color:#ae81ff">78.157</span>, <span style="color:#ae81ff">79.479</span>, <span style="color:#ae81ff">80.725</span>, <span style="color:#ae81ff">80.582</span>]</code></pre></div>
+
+<h2 id="데이터-수집-data-collection">데이터 수집 (Data Collection)</h2>
+
+<p>데이터를 다운로드하고 데이터프레임으로 변환한다.</p>
+
+<p>Keras의 get_file을 이용해서 데이터를 다운로드 한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tensorflow.keras.utils <span style="color:#f92672">import</span> get_file
+
+fname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;momjjangban_data.csv&#39;</span>
+origin <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://skettee.github.io/post/linear_regression/momjjangban_data.csv&#39;</span>
+path <span style="color:#f92672">=</span> get_file(fname, origin)</code></pre></div>
+<p>CSV파일을 읽어서 데이터프레임으로 변환한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+
+df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(path, index_col<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+
+df<span style="color:#f92672">.</span>head()</code></pre></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>height</th>
+      <th>weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>158.9</td>
+      <td>52.015</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>173.6</td>
+      <td>66.910</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>174.4</td>
+      <td>66.000</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>169.2</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>154.0</td>
+      <td>49.275</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="데이터-클렌징-data-cleansing">데이터 클렌징 (Data Cleansing)</h2>
+
+<p>데이터가 빵꾸난 것이 없는지 확인한다. 빵꾸난 데이터는 제거한다.</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>얼굴만 클렌징하는거 아니다&hellip;<br />
+데이터도 클렌징해야 한다.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Check nan</span>
+df<span style="color:#f92672">.</span>isnull()<span style="color:#f92672">.</span>any()</code></pre></div>
+<pre><code>height    True
+weight    True
+dtype: bool
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Remove row with nan</span>
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>dropna(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>reset_index(drop<span style="color:#f92672">=</span>True)
+
+df<span style="color:#f92672">.</span>head()</code></pre></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>height</th>
+      <th>weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>158.9</td>
+      <td>52.015</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>173.6</td>
+      <td>66.910</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>174.4</td>
+      <td>66.000</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>154.0</td>
+      <td>49.275</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>177.7</td>
+      <td>69.820</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">height_data <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>height
+weight_data <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>weight
+
+<span style="color:#66d9ef">print</span>(height_data<span style="color:#f92672">.</span>shape)
+<span style="color:#66d9ef">print</span>(weight_data<span style="color:#f92672">.</span>shape)</code></pre></div>
+<pre><code>(50,)
+(50,)
+</code></pre>
+
 <h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
 
 <p>데이터가 어떤 모양인지 확인해 보자.</p>
@@ -125,7 +276,7 @@ plt<span style="color:#f92672">.</span>scatter(height_data, weight_data)
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;height (cm)&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;weight (kg)&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_7_0.png" alt="png" /></p>
+<p><img src="output_14_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -147,7 +298,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <li>컬럼의 크기는 측정한 항목의 개수<br /></li>
 </ul>
 
-<p>키 값을 입력하면 &lsquo;몸짱반&rsquo;에 들어갈 수 있는 몸무게를 예측해야 한다. 키 데이터를 입력 x라고 하고 몸무게 데이터를 출력 y라고 하자</p>
+<p>키 값을 입력하면 &lsquo;몸짱반&rsquo;에 들어갈 수 있는 몸무게를 예측해야 한다. 키 데이터를 입력 \(x\)라고 하고 몸무게 데이터를 출력 \(y\)라고 하자</p>
 
 <ul>
 <li>키 데이터는 50개의 &lsquo;키&rsquo;를 측정한 데이터가 있으므로 50X1 매트릭스<br /></li>
@@ -162,37 +313,35 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 복잡하다 &hellip; 잘못하면 다크-디멘션에 빠진다&hellip;<br />
 뒤에서 더 자세하게 설명할 기회가 있을 것이다.</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
-
-x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(height_data)<span style="color:#f92672">.</span>reshape(len(height_data), <span style="color:#ae81ff">1</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(height_data)<span style="color:#f92672">.</span>reshape(len(height_data), <span style="color:#ae81ff">1</span>)
 y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(weight_data)<span style="color:#f92672">.</span>reshape(len(weight_data), <span style="color:#ae81ff">1</span>)
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;x = &#39;</span>, x[:<span style="color:#ae81ff">10</span>])
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;x.shape= &#39;</span>, x<span style="color:#f92672">.</span>shape)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">y = &#39;</span>, y[:<span style="color:#ae81ff">10</span>])
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;y.shape= &#39;</span>, y<span style="color:#f92672">.</span>shape)</code></pre></div>
-<pre><code>x =  [[150. ]
- [150.8]
- [151.6]
- [152.4]
- [153.2]
+<pre><code>x =  [[158.9]
+ [173.6]
+ [174.4]
  [154. ]
- [154.8]
- [155.7]
- [156.5]
- [157.3]]
+ [177.7]
+ [188.3]
+ [183.4]
+ [168.7]
+ [185.1]
+ [156.5]]
 x.shape=  (50, 1)
 
-y =  [[45.198]
- [46.212]
- [45.85 ]
- [47.389]
- [46.92 ]
+y =  [[52.015]
+ [66.91 ]
+ [66.   ]
  [49.275]
- [49.79 ]
- [50.354]
- [51.694]
- [50.789]]
+ [69.82 ]
+ [79.479]
+ [75.685]
+ [61.569]
+ [76.346]
+ [51.694]]
 y.shape=  (50, 1)
 </code></pre>
 
@@ -293,7 +442,7 @@ ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#3
 ax<span style="color:#f92672">.</span>set_zlabel(<span style="color:#e6db74">&#39;J&#39;</span>)
 ax<span style="color:#f92672">.</span>set_zticks([])
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_18_0.png" alt="png" /></p>
+<p><img src="output_25_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -427,7 +576,7 @@ plt<span style="color:#f92672">.</span>scatter(X_train, Y_train)
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;scaled-height&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;scaled-weight&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_28_0.png" alt="png" /></p>
+<p><img src="output_35_0.png" alt="png" /></p>
 
 <h3 id="모델링-modeling">모델링 (Modeling)</h3>
 
@@ -453,7 +602,7 @@ model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672"
 <span style="color:#75715e"># epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.</span>
 hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">3000</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) </code></pre></div>
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0901 10:10:02.460783 139866692384576 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0914 02:05:15.168387 140504936548160 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 </code></pre>
@@ -463,7 +612,7 @@ Call initializer instance with the dtype argument instead of passing it to the c
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_32_0.png" alt="png" /></p>
+<p><img src="output_39_0.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -478,8 +627,8 @@ w <span style="color:#f92672">=</span>  w[<span style="color:#ae81ff">0</span>][
 b <span style="color:#f92672">=</span> b[<span style="color:#ae81ff">0</span>]
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;w: &#39;</span>, w)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;b: &#39;</span>, b)</code></pre></div>
-<pre><code>w:  0.8991271
-b:  -2.6255682
+<pre><code>w:  0.89876956
+b:  -2.6253219
 </code></pre>
 
 <h3 id="그래프로-확인">그래프로 확인</h3>
@@ -490,7 +639,7 @@ plt<span style="color:#f92672">.</span>plot(x_scale, w<span style="color:#f92672
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;scaled-height&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;scaled-weight&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_37_0.png" alt="png" /></p>
+<p><img src="output_44_0.png" alt="png" /></p>
 
 <h2 id="해결-solution">해결 (Solution)</h2>
 
