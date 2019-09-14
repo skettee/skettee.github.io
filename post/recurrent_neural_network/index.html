@@ -345,9 +345,10 @@ RNN 모델은 다음과 같다.</p>
 
 <p><img src="https://skettee.github.io/post/recurrent_neural_network/rnn_model.png" alt="RNN 모델" /></p>
 
-<p>\(a^{<t>} = g\left(W_{aa}a^{<t-1>} + W_{ax}x^{<t>} + b_a\right)\)</p>
-
-<p>\(\hat y^{<t>} = W_{ya}a^{<t>} + b_y\)</p>
+<p>\(\begin{align}
+a^{\lt t \gt} &amp; = g\left(W_{aa}a^{\lt t-1 \gt} + W_{ax}x^{\lt t \gt} + b_a\right) \\
+\hat y^{\lt t \gt} &amp; = W_{ya}a^{\lt t \gt} + b_y
+\end{align}\)</p>
 
 <p>⚙️ 엔지니어</p>
 
