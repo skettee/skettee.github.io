@@ -12,11 +12,11 @@
     
     
     <item>
-      <title>SimpleRNN</title>
-      <link>/tags/simplernn/</link>
+      <title>many-to-one</title>
+      <link>/tags/many-to-one/</link>
       <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>/tags/simplernn/</guid>
+      <guid>/tags/many-to-one/</guid>
       <description></description>
     </item>
     
@@ -26,6 +26,15 @@
       <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/tanh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>timesteps</title>
+      <link>/tags/timesteps/</link>
+      <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/timesteps/</guid>
       <description></description>
     </item>
     
