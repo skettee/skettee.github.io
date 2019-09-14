@@ -422,20 +422,21 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p>입력 데이터의 이모티콘과 출력 데이터의 문자를 숫자로 변환한다.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> LabelEncoder
 
-encoder <span style="color:#f92672">=</span> LabelEncoder()
+encoder_x <span style="color:#f92672">=</span> LabelEncoder()
+encoder_y <span style="color:#f92672">=</span> LabelEncoder()
 
 <span style="color:#75715e"># Encoding X</span>
 batch_size <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
 input_dim <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
 x_train <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>flatten() <span style="color:#75715e"># Flattern</span>
-x_train <span style="color:#f92672">=</span> encoder<span style="color:#f92672">.</span>fit_transform(x_train) <span style="color:#75715e"># Labeling</span>
+x_train <span style="color:#f92672">=</span> encoder_x<span style="color:#f92672">.</span>fit_transform(x_train) <span style="color:#75715e"># Labeling</span>
 x_train <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(x_train, (batch_size, input_dim)) <span style="color:#75715e"># Reshape</span>
 
 <span style="color:#75715e"># Encoding Y</span>
 batch_size <span style="color:#f92672">=</span> y<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
 input_dim <span style="color:#f92672">=</span> y<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
 y_train <span style="color:#f92672">=</span> y<span style="color:#f92672">.</span>flatten() <span style="color:#75715e"># Flattern</span>
-y_train <span style="color:#f92672">=</span> encoder<span style="color:#f92672">.</span>fit_transform(y_train) <span style="color:#75715e"># Labeling</span>
+y_train <span style="color:#f92672">=</span> encoder_y<span style="color:#f92672">.</span>fit_transform(y_train) <span style="color:#75715e"># Labeling</span>
 y_train <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(y_train, (batch_size, input_dim)) <span style="color:#75715e"># Reshape</span>
 
 <span style="color:#66d9ef">print</span>(x_train<span style="color:#f92672">.</span>shape)
@@ -467,7 +468,7 @@ model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">1
 model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;mean_squared_error&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;rmsprop&#39;</span>)
 model<span style="color:#f92672">.</span>summary()</code></pre></div>
 <pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0913 23:04:53.602141 139855953307456 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+W0914 21:28:56.682714 140606029240128 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
 Instructions for updating:
 Call initializer instance with the dtype argument instead of passing it to the constructor
 
@@ -514,7 +515,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
     batch_size <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
     time_steps <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
     x <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>flatten()
-    x <span style="color:#f92672">=</span> encoder<span style="color:#f92672">.</span>fit_transform(x)
+    x <span style="color:#f92672">=</span> encoder_x<span style="color:#f92672">.</span>transform(x)
     X_test <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(x, (batch_size, time_steps, <span style="color:#ae81ff">1</span>))
     predict <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(X_test)
     <span style="color:#66d9ef">if</span> predict[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.5</span>:
