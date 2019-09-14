@@ -329,17 +329,23 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <p>경사하강법(Gradient Descent)의 단점은 손실 함수의 최소값을 찾아가는 과정이 주식 그래프 처럼 진동이 심하다는 것이다. 따라서 경사하강법에 &lsquo;지수이동평균&rsquo;을 적용해서 <strong>부드럽게</strong> 손실 함수의 최소값을 찾아가는 방법을 모멘텀(Gradient Descent with momentum) 이라고 한다.</p>
 
-<p>\(dw = {\partial {J(w,b)}\over \partial w}\),<br />
-\(db = {\partial{J(w,b)}\over \partial b}\)</p>
+<p>\(\begin{align}
+dw &amp;= \dfrac{\partial J(w,b)}{\partial w}, \\
+db  &amp;= \dfrac{\partial J(w,b)}{\partial b}
+\end{align}\)</p>
 
-<p>REPEAT(epoch) {<br />
-\(w:=w-\alpha {V_{dw}}\)</p>
+<p>REPEAT(epoch) {</p>
 
-<p>\(b:=b-\alpha {V_{db}}\)<br />
+<p>\(\begin{align}
+w: &amp;= w-\alpha {V_{dw}} \\
+b:  &amp;= b-\alpha {V_{db}}
+\end{align}\)<br />
 }</p>
 
-<p>\(V_{dw} = \beta_1 V_{dw} + (1-\beta_1 )dw\),<br />
-\(V_{db} = \beta_1 V_{db} + (1-\beta_1 )db\)</p>
+<p>\(\begin{align}
+V_{dw} &amp;= \beta_1 V_{dw} + (1-\beta_1 )dw, \\
+V_{db}  &amp;= \beta_1 V_{db} + (1-\beta_1 )db
+\end{align}\)</p>
 
 <p>\(\alpha =0.001\) : learining rate,<br />
 \(\beta_1 = 0.9\) : exponential decay rate</p>
@@ -349,14 +355,18 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p>급경사인 경우에는 보폭을 낮추어서 가장 아래인지를 세밀히 살피고, 완만한 경사인 경우에는 보폭을 넓혀서 빨리 지나가는 방식이다.<br />
 이 방식은 <strong>빠르게</strong> 손실 함수의 최소값을 찾을 수 있다.</p>
 
-<p>REPEAT(epoch) {<br />
-\(w:=w-\alpha {dw \over {\sqrt {S_{dw}} + \epsilon}}\)</p>
+<p>REPEAT(epoch) {</p>
 
-<p>\(b:=b-\alpha {db \over {\sqrt {S_{db}} + \epsilon}}\)<br />
+<p>\(\begin{align}
+w: &amp;= w-\alpha \dfrac{dw}{\sqrt {S_{dw}} + \epsilon} \\
+b:  &amp;= b-\alpha \dfrac{db}{\sqrt {S_{db}} + \epsilon}
+\end{align}\)<br />
 }</p>
 
-<p>\(S_{dw} = \beta_2 S_{dw} + (1-\beta_2)dw^2\),<br />
-\(S_{db} = \beta_2 S_{db} + (1-\beta_2)db^2\)</p>
+<p>\(\begin{align}
+S_{dw} &amp;= \beta_2 S_{dw} + (1-\beta_2)dw^2, \\
+S_{db}  &amp;= \beta_2 S_{db} + (1-\beta_2)db^2
+\end{align}\)</p>
 
 <p>\(\beta_2 = 0.999\) : discounting factor,<br />
 \(\epsilon = 1e-07\) : small value to avoid zero denominator</p>
@@ -366,10 +376,12 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p>앞의 Momentum과 RMSProp을 합친것이 Adam이다.<br />
 <strong>빠르고 부드럽게</strong> 최소값을 찾아 간다.</p>
 
-<p>REPEAT(epoch) {<br />
-\(w:=w-\alpha {V_{dw} \over {\sqrt {S_{dw}} + \epsilon}}\)</p>
+<p>REPEAT(epoch) {</p>
 
-<p>\(b:=b-\alpha {V_{db} \over {\sqrt {S_{db}} + \epsilon}}\)<br />
+<p>\(\begin{align}
+w: &amp;= w-\alpha \dfrac{V_{dw}}{\sqrt {S_{dw}} + \epsilon} \\
+b:  &amp;= b-\alpha \dfrac{V_{db}}{\sqrt {S_{db}} + \epsilon}
+\end{align}\)<br />
 }</p>
 
 <p>⚙️ 엔지니어</p>
@@ -491,9 +503,11 @@ test loss:  0.1314390505407006
 <p>과대적합(Overfitting)을 줄이는 방법 중에 하나로서<br />
 기존의 손실함수 \(J(w,b)\)에 \( {\lambda \over {2m}} \sum_{l=1}^L ||w||^2\)를 추가한 것이다.</p>
 
-<p>\({\large J}(w, b) = -{1\over {m}}\sum_{i=1}^m [(y^{(i)}log({\hat y}^{(i)})) + (1-y^{(i)})log(1-{\hat y}^{(i)})]<br />
+<p>\(\begin{align}
+{\large J}(w, b) = &amp; -\dfrac{1}{m}\sum_{i=1}^m [(y^{(i)}log({\hat y}^{(i)})) + (1-y^{(i)})log(1-{\hat y}^{(i)})]<br />
 \\
-\hspace{3.9em} + {\lambda \over {2m}} \sum_{l=1}^L ||w||^2\)</p>
+&amp; + {\dfrac{\lambda}{2m}} \sum_{l=1}^L ||w||^2
+\end{align}\)</p>
 
 <p>우리는 이것을 <strong>L2 Regularization</strong> 이라고 한다.<br />
 \(\lambda\) 값은 모델에 따라서 적절하게 선택해야 한다.</p>

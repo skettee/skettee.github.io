@@ -68,10 +68,8 @@
 <li><a href="#ratings-데이터프레임">Ratings 데이터프레임</a></li>
 <li><a href="#movies-데이터프레임">Movies 데이터프레임</a></li>
 </ul></li>
-<li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a>
-<ul>
-<li><a href="#데이터-확인-data-visualization">데이터 확인 (Data Visualization)</a></li>
-</ul></li>
+<li><a href="#데이터-클렌징-data-cleansing">데이터 클렌징 (Data Cleansing)</a></li>
+<li><a href="#데이터-분석-data-analysis">데이터 분석 (Data Analysis)</a></li>
 <li><a href="#미니-데이터-mini-data">미니 데이터 (Mini Data)</a>
 <ul>
 <li><a href="#잠재-인수-latent-factor">잠재 인수 (Latent factor)</a></li>
@@ -348,14 +346,7 @@ Officer and a Gentleman, An (1982)
 Sweet Home Alabama (2002)
 </code></pre>
 
-<h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
-
-<h3 id="데이터-확인-data-visualization">데이터 확인 (Data Visualization)</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;{} Ratings, {} Users, {} Movies&#39;</span><span style="color:#f92672">.</span>format(len(ratings_df), 
-                                               len(ratings_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique()), 
-                                               len(ratings_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique())))</code></pre></div>
-<pre><code>100836 Ratings, 610 Users, 9724 Movies
-</code></pre>
+<h2 id="데이터-클렌징-data-cleansing">데이터 클렌징 (Data Cleansing)</h2>
 
 <p>데이터가 구멍이 난 것이 없는지 확인</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Check missing data</span>
@@ -367,8 +358,14 @@ missing number of movieId data is  0
 missing number of rating data is  0
 </code></pre>
 
-<p><code>userId</code>, <code>movieId</code>, <code>rating</code> 세개만 가지고 피쳐 벡터(feature vector)를 추출할 예정이다.<br />
-일단 <code>userId</code>를 컬럼(Column), <code>movieId</code>를 열(Row)로 만들어서 <code>rating</code>값을 확인해 보자</p>
+<h2 id="데이터-분석-data-analysis">데이터 분석 (Data Analysis)</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;{} Ratings, {} Users, {} Movies&#39;</span><span style="color:#f92672">.</span>format(len(ratings_df), 
+                                               len(ratings_df<span style="color:#f92672">.</span>userId<span style="color:#f92672">.</span>unique()), 
+                                               len(ratings_df<span style="color:#f92672">.</span>movieId<span style="color:#f92672">.</span>unique())))</code></pre></div>
+<pre><code>100836 Ratings, 610 Users, 9724 Movies
+</code></pre>
+
+<p><code>userId</code>를 컬럼(Column), <code>movieId</code>를 열(Row)로 만들어서 <code>rating</code>값을 확인해 보자</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_table <span style="color:#f92672">=</span> ratings_df<span style="color:#f92672">.</span>set_index([<span style="color:#e6db74">&#34;movieId&#34;</span>, <span style="color:#e6db74">&#34;userId&#34;</span>])<span style="color:#f92672">.</span>unstack()
 df_table<span style="color:#f92672">.</span>shape</code></pre></div>
 <pre><code>(9724, 1220)
@@ -1583,7 +1580,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <pre><code>loss:  0.030767172574996948
 </code></pre>
 
-<p><img src="output_49_1.png" alt="png" /></p>
+<p><img src="output_50_1.png" alt="png" /></p>
 
 <h4 id="미니-예측-predict">미니 예측 (Predict)</h4>
 
@@ -1681,19 +1678,24 @@ pd<span style="color:#f92672">.</span>DataFrame(R_hat)</code></pre></div>
 
 <p>여기에 과대적합(Overfitting)을 방지하기 위해서 <strong>L2 Regularization</strong> 을 추가한다.</p>
 
-<p>\(J(p, q) = {1 \over 2}\sum_{(i,j) \in R} (r_{ij} - q_i \cdot p_{j}^T)^2
-\\
-\hspace{3.9em} + {1 \over 2}\lambda \sum_{i} ||q_i||^2 + {1 \over 2}\lambda \sum_{j} ||p_j||^2\)</p>
+<p>\(\begin{align}
+J(p, q) &amp; = {1 \over 2}\sum_{(i,j) \in R} (r_{ij} - q_i \cdot p_{j}^T)^2 \\
+ &amp; + {1 \over 2}\lambda \sum_{i} ||q_i||^2 + {1 \over 2}\lambda \sum_{j} ||p_j||^2
+\end{align}\)</p>
 
 <h3 id="최적화-optimization">최적화 (Optimization)</h3>
 
 <p>손실함수의 최소값을 찾기 위해서 <strong>경사 하강법(Gradient Descent)</strong> 을 적용한다.</p>
 
-<p>REPEAT(epoch) {<br />
-\(p:=p-\alpha {\partial {J(p,q)}\over \partial p}\)</p>
+<p>REPEAT(epoch) {</p>
 
-<p>\(q:=q-\alpha {\partial{J(p,q)}\over \partial q}\) , \(\alpha\): learining rate<br />
+<p>\(\begin{align}
+p: &amp;= p-\alpha \dfrac{\partial J(p,q)}{\partial p} \\
+q: &amp;= q-\alpha \dfrac{\partial J(p,q)}{\partial q}
+\end{align}\)<br />
 }</p>
+
+<p>\(\alpha\): learining rate</p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -1798,7 +1800,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 test loss:  1.4420501856603685
 </code></pre>
 
-<p><img src="output_64_1.png" alt="png" /></p>
+<p><img src="output_65_1.png" alt="png" /></p>
 
 <p>⚙️ 엔지니어</p>
 

@@ -386,9 +386,12 @@ sigmoid는<br />
 세가지 이상에 대한 분류는 소프트맥스 회귀(softmax regression)로 모델링을 한다.<br />
 소프트맥스의 활성 함수(activation function)는 아래와 같이 정의한다.</p>
 
-<p>\(z=w^{T}x+b\),<br />
-\(a=\sigma(z) = {{e^z}\over{\sum_{j=1}^{m} e^z}}\),<br />
-\(m=\) number of classes (분류 개수)</p>
+<p>\(\begin{align}
+z &amp; = w^{T}x+b, \\
+a &amp; =\sigma(z) = {\dfrac{e^z}{\sum_{j=1}^{m} e^z}},
+\end{align}\)</p>
+
+<p>\(m\) = number of classes (분류 개수)</p>
 
 <p><strong>소프트맥스 회귀를 이용한 분류</strong></p>
 

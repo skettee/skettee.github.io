@@ -422,7 +422,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p>엔지니어들은 미분이 잘 되고 \(x\)에 어떤 값을 넣어도 0이나 1의 값에 가까운 값을 가지는 함수를 만들어 냈다.<br />
 이것이 시그모이드 함수다.</p>
 
-<p>\(\sigma(x) = {1 \over {1 + e^{-x}}}\)</p>
+<p>\(\sigma(x) = \dfrac{1} {1 + e^{-x}}\)</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sigmoid <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> x: <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">+</span> np<span style="color:#f92672">.</span>exp(<span style="color:#f92672">-</span>x))
 
 xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#f92672">-</span><span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">100</span>)
@@ -453,9 +453,11 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <p>모든 데이터(m개의 데이터 세트)로 부터 얻은 것을 평균 한것이 손실 함수(Loss function)이다. 손실 함수는 \(w\)와 \(b\)의 함수로 나타낼 수 있다.</p>
 
-<p>\({\large J}(w, b) = {1\over m}\sum_{i=1}^m L({\hat y}^{(i)}, y^{(i)}) \\
+<p>\(\begin{align}
+{\large J}(w, b) &amp; = {1\over m}\sum_{i=1}^m L({\hat y}^{(i)}, y^{(i)}) \\
 \\
-\hspace{2.9em}= -{1\over {m}}\sum_{i=1}^m [(y^{(i)}log({\hat y}^{(i)})) + (1-y^{(i)})log(1-{\hat y}^{(i)})]\)</p>
+&amp; = -{1\over {m}}\sum_{i=1}^m [(y^{(i)}log({\hat y}^{(i)})) + (1-y^{(i)})log(1-{\hat y}^{(i)})]
+\end{align}\)</p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -478,7 +480,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <blockquote>
 <p>우선 손실 함수(Loss function)가 어떻게 생겨 먹었는지 살펴 보자.<br />
-x축을 \(w\)로 놓고, y축을 \(b\)로 놓고, z축을 손실 함수 \({\large J}(w, b)\)로
+x축을 \(w\)로 놓고, y축을 \(b\)로 놓고, z축을 손실 함수 \(J(w, b)\)로
 그래프를 그려 보면<br />
 어떻게 최소값을 찾을지 감이 올 것 같다.</p>
 </blockquote>
@@ -536,17 +538,23 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p>RMSProp의 원리는 급경사인 경우에는 보폭을 낮추어서 가장 아래인지를 세밀히 살피고, 완만한 경사인 경우에는 보폭을 넓혀서 빨리 지나가는 방식이다.<br />
 이 방식은 매우 빠르게 손실 함수의 최소값을 찾을 수 있다.</p>
 
-<p>\(dw = {\partial {J(w,b)}\over \partial w}\),<br />
-\(db = {\partial{J(w,b)}\over \partial b}\)</p>
+<p>\(\begin{align}
+dw &amp; = \dfrac{\partial J(w,b)}{\partial w}, \\
+db &amp; = \dfrac{\partial J(w,b)}{\partial b}
+\end{align}\)</p>
 
-<p>REPEAT(epoch) {<br />
-\(w:=w-\alpha {dw \over {\sqrt {S_{dw}} + \epsilon}}\)</p>
+<p>REPEAT(epoch) {</p>
 
-<p>\(b:=b-\alpha {db \over {\sqrt {S_{db}} + \epsilon}}\)<br />
+<p>\(\begin{align}
+w: &amp;= w-\alpha \dfrac{dw}{\sqrt {S_{dw}} + \epsilon} \\
+b:  &amp;= b-\alpha \dfrac{db}{\sqrt {S_{db}} + \epsilon}
+\end{align}\)<br />
 }</p>
 
-<p>\(S_{dw} = \rho S_{dw} + (1-\rho)dw^2\),<br />
-\(S_{db} = \rho S_{db} + (1-\rho)db^2\)</p>
+<p>\(\begin{align}
+S_{dw} &amp;= \rho S_{dw} + (1-\rho)dw^2, \\
+S_{db} &amp;= \rho S_{db} + (1-\rho)db^2
+\end{align}\)</p>
 
 <p>\(\alpha=0.001\) : learining rate,<br />
 \(\rho=0.9\) : discounting factor,<br />

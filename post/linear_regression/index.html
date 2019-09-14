@@ -390,9 +390,11 @@ y.shape=  (50, 1)
 
 <p>모든 데이터(m개의 데이터 세트)로 부터 얻은 것을 평균(mean squred error)한것이 손실 함수(Loss function)이다. 손실 함수는 \(w\)와 \(b\)의 함수로 나타낼 수 있다.</p>
 
-<p>\({\large J}(w, b) = {1\over m}\sum_{i=1}^m L({\hat y}^{(i)}, y^{(i)}) \\
+<p>\(\begin{align}
+{\large J}(w, b) &amp; = {1\over m}\sum_{i=1}^m L({\hat y}^{(i)}, y^{(i)}) \\
 \\
-\hspace{2.9em}= {1\over {2m}}\sum_{i=1}^m ({\hat y}^{(i)}-y^{(i)})^2\)</p>
+&amp; = {1\over {2m}}\sum_{i=1}^m ({\hat y}^{(i)}-y^{(i)})^2
+\end{align}\)</p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -407,7 +409,7 @@ y.shape=  (50, 1)
 <p><strong>손실 함수 (Loss function) 시각화</strong></p>
 
 <p>우선 손실 함수(Loss function)가 어떻게 생겨 먹었는지 살펴 보자.<br />
-x축을 \(w\)로 놓고, y축을 \(b\)로 놓고, z축을 손실 함수 \({\large J}(w, b)\)로 그래프를 그려 보면 어떻게 최소값을 찾을지 감이 올 것 같다.</p>
+x축을 \(w\)로 놓고, y축을 \(b\)로 놓고, z축을 손실 함수 \(J(w, b)\)로 그래프를 그려 보면 어떻게 최소값을 찾을지 감이 올 것 같다.</p>
 
 <p>\(w\)는 \(-5\leqq w \leqq 5\) 정도로 잡고,<br />
 \(b\)는 \(-5\leqq b \leqq 5\)으로 잡아보자.</p>
@@ -515,11 +517,14 @@ xx <span style="color:#f92672">=</span> xx <span style="color:#f92672">-</span> 
 
 <p>수식으로 표현해보자</p>
 
-<p>REPEAT(epoch) {<br />
-\(w:=w-\alpha {\partial {J(w,b)}\over \partial w}\)</p>
+<p>REPEAT(epoch) {</p>
 
-<p>\(b:=b-\alpha {\partial{J(w,b)}\over \partial b}\) , \(\alpha=0.01\) learining rate<br />
-}</p>
+<p>\(\begin{align}
+w: &amp;=w-\alpha \dfrac{\partial J(w,b)}{\partial w} \\
+b:  &amp;=b-\alpha \dfrac{\partial J(w,b)}{\partial b}
+\end{align}\)<br />
+}<br />
+\(\alpha=0.001\) learining rate</p>
 
 <p>⚙️ 엔지니어</p>
 
