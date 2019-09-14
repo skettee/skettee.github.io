@@ -247,13 +247,13 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 <p>입력 데이터의 2D shape (28,28)를 1D (784, )로 변환해 주는 작업을 <strong>벡터화(Flatten)</strong> 라고 한다.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Train</span>
 batch_size <span style="color:#f92672">=</span> train_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
-flatten_vector <span style="color:#f92672">=</span> train_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span>  train_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>]
-X_train <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(train_images, (batch_size,flatten_vector))
+input_dim <span style="color:#f92672">=</span> train_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span>  train_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>]
+X_train <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(train_images, (batch_size, input_dim))
 <span style="color:#66d9ef">print</span>(X_train<span style="color:#f92672">.</span>shape)
 <span style="color:#75715e"># Test</span>
 batch_size <span style="color:#f92672">=</span> test_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
-flatten_vector <span style="color:#f92672">=</span> test_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span>  test_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>]
-X_test <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(test_images, (batch_size,flatten_vector))
+input_dim <span style="color:#f92672">=</span> test_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span>  test_images<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">2</span>]
+X_test <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>reshape(test_images, (batch_size, input_dim))
 <span style="color:#66d9ef">print</span>(X_test<span style="color:#f92672">.</span>shape)</code></pre></div>
 <pre><code>(60000, 784)
 (10000, 784)
