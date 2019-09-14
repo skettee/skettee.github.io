@@ -345,10 +345,9 @@ RNN 모델은 다음과 같다.</p>
 
 <p><img src="https://skettee.github.io/post/recurrent_neural_network/rnn_model.png" alt="RNN 모델" /></p>
 
-<p>\(\begin{align}
-a^{\text<t>} &amp; = g\left(W_{aa}a^{\text<t-1>} + W_{ax}x^{\text<t>} + b_a\right) \\
-\hat y^{\text<t>} &amp; = W_{ya}a^{\text<t>} + b_y
-\end{align}\)</p>
+<p>\(a^{<t>} = g\left(W_{aa}a^{<t-1>} + W_{ax}x^{<t>} + b_a\right)\)</p>
+
+<p>\(\hat y^{<t>} = W_{ya}a^{<t>} + b_y\)</p>
 
 <p>⚙️ 엔지니어</p>
 
@@ -375,7 +374,7 @@ xx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>li
 
 plt<span style="color:#f92672">.</span>plot(xx, tanh(xx))
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_9_0.png" alt="png" /></p>
+<p><img src="output_10_0.png" alt="png" /></p>
 
 <h3 id="many-to-one-model">Many-to-One Model</h3>
 
@@ -493,7 +492,7 @@ plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</s
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
 plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;loss&#39;</span>)
 plt<span style="color:#f92672">.</span>show()</code></pre></div>
-<p><img src="output_19_0.png" alt="png" /></p>
+<p><img src="output_20_0.png" alt="png" /></p>
 
 <h2 id="해결-solution">해결 (Solution)</h2>
 
