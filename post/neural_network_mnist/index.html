@@ -446,12 +446,6 @@ model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">1
 model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">84</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
 model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">10</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;softmax&#39;</span>))
 model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;categorical_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>, metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])</code></pre></div>
-<pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0913 23:46:37.737540 140087928641344 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-Instructions for updating:
-Call initializer instance with the dtype argument instead of passing it to the constructor
-</code></pre>
-
 <h3 id="모델-훈련-train-model">모델 훈련 (Train Model)</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
 train_acc <span style="color:#f92672">=</span> hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;acc&#39;</span>][<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
@@ -459,8 +453,8 @@ train_loss <span style="color:#f92672">=</span>  hist<span style="color:#f92672"
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train accuracy: &#39;</span>, train_acc)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, train_loss)</code></pre></div>
-<pre><code>train accuracy:  0.99663335
-train loss:  0.011095259626388673
+<pre><code>train accuracy:  0.99736667
+train loss:  0.009246259947535234
 </code></pre>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
@@ -473,9 +467,9 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test accuracy: &#39;</span>, test_acc)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test loss: &#39;</span>, test_loss)</code></pre></div>
-<pre><code>10000/10000 [==============================] - 0s 31us/sample - loss: 0.1314 - acc: 0.9750
-test accuracy:  0.975
-test loss:  0.1314390505407006
+<pre><code>10000/10000 [==============================] - 0s 31us/sample - loss: 0.1261 - acc: 0.9775
+test accuracy:  0.9775
+test loss:  0.1261198779489074
 </code></pre>
 
 <p>대충 만들었는데도 정확도가 상당히 높다.<br />
@@ -537,8 +531,8 @@ train_loss_l2 <span style="color:#f92672">=</span>  hist<span style="color:#f926
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train accuracy: &#39;</span>, train_acc_l2)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;train loss: &#39;</span>, train_loss_l2)</code></pre></div>
-<pre><code>train accuracy:  0.9906833
-train loss:  0.0694867668012778
+<pre><code>train accuracy:  0.9907
+train loss:  0.06976700219710667
 </code></pre>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
@@ -549,9 +543,9 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test accuracy: &#39;</span>, test_acc_l2)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;test loss: &#39;</span>, test_loss_l2)</code></pre></div>
-<pre><code>10000/10000 [==============================] - 0s 36us/sample - loss: 0.1049 - acc: 0.9813
-test accuracy:  0.9813
-test loss:  0.10486903595924378
+<pre><code>10000/10000 [==============================] - 0s 37us/sample - loss: 0.1182 - acc: 0.9783
+test accuracy:  0.9783
+test loss:  0.11817346230745315
 </code></pre>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
 
@@ -584,13 +578,13 @@ df</code></pre></div>
   <tbody>
     <tr>
       <td>model</td>
-      <td>0.996633</td>
-      <td>0.9750</td>
+      <td>0.997367</td>
+      <td>0.9775</td>
     </tr>
     <tr>
       <td>model_with_l2</td>
-      <td>0.990683</td>
-      <td>0.9813</td>
+      <td>0.990700</td>
+      <td>0.9783</td>
     </tr>
   </tbody>
 </table>
@@ -602,7 +596,7 @@ df</code></pre></div>
 
 <blockquote>
 <p>보스~ 원하시는 솔루션입니다.<br />
-정확도는 98% 이상입니다.</p>
+정확도는 97% 이상입니다.</p>
 
 <p>test_data에 원하시는 이미지를 입력하시면<br />
 원하시는 결과값이 출력 됩니다.</p>

@@ -1539,12 +1539,6 @@ item_embedding <span style="color:#f92672">=</span> Embedding(n_items, n_items_l
 user_embedding <span style="color:#f92672">=</span> Embedding(n_users, n_users_latent_factors, <span style="color:#75715e"># (4X2) Latent factor</span>
                            embeddings_regularizer<span style="color:#f92672">=</span>regularizers<span style="color:#f92672">.</span>l2(<span style="color:#ae81ff">0.001</span>),
                            name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_embedding&#39;</span>)(user_input)</code></pre></div>
-<pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0914 23:06:25.672605 139764579673920 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-Instructions for updating:
-Call initializer instance with the dtype argument instead of passing it to the constructor
-</code></pre>
-
 <h4 id="벡터화-flattern">벡터화 (Flattern)</h4>
 
 <p>2D로 되어 있는 임베딩(Embedding)을 1D로 변환한다.  이것을 <strong>잠재 벡터(Latent vector)</strong> 라고 한다.</p>

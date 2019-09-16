@@ -606,12 +606,6 @@ model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672"
 
 <span style="color:#75715e"># epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.</span>
 hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">3000</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) </code></pre></div>
-<pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0914 02:05:15.168387 140504936548160 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-Instructions for updating:
-Call initializer instance with the dtype argument instead of passing it to the constructor
-</code></pre>
-
 <h3 id="손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
@@ -632,8 +626,8 @@ w <span style="color:#f92672">=</span>  w[<span style="color:#ae81ff">0</span>][
 b <span style="color:#f92672">=</span> b[<span style="color:#ae81ff">0</span>]
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;w: &#39;</span>, w)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;b: &#39;</span>, b)</code></pre></div>
-<pre><code>w:  0.89876956
-b:  -2.6253219
+<pre><code>w:  0.89936906
+b:  -2.6258316
 </code></pre>
 
 <h3 id="그래프로-확인">그래프로 확인</h3>

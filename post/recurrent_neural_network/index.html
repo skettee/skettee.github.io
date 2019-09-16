@@ -385,7 +385,7 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <p>출처: <a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">Andrej Karpathy blog</a></p>
 
-<p>자세한 설명은 생략한다.  우리 문제를 해결하기 위해서 감성분석(Sentiment Anaysis)에 주로 사용되는 many to one 모델을 사용하자<br />
+<p>자세한 설명은 생략한다.  우리 문제를 해결하기 위해서 감성분석(Sentiment Anaysis)에 사용되는 many to one 모델을 사용하자<br />
 입력과 출력의 모양은 아래 그림과 같다.</p>
 
 <p><img src="https://skettee.github.io/post/recurrent_neural_network/many_to_one.png" alt="many-to-one" /></p>
@@ -404,15 +404,15 @@ plt<span style="color:#f92672">.</span>show()</code></pre></div>
 
 <ol>
 <li>32개 유닛으로 구성한다.<br /></li>
-<li>활성 함수는 ReLU를 사용한다.<br /></li>
+<li>활성 함수는 tanh를 사용한다.<br /></li>
 </ol></li>
 <li>Output Layer (파랑색)
 
 <ol>
 <li>활성 함수는 시그모이드(Sigmoid)를 사용한다.</li>
 </ol></li>
-<li>Loss funtion 은 mean squared error 를 사용한다.<br /></li>
-<li>Optimizer 는 RMSProp을 사용한다.<br /></li>
+<li>Loss funtion 은 binary_crossentropy 를 사용한다.<br /></li>
+<li>Optimizer 는 Adam 을 사용한다.<br /></li>
 </ol>
 
 <h2 id="케라스-keras-로-모델링-modeling">케라스(Keras)로 모델링(Modeling)</h2>
@@ -463,32 +463,11 @@ Y_train <span style="color:#f92672">=</span> y_train
 <span style="color:#f92672">from</span> tensorflow.keras.layers <span style="color:#f92672">import</span> SimpleRNN, Dense
 
 model <span style="color:#f92672">=</span> Sequential()
-model<span style="color:#f92672">.</span>add(SimpleRNN(units<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>, input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;relu&#34;</span>))
+model<span style="color:#f92672">.</span>add(SimpleRNN(units<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>, input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tanh&#34;</span>))
 model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">1</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sigmoid&#34;</span>))
-model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;mean_squared_error&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;rmsprop&#39;</span>)
-model<span style="color:#f92672">.</span>summary()</code></pre></div>
-<pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0914 21:28:56.682714 140606029240128 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-Instructions for updating:
-Call initializer instance with the dtype argument instead of passing it to the constructor
-
-
-Model: &quot;sequential&quot;
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #   
-=================================================================
-simple_rnn (SimpleRNN)       (None, 32)                1088      
-_________________________________________________________________
-dense (Dense)                (None, 1)                 33        
-=================================================================
-Total params: 1,121
-Trainable params: 1,121
-Non-trainable params: 0
-_________________________________________________________________
-</code></pre>
-
+model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;binary_crossentropy&#39;</span>, optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>)</code></pre></div>
 <h3 id="모델-훈련-train-model">모델 훈련 (Train Model)</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train,Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train,Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">300</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
 
 plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
@@ -552,6 +531,9 @@ result <span style="color:#f92672">=</span> analyze_message(test_data2)
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
 		<a class="post-nav__link" href="/post/latent_factor_model/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">잠재 인수 모델 (Latent Factor Model)</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/long_short_term_memory/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Long Short-Term Memory (LSTM)</p></a>
 	</div>
 </nav>
 <script src="https://utteranc.es/client.js"

@@ -631,15 +631,6 @@ model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672"
 
 <span style="color:#75715e"># epochs만큼 반복해서 손실값이 최저가 되도록 모델을 훈련한다.</span>
 hist <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, Y_train, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">10000</span>, batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">20</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) </code></pre></div>
-<pre><code>WARNING: Logging before flag parsing goes to stderr.
-W0914 02:12:17.257588 140325522511680 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-Instructions for updating:
-Call initializer instance with the dtype argument instead of passing it to the constructor
-W0914 02:12:17.276001 140325522511680 deprecation.py:323] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.&lt;locals&gt;.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
-Instructions for updating:
-Use tf.where in 2.0, which has the same broadcast rule as np.where
-</code></pre>
-
 <h3 id="손실값의-변화를-그래프로-확인">손실값의 변화를 그래프로 확인</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plt<span style="color:#f92672">.</span>plot(hist<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>])
 plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;epoch&#39;</span>)
@@ -660,8 +651,8 @@ w <span style="color:#f92672">=</span>  w[<span style="color:#ae81ff">0</span>][
 b <span style="color:#f92672">=</span> b[<span style="color:#ae81ff">0</span>]
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;w: &#39;</span>, w)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;b: &#39;</span>, b)</code></pre></div>
-<pre><code>w:  14.625153
-b:  -7.5220504
+<pre><code>w:  15.071264
+b:  -7.7537856
 </code></pre>
 
 <h3 id="그래프로-확인">그래프로 확인</h3>
@@ -688,7 +679,7 @@ input_x <span style="color:#f92672">=</span> mm_scaler<span style="color:#f92672
 predict <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(input_x)
 
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;친추가 될 확률은 {:.1f}% 입니다.&#39;</span><span style="color:#f92672">.</span>format(predict[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]<span style="color:#f92672">*</span><span style="color:#ae81ff">100</span>))</code></pre></div>
-<pre><code>친추가 될 확률은 93.8% 입니다.
+<pre><code>친추가 될 확률은 94.2% 입니다.
 </code></pre>
 		</div>
 		<footer class="post__footer">

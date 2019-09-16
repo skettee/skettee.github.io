@@ -4,43 +4,72 @@
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/deep-learning/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/lstm/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/long_short_term_memory/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/pos/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/recurrent-neural-network/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/tokenization/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/many-to-one/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/post/recurrent_neural_network/</loc>
     <lastmod>2019-09-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/many-to-one/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -51,12 +80,6 @@
   
   <url>
     <loc>/tags/timesteps/</loc>
-    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/</loc>
     <lastmod>2019-09-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
