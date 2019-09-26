@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Monte Carlo Learning - 막돼먹은 엔지니어의 머신런닝 개발</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Monte Carlo Learning" />
+<meta property="og:description" content="강화 학습(Reinforcement Learning)에서 사용하는 Monte Carlo에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위한 알고리듬을 만들어 보자." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/monte_carlo_learning/" />
+<meta property="article:published_time" content="2019-09-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-09-23T00:00:00+00:00" />
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="막돼먹은 엔지니어의 머신런닝 개발" rel="home">
+				<div class="logo__title">막돼먹은 엔지니어의 머신런닝 개발</div>
+				<div class="logo__tagline">딥러닝 모델링</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Monte Carlo Learning</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2019-09-23T00:00:00">2019-09-23</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/reinforcement-learning" rel="category">Reinforcement Learning</a>, <a class="meta__link" href="/categories/monte-carlo-learning" rel="category">Monte-Carlo Learning</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#문제-problem">문제 (Problem)</a></li>
+<li><a href="#문제-분석-problem-anaysis">문제 분석 (Problem Anaysis)</a></li>
+<li><a href="#환경-environment">환경 (Environment)</a>
+<ul>
+<li><a href="#액션-action">액션 (Action)</a></li>
+<li><a href="#상태-state">상태 (State)</a></li>
+<li><a href="#보상-reward">보상 (Reward)</a>
+<ul>
+<li><a href="#return-미래-보상의-합">Return (미래 보상의 합)</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#에이전트-agent">에이전트 (Agent)</a>
+<ul>
+<li><a href="#정책-policy">정책 (Policy)</a></li>
+<li><a href="#상태-가치-state-value">상태 가치 (State Value)</a></li>
+<li><a href="#q-value-state-action-value">Q-value (State Action Value)</a></li>
+<li><a href="#최적-가치-optimal-value">최적 가치 (Optimal Value)</a></li>
+<li><a href="#최적-정책-optimal-policy">최적 정책 (Optimal Policy)</a></li>
+<li><a href="#monte-carlo-몬테-카를로">Monte Carlo (몬테 카를로)</a></li>
+</ul></li>
+<li><a href="#학습-learning">학습 (Learning)</a></li>
+<li><a href="#해결-solution">해결 (Solution)</a></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
+			<p>강화 학습(Reinforcement Learning)에서 사용하는 Monte Carlo에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위한 알고리듬을 만들어 보자.</p>
+
+<p>실제로 돌려 보고 싶으면 구글 코랩으로 ~</p>
+
+<p><a href="https://colab.research.google.com/github/skettee/notebooks/blob/master/monte_carlo_learning.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" /></a></p>
+
+<h2 id="문제-problem">문제 (Problem)</h2>
+
+<p>👤 상사</p>
+
+<blockquote>
+<p>인공지능 게임 프로젝트를 시작한다.<br />
+게임을 만들려면 &lsquo;강화학습&rsquo;이라는 것을 알아야 한다는데&hellip;<br />
+아래 체육관(Gym)에 가서<br />
+&lsquo;얼음 호수&rsquo; 문제를 한번 풀어보게</p>
+
+<p><a href="https://gym.openai.com/envs/FrozenLake-v0/">https://gym.openai.com/envs/FrozenLake-v0/</a></p>
+</blockquote>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>오~ 게임이라<br />
+딥러닝에 찌든 머리가 갑자기 맑아진다~<br />
+새로운 마음으로 문제를 해결해 보자!</p>
+</blockquote>
+
+<h2 id="문제-분석-problem-anaysis">문제 분석 (Problem Anaysis)</h2>
+
+<p>일단 Gym을 설치하고 돌려 보자!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">%</span>pip install gym</code></pre></div>
+<pre><code>Requirement already satisfied: gym in /home/dataman/anaconda3/lib/python3.7/site-packages (0.14.0)
+Requirement already satisfied: pyglet&lt;=1.3.2,&gt;=1.2.0 in /home/dataman/anaconda3/lib/python3.7/site-packages (from gym) (1.3.2)
+Requirement already satisfied: six in /home/dataman/anaconda3/lib/python3.7/site-packages (from gym) (1.12.0)
+Requirement already satisfied: numpy&gt;=1.10.4 in /home/dataman/anaconda3/lib/python3.7/site-packages (from gym) (1.16.4)
+Requirement already satisfied: cloudpickle~=1.2.0 in /home/dataman/anaconda3/lib/python3.7/site-packages (from gym) (1.2.1)
+Requirement already satisfied: scipy in /home/dataman/anaconda3/lib/python3.7/site-packages (from gym) (1.3.1)
+Requirement already satisfied: future in /home/dataman/anaconda3/lib/python3.7/site-packages (from pyglet&lt;=1.3.2,&gt;=1.2.0-&gt;gym) (0.17.1)
+Note: you may need to restart the kernel to use updated packages.
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> gym
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">from</span> time <span style="color:#f92672">import</span> sleep
+<span style="color:#f92672">from</span> IPython.display <span style="color:#f92672">import</span> display, clear_output, Pretty
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_optimal_value</span>(state, action, reward):
+    <span style="color:#66d9ef">return</span> None
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_optimal_action</span>():
+    <span style="color:#66d9ef">return</span> env<span style="color:#f92672">.</span>action_space<span style="color:#f92672">.</span>sample()</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#</span>
+<span style="color:#75715e"># Environment</span>
+<span style="color:#75715e">#</span>
+env <span style="color:#f92672">=</span> gym<span style="color:#f92672">.</span>make(<span style="color:#e6db74">&#39;FrozenLake-v0&#39;</span>, is_slippery<span style="color:#f92672">=</span>False) <span style="color:#75715e"># 얼음위에서 미끄러지지 않도록 설정</span>
+state <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>reset()
+
+<span style="color:#75715e"># Initial world display</span>
+world <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>render(mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ansi&#39;</span>)
+display(Pretty(world))
+sleep(<span style="color:#ae81ff">0.5</span>)
+
+<span style="color:#75715e">#</span>
+<span style="color:#75715e"># Agent</span>
+<span style="color:#75715e">#</span>
+<span style="color:#66d9ef">for</span> step <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>):
+    action <span style="color:#f92672">=</span> get_optimal_action()
+    next_state, reward, done, info <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>step(action)    
+    get_optimal_value(state, action, reward)
+    state <span style="color:#f92672">=</span> next_state
+    
+    <span style="color:#75715e"># updated world display</span>
+    world <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>render(mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ansi&#39;</span>)
+    clear_output(wait<span style="color:#f92672">=</span>True)
+    display(Pretty(world))
+    sleep(<span style="color:#ae81ff">0.5</span>)
+    
+    <span style="color:#66d9ef">if</span> done: <span style="color:#75715e"># an episode finished</span>
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Episode finished after {} timesteps&#34;</span><span style="color:#f92672">.</span>format(step<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>))
+        <span style="color:#66d9ef">break</span></code></pre></div>
+<pre><code>  (Right)
+SFFF
+F[41mH[0mFH
+FFFH
+HFFG
+
+
+
+Episode finished after 5 timesteps
+</code></pre>
+
+<p>4X4 매트릭스에서 <code>S</code>(Start)에서 시작해서 <code>H</code>(Hole)를 피해서 <code>G</code>(Goal)까지 도착하는 최적의 길을 찾는 게임이다.  코드를 보면 &hellip;</p>
+
+<ol>
+<li>환경(Environemnt)과 에이젼트(Agent)로 나누어져 있고,<br /></li>
+<li>에이젼트는 환경으로 부터 상태(state)를 얻어 오고<br /></li>
+<li>최적의 액션(action)을 결정하고<br /></li>
+<li>액션을 실행하고 그 결과로 다음 상태, 보상(Reward)을 얻어 오고<br /></li>
+<li>상태, 액션, 보상을 이용해서 최적의 가치(Value)를 계산하고<br /></li>
+<li>3,4,5를 반복하는<br /></li>
+</ol>
+
+<p>&hellip; 구조로 되어 있다.</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>이거&hellip;<br />
+딥러닝하고는 완전 다른 문제다&hellip;<br />
+딥러닝은 데이터를 주고 사람보다 뛰어난 분류와 예측을 하도록 <strong>모델링</strong> 을 하는 것이다.<br />
+강화학습은 환경과 에이젼트를 주고 사람보다 뛰어난 행동을 하도록 <strong>알고리듬</strong> 을 만드는 것이다.</p>
+
+<p>우선 환경(Environment)에 대해서 알아 보자</p>
+</blockquote>
+
+<h2 id="환경-environment">환경 (Environment)</h2>
+
+<p>&lsquo;얼음호수&rsquo; 세계의 환경은 16개의 상태(State)와 4개의 액션(Action)으로 구성 되어 있다.</p>
+
+<h3 id="액션-action">액션 (Action)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Action Space</span>
+env<span style="color:#f92672">.</span>action_space</code></pre></div>
+<pre><code>Discrete(4)
+</code></pre>
+
+<p>&lsquo;얼음호수&rsquo; 세계에서는 4개의 액션이 존재한다. 그리고 각각의 액션이 번호로 지정 되어 있다.</p>
+
+<p>\(A = \{0, 1, 2, 3\}\)</p>
+
+<table>
+<thead>
+<tr>
+<th>Num</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0</td>
+<td>왼쪽으로 이동 (Move Left)</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>아래로 이동 (Move Down)</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>오른쪽으로 이동 (Move Right)</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>위로 이동 (Move Up)</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="상태-state">상태 (State)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># State Space</span>
+env<span style="color:#f92672">.</span>observation_space</code></pre></div>
+<pre><code>Discrete(16)
+</code></pre>
+
+<p>&lsquo;얼음호수&rsquo;의 상태(State) \(S\)는 다음과 같이 각 상태가 0과 15까지 번호로 지정되어 있다.</p>
+
+<p>\(S = \{0, 1, \cdots , 15\}\)</p>
+
+<p>\(\begin{vmatrix}
+0 &amp; 1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6 &amp; 7 \\
+8 &amp; 9 &amp; 10 &amp; 11 \\
+12 &amp; 13 &amp; 14 &amp; 15
+\end{vmatrix}\)</p>
+
+<p>그리고 각 상태마다 액션(action), 확률(probability), 다음 상태(next state), 보상(reward), 종료(done)가 <code>{action: [(probability, nextstate, reward, done)]}</code> 형식으로 정의 되어 있다.</p>
+
+<p>6번 상태를 까보자</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">env<span style="color:#f92672">.</span>P[<span style="color:#ae81ff">6</span>]</code></pre></div>
+<pre><code>{0: [(1.0, 5, 0.0, True)],
+ 1: [(1.0, 10, 0.0, False)],
+ 2: [(1.0, 7, 0.0, True)],
+ 3: [(1.0, 2, 0.0, False)]}
+</code></pre>
+
+<p>해석을 해 보면 다음과 같다.</p>
+
+<blockquote>
+<p>6번 상태에서<br />
+왼쪽으로 이동하면 100%의 확률로 5번 상태로 변환되고, 보상은 0.0, 종료한다.<br />
+아래로 이동하면 100%의 확률로 10번 상태로 변환되고, 보상은 0.0, 계속한다.<br />
+오른쪽으로 이동하면 100%의 확률로 7번 상태로 변환되고 보상은 0.0, 종료한다.<br />
+위로 이동하면 100%의 확률로 2번 상태로 변환되고 보상은 0.0, 계속한다.</p>
+</blockquote>
+
+<h3 id="보상-reward">보상 (Reward)</h3>
+
+<p>14번의 상태도 까보자</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">env<span style="color:#f92672">.</span>P[<span style="color:#ae81ff">14</span>]</code></pre></div>
+<pre><code>{0: [(1.0, 13, 0.0, False)],
+ 1: [(1.0, 14, 0.0, False)],
+ 2: [(1.0, 15, 1.0, True)],
+ 3: [(1.0, 10, 0.0, False)]}
+</code></pre>
+
+<p>14번 상태에서 오른쪽으로 이동하면 100% 확률로 15번 상태로 변환되고 1.0을 보상 받고 종료한다!</p>
+
+<p>기대 보상값은 아래와 같이 정의한다.</p>
+
+<p>\(\mathcal R_s^a = \mathbb E [\mathcal R_{t+1} | S_t = s, A_t = a ]\)</p>
+
+<p>예를 들어서 14번 상태에서, 2번 액션에서의 기대 보상값은 아래와 같다.</p>
+
+<p>\(\mathcal R_{14}^{2} = 1.0\)</p>
+
+<h4 id="return-미래-보상의-합">Return (미래 보상의 합)</h4>
+
+<p>에이전트는 바로 다음의 보상만을 보고 액션을 하면 안된다.  먼 미래의 최종 보상의 합을 예상해서 액션을 해야 한다.<br />
+&lsquo;2보 전진을 위한 1보 후퇴&rsquo; 전략을 구사할 수 있어야 한다.</p>
+
+<p>에이전트가 원하는 최종 골(Goal)은 다음의 식과 같이 다음, 다음, 다음&hellip;의 미래의 보상들의 합을 돌려 받는(Return) 것이다.</p>
+
+<p>\(\begin{align}G_t = R_{t+1} + \gamma R_{t+2} + \cdots + = \sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1}\end{align}\)</p>
+
+<p>그러나 에이전트도 욕심이 있어서 바로 다음 보상이 커보인다. 이것을 만족시켜 주는 것이 디스카운트(discount factor) \(\gamma\) 값이다.  \(\gamma\) 는 0과 1사이의 값을 가진다.</p>
+
+<p>\(\gamma \in [0,1]\)</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>에이전트는<br />
+보상을 받기 위해<br />
+구멍에 빠지지 않고 15번 상태로 이동하기 위해<br />
+최적의 액션을 해야 한다.</p>
+
+<p>우리는<br />
+에이전트가 최적의 액션을 하도록<br />
+알고리듬을 만들어야 한다.<br />
+어떻게 ?</p>
+</blockquote>
+
+<h2 id="에이전트-agent">에이전트 (Agent)</h2>
+
+<p>에이전트는 환경에서 부터 주어진 상태(\(S\)), 액션(\(A\)), 보상(\(R\))을 가지고 가치(Q-value)를 계산하고 정책(Policy)을 수립해서 최적의 액션을 수행해야 한다.</p>
+
+<h3 id="정책-policy">정책 (Policy)</h3>
+
+<p>에이전트가 주어진 상태에서 액션을 선택하는 확률이다.</p>
+
+<p>\(\pi (a|s) = \mathbb P[A_t = a | S_t = s]\)</p>
+
+<p>예를 들어서 \(\pi (1 | 5) = 0.25\) 라는 것은 5번 상태에서 아래로 이동하는 액션(1) 을 수행할 확률을 25%로 정한다는 뜻이다.</p>
+
+<h3 id="상태-가치-state-value">상태 가치 (State Value)</h3>
+
+<p>상태 가치는 상태 s 에서 기대되는 미래 보상의 합이다.</p>
+
+<p>\(v_{\pi}(s) = \mathbb E_{\pi} [G_t | S_t = s]\)</p>
+
+<h3 id="q-value-state-action-value">Q-value (State Action Value)</h3>
+
+<p>Q-value는 상태 s 에서 액션 a 를 수행할 경우에 기대되는 미래 보상의 합이다.</p>
+
+<p>\(q_{\pi}(s,a) = \mathbb E_{\pi} [G_t | S_t = s, A_t = a]\)</p>
+
+<h3 id="최적-가치-optimal-value">최적 가치 (Optimal Value)</h3>
+
+<p>상태 s 에서 가장 큰 Q-value이다.</p>
+
+<p>\(q_*(s,a) = \max_{\pi} q_{\pi}(s,a)\)</p>
+
+<h3 id="최적-정책-optimal-policy">최적 정책 (Optimal Policy)</h3>
+
+<p>\(q_*(s,a)\)가 결정 되면 \(\pi (a|s) = 1\) 이 된다. 즉 상태 s일때는 100% 액션 a를 수행 한다.</p>
+
+<p>\( \pi_*(a|s) = \begin{cases}
+1 &amp; \text{if } a= \text{argmax}_{a \in A} q_\star(s,a) \\
+0 &amp; \text{otherwise}
+\end{cases} \)</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>에이전트는<br />
+각 상태(state)의 액션(action)마다<br />
+Q-value를 계산한다.</p>
+
+<p>에이전트가
+최적의 액션을 하기 위해서는<br />
+각 상태에서 Q-value의 최고값을 가진<br />
+액션을 수행하면 된다!</p>
+
+<p>그런데<br />
+Q-value를 어떻게 찾지?</p>
+</blockquote>
+
+<h3 id="monte-carlo-몬테-카를로">Monte Carlo (몬테 카를로)</h3>
+
+<p>&lsquo;얼음호수&rsquo; 에서 <code>S</code>(Start)에서 시작해서 <code>H</code>(Hole)를 빠지거나  <code>G</code>(Goal)에 도착하면 게임을 끝이난다. 이 것을 <strong>에피소드(episode)</strong> 라고 한다.  하나의 에피소드가 끝나면 에피소드에서 지나왔던 상태(state)에 대해서 Q-value를 구한다. 그리고 계속해서 에피소드를 실행 시키면서 지나온 상태(state)에 대한 Q-value를 업데이트 하면 결국 최적의 Q-value를 구할 수 있다. 이것이 몬테 카를로 방법(Monte Carlo method)이다.</p>
+
+<p>하나의 에피소드가 끝나면 아래와 같이 Q-value를 구한다.</p>
+
+<p>\(k\): Sample k번째 에피소드</p>
+
+<p>\(\begin{align}
+N(S_t, A_t) &amp; \leftarrow N(S_t, A_t) + 1 \\
+Q(S_t, A_t) &amp; \leftarrow Q(S_t, A_t) + \dfrac{1}{N(S_t, A_t)} \left( G_t - Q(S_t, A_t) \right)<br />
+\end{align}\)</p>
+
+<p>계속해서 에피소드를 실행 시키면서 \(Q(S_t, A_t)\)를 업데이트 하면 결국 \(Q(s, a) \rightarrow q_*(s,a)\)가 된다.</p>
+
+<p>⚙️ 엔지니어</p>
+
+<blockquote>
+<p>아하! 최적의 Q-value를  찾아 가는 것이 강화 학습(Reinfocement Learning)하는 방법이구나!</p>
+</blockquote>
+
+<h2 id="학습-learning">학습 (Learning)</h2>
+
+<p>몬테 카를로를 이용해서 최적의 Q-value를 찾아보자!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> tqdm
+
+num_state <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>observation_space<span style="color:#f92672">.</span>n
+num_action <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>action_space<span style="color:#f92672">.</span>n
+num_episode <span style="color:#f92672">=</span> <span style="color:#ae81ff">5000</span>
+
+<span style="color:#75715e"># Q_table</span>
+Q_table <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((num_state, num_action))
+<span style="color:#75715e"># N_table</span>
+N_table <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((num_state, num_action))
+<span style="color:#75715e"># R_table</span>
+R_table <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros((num_state, num_action))
+
+<span style="color:#66d9ef">for</span> episode <span style="color:#f92672">in</span> tqdm(range(num_episode)):
+    traj <span style="color:#f92672">=</span> []    
+    state <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>reset()
+    
+    <span style="color:#66d9ef">for</span> step <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>):
+        action <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>action_space<span style="color:#f92672">.</span>sample()        
+        traj<span style="color:#f92672">.</span>append((state, action)) <span style="color:#75715e"># trajectory</span>
+        next_state, reward, done, info <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>step(action)
+        R_table[state][action] <span style="color:#f92672">=</span> reward
+        state <span style="color:#f92672">=</span> next_state
+        
+        <span style="color:#66d9ef">if</span> done: <span style="color:#75715e"># an episode finished  </span>
+            <span style="color:#75715e">#</span>
+            <span style="color:#75715e"># Monte Carlo policy evaluation</span>
+            <span style="color:#75715e">#</span>
+            G_t <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(traj)):
+                gamma <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.6</span> <span style="color:#75715e"># discount factor</span>
+                <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range( i, len(traj) ):
+                    S_t <span style="color:#f92672">=</span> traj[j][<span style="color:#ae81ff">0</span>]
+                    A_t <span style="color:#f92672">=</span> traj[j][<span style="color:#ae81ff">1</span>]
+                    <span style="color:#66d9ef">if</span> i<span style="color:#f92672">==</span>j:
+                        G_t <span style="color:#f92672">+=</span> R_table[S_t][A_t]
+                    <span style="color:#66d9ef">else</span>:
+                        G_t <span style="color:#f92672">+=</span> gamma <span style="color:#f92672">*</span> R_table[S_t][A_t]
+                        gamma <span style="color:#f92672">=</span> gamma <span style="color:#f92672">*</span> gamma
+                S_t <span style="color:#f92672">=</span> traj[i][<span style="color:#ae81ff">0</span>]
+                A_t <span style="color:#f92672">=</span> traj[i][<span style="color:#ae81ff">1</span>]
+                N_table[S_t][A_t] <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+                Q_table[S_t][A_t] <span style="color:#f92672">+=</span> (G_t <span style="color:#f92672">-</span> Q_table[S_t][A_t]) <span style="color:#f92672">/</span> N_table[S_t][A_t]
+            <span style="color:#66d9ef">break</span></code></pre></div>
+<pre><code>100%|██████████| 5000/5000 [00:00&lt;00:00, 8508.33it/s]
+</code></pre>
+
+<h2 id="해결-solution">해결 (Solution)</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">state <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>reset()
+done <span style="color:#f92672">=</span> False
+
+<span style="color:#75715e"># Initial world display</span>
+world <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>render(mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ansi&#39;</span>)
+display(Pretty(world))
+sleep(<span style="color:#ae81ff">0.5</span>)
+
+<span style="color:#66d9ef">while</span> <span style="color:#f92672">not</span> done:
+    action <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>argmax(Q_table[state]) <span style="color:#75715e"># Optimal Policy</span>
+    state, reward, done, info <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>step(action)
+    
+    <span style="color:#75715e"># updated world display</span>
+    world <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>render(mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;ansi&#39;</span>)
+    clear_output(wait<span style="color:#f92672">=</span>True)
+    display(Pretty(world))
+    sleep(<span style="color:#ae81ff">0.5</span>)
+    
+    <span style="color:#66d9ef">if</span> done <span style="color:#f92672">and</span> state <span style="color:#f92672">==</span> <span style="color:#ae81ff">15</span>:
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74"> 🎉👍 성공! 🍺🥇&#39;</span>)</code></pre></div>
+<pre><code>  (Right)
+SFFF
+FHFH
+FFFH
+HFF[41mG[0m
+
+
+
+
+ 🎉👍 성공! 🍺🥇
+</code></pre>
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/environment/" rel="tag">Environment</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/agent/" rel="tag">Agent</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/state/" rel="tag">State</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/action/" rel="tag">Action</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/reward/" rel="tag">Reward</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/policy/" rel="tag">Policy</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/q-value/" rel="tag">Q-value</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/monte-carlo/" rel="tag">Monte-Carlo</a></li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/long_short_term_memory/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Long Short-Term Memory (LSTM)</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/sarsa_learning/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">SARSA Learning</p></a>
+	</div>
+</nav>
+<script src="https://utteranc.es/client.js"
+        repo="skettee/blog-comments"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 skettee.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

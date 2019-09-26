@@ -6,10 +6,100 @@
     <description>Recent content in Tags on 막돼먹은 엔지니어의 머신런닝 개발</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 14 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 26 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Action</title>
+      <link>/tags/action/</link>
+      <pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/action/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Agent</title>
+      <link>/tags/agent/</link>
+      <pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/agent/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Environment</title>
+      <link>/tags/environment/</link>
+      <pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/environment/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Policy</title>
+      <link>/tags/policy/</link>
+      <pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/policy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Q-value</title>
+      <link>/tags/q-value/</link>
+      <pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/q-value/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reward</title>
+      <link>/tags/reward/</link>
+      <pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/reward/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>State</title>
+      <link>/tags/state/</link>
+      <pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/state/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>𝜀-greedy</title>
+      <link>/tags/%F0%9D%9C%80-greedy/</link>
+      <pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/%F0%9D%9C%80-greedy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SARSA</title>
+      <link>/tags/sarsa/</link>
+      <pubDate>Wed, 25 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/sarsa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Monte-Carlo</title>
+      <link>/tags/monte-carlo/</link>
+      <pubDate>Mon, 23 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/monte-carlo/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>LSTM</title>
