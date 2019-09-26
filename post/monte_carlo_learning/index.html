@@ -390,7 +390,9 @@ Q-value를 어떻게 찾지?</p>
 
 <h3 id="monte-carlo-몬테-카를로">Monte Carlo (몬테 카를로)</h3>
 
-<p>&lsquo;얼음호수&rsquo; 에서 <code>S</code>(Start)에서 시작해서 <code>H</code>(Hole)를 빠지거나  <code>G</code>(Goal)에 도착하면 게임을 끝이난다. 이 것을 <strong>에피소드(episode)</strong> 라고 한다.  하나의 에피소드가 끝나면 에피소드에서 지나왔던 상태(state)에 대해서 Q-value를 구한다. 그리고 계속해서 에피소드를 실행 시키면서 지나온 상태(state)에 대한 Q-value를 업데이트 하면 결국 최적의 Q-value를 구할 수 있다. 이것이 몬테 카를로 방법(Monte Carlo method)이다.</p>
+<p>&lsquo;얼음호수&rsquo; 에서 <code>S</code>(Start)에서 시작해서 <code>H</code>(Hole)에 빠지거나  <code>G</code>(Goal)에 도착하면 게임을 끝이난다. 이 것을 <strong>에피소드(episode)</strong> 라고 한다.  하나의 에피소드가 끝나면 에피소드에서 지나왔던 상태(state)에 대해서 Q-value를 구한다. 그리고 계속해서 에피소드를 실행 시키면서 지나온 상태(state)에 대한 Q-value를 업데이트 하면 결국 최적의 Q-value를 구할 수 있다. 이것이 몬테 카를로 방법(Monte Carlo method)이다. 이때 액션은 랜덤으로 결정한다.</p>
+
+<p>\(\pi(0|\cdot) = \pi(1|\cdot) = \pi(2|\cdot) = \pi(3|\cdot) = 0.25\)</p>
 
 <p>하나의 에피소드가 끝나면 아래와 같이 Q-value를 구한다.</p>
 
