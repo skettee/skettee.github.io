@@ -66,7 +66,9 @@
 <li><a href="#환경-environment">환경 (Environment)</a></li>
 <li><a href="#q-learning">Q-Learning</a>
 <ul>
-<li>
+<li><a href="#sarsa-greedy">SARSA + greedy</a></li>
+<li><a href="#sarsa-𝜀-greedy">SARSA + 𝜀-greedy</a></li>
+<li><a href="#q-learning-1">Q-Learning</a>
 <ul>
 <li><a href="#target">Target</a></li>
 <li><a href="#error-델타">Error (델타)</a></li>
@@ -136,19 +138,15 @@ sleep(<span style="color:#ae81ff">0.5</span>)
     <span style="color:#66d9ef">if</span> done: <span style="color:#75715e"># an episode finished</span>
         <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Episode finished after {} timesteps&#34;</span><span style="color:#f92672">.</span>format(step<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>))
         <span style="color:#66d9ef">break</span></code></pre></div>
-<pre><code>  (Down)
+<pre><code>  (Up)
 SFFFFFFF
 FFFFFFFF
-FFF[41mH[0mFFFF
+FFFHFFFF
 FFFFFHFF
 FFFHFFFF
 FHHFFFHF
-FHFFHFHF
+[41mF[0mHFFHFHF
 FFFHFFFG
-
-
-
-Episode finished after 17 timesteps
 </code></pre>
 
 <p>⚙️ 엔지니어</p>
@@ -191,23 +189,31 @@ Episode finished after 17 timesteps
 
 <h2 id="q-learning">Q-Learning</h2>
 
-<p>Q-Learning 의 원리는 서로 다른 정책(policy)으로 훈련 시킨 데이터를 섞어도 최적화가 가능하다는 것이다.</p>
+<p>Q-Learning 의 원리는 서로 다른 정책(policy)으로 학습 시킨 데이터를 섞어도 최적화가 가능하다는 것이다.</p>
 
-<p>SARSA + greedy 방식으로 훈련해서 만들어진 \(Q(S, A&rsquo;)\)가 있다고 가정하자.</p>
+<h3 id="sarsa-greedy">SARSA + greedy</h3>
 
-<p>그리고 우리는 SARSA + 𝜀-greedy 방식으로 훈련해서 \(Q(S, A)\)를 만들 것이다.  이렇게&hellip;</p>
+<p>SARSA + greedy 방식으로 학습한 Q-value는 아래와 같다.</p>
+
+<p>\(Q(S_t, A&rsquo;_t) \leftarrow Q(S_t, A&rsquo;_t) + \alpha \left( R_{t+1} + \gamma Q(S_{t+1}, A&rsquo;_{t+1}) - Q(S_t, A&rsquo;_t) \right)\)</p>
+
+<p>greedy 방식은 다음 스텝의 액션을 선택하는 경우에 욕심쟁이(greedy)처럼 최고의 Q-value의 액션만을 선택한다. 따라서 다음 식을 만족한다.</p>
+
+<p>\(A&rsquo;_{t+1} = \max_{a&rsquo;} Q(S_{t+1}, a&rsquo;)\)</p>
+
+<p>따라서 Q-value는 다음과 같다.</p>
+
+<p>\(Q(S_t, A&rsquo;_t) \leftarrow Q(S_t, A&rsquo;_t) + \alpha \left( R_{t+1} + \gamma \max_{a&rsquo;} Q(S_{t+1}, a&rsquo;) - Q(S_t, A&rsquo;_t) \right)\)</p>
+
+<h3 id="sarsa-𝜀-greedy">SARSA + 𝜀-greedy</h3>
+
+<p>SARSA + 𝜀-greedy 방식으로 학습한 Q-value는 아래와 같다.</p>
 
 <p>\(Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left( R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) \right)\)</p>
 
-<p>여기서 \(Q(S_{t+1}, A_{t+1})\) 대신에 SARSA + greedy 방식으로 만들어진 \(Q(S_{t+1}, A&rsquo;)\)을 사용한다.  이렇게&hellip;</p>
+<p>여기서 \(Q(S_{t+1}, A_{t+1})\) 대신에 SARSA + greedy 방식으로 만들어진 \(\max_{a&rsquo;} Q(S_{t+1}, a&rsquo;)\)을 사용한다.  그러면&hellip;</p>
 
-<p>\(Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left( R_{t+1} + \gamma Q(S_{t+1}, A&rsquo;) - Q(S_t, A_t) \right)\)</p>
-
-<p>A&rsquo; 은 greedy 방식으로 만들어 졌으므로 다음의 식이 성립한다.</p>
-
-<p>\(\pi(S_{t+1}) = \text{argmax}_{a&rsquo;} Q(S_{t+1}, a&rsquo;)\)</p>
-
-<p>A&rsquo; 에 \(\pi(S_{t+1})\)를 박아 넣으면 다음의 식이 나온다.</p>
+<h3 id="q-learning-1">Q-Learning</h3>
 
 <p>\(Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left( R_{t+1} + \gamma \max_{a&rsquo;} Q(S_{t+1}, a&rsquo;) - Q(S_t, A_t) \right)\)</p>
 
@@ -220,7 +226,7 @@ Episode finished after 17 timesteps
 
 <h4 id="error-델타">Error (델타)</h4>
 
-<p>목표값과 현재값과의 차이를 \(\delta\) 라고 한다. 여기서 에러는</p>
+<p>목표값과 현재값과의 차이를 \(\delta\) 라고 한다.</p>
 
 <p>\(\delta_t = R_{t+1} + \gamma \max_{a&rsquo;} Q(S_{t+1}, a&rsquo;) - Q(S_t, A_t)\)</p>
 
@@ -230,7 +236,7 @@ Episode finished after 17 timesteps
 
 <blockquote>
 <p>SARSA에서 마지막 A를 수행할 필요 없이<br />
-Q 테이블에서 가장 높을 점수의 액션을 선택하면<br />
+Q 테이블에서 가장 큰 수의 액션을 선택하면<br />
 최적화가 가능하다는 것이 바로<br />
 Q-Learning이다!</p>
 </blockquote>
@@ -266,10 +272,12 @@ Q_table <span style="color:#f92672">=</span> np<span style="color:#f92672">.</sp
         <span style="color:#66d9ef">else</span>:
             action <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>argmax(Q_table[state])
         next_state, reward, done, info <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>step(action)
-        Q_table[state][action] <span style="color:#f92672">+=</span> alpha <span style="color:#f92672">*</span> (reward <span style="color:#f92672">+</span> gamma<span style="color:#f92672">*</span>Q_table[next_state, np<span style="color:#f92672">.</span>argmax(Q_table[next_state])] \
-                                           <span style="color:#f92672">-</span> Q_table[state][action])
+        
+        target <span style="color:#f92672">=</span> reward <span style="color:#f92672">+</span> gamma<span style="color:#f92672">*</span>Q_table[next_state, np<span style="color:#f92672">.</span>argmax(Q_table[next_state])] 
+        delta <span style="color:#f92672">=</span> target <span style="color:#f92672">-</span> Q_table[state][action]
+        Q_table[state][action] <span style="color:#f92672">+=</span> alpha <span style="color:#f92672">*</span> delta
         state <span style="color:#f92672">=</span> next_state</code></pre></div>
-<pre><code>100%|██████████| 5000/5000 [00:02&lt;00:00, 1558.53it/s]
+<pre><code>100%|██████████| 5000/5000 [00:03&lt;00:00, 1390.73it/s]
 </code></pre>
 
 <h2 id="해결-solution">해결 (Solution)</h2>
