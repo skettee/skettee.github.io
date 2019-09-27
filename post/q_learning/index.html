@@ -64,7 +64,14 @@
 <ul>
 <li><a href="#문제-분석-problem-anaysis">문제 분석 (Problem Anaysis)</a></li>
 <li><a href="#환경-environment">환경 (Environment)</a></li>
-<li><a href="#q-learning">Q-Learning</a></li>
+<li><a href="#q-learning">Q-Learning</a>
+<ul>
+<li>
+<ul>
+<li><a href="#target">Target</a></li>
+<li><a href="#error-델타">Error (델타)</a></li>
+</ul></li>
+</ul></li>
 <li><a href="#학습-learning">학습 (Learning)</a></li>
 <li><a href="#해결-solution">해결 (Solution)</a></li>
 </ul></li>
@@ -184,9 +191,9 @@ Episode finished after 17 timesteps
 
 <h2 id="q-learning">Q-Learning</h2>
 
-<p>Q-Learning 의 원리는 살사(SARSA)에서 서로 다른 정책(policy)으로 훈련 시킨 데이터를 섞어도 최적화가 가능하다는 것이다.</p>
+<p>Q-Learning 의 원리는 서로 다른 정책(policy)으로 훈련 시킨 데이터를 섞어도 최적화가 가능하다는 것이다.</p>
 
-<p>일단, SARSA + greedy 방식으로 훈련해서 \(Q(S, A&rsquo;)\)을 만들어 놓는다.</p>
+<p>SARSA + greedy 방식으로 훈련해서 만들어진 \(Q(S, A&rsquo;)\)가 있다고 가정하자.</p>
 
 <p>그리고 우리는 SARSA + 𝜀-greedy 방식으로 훈련해서 \(Q(S, A)\)를 만들 것이다.  이렇게&hellip;</p>
 
@@ -200,12 +207,24 @@ Episode finished after 17 timesteps
 
 <p>\(\pi(S_{t+1}) = \text{argmax}_{a&rsquo;} Q(S_{t+1}, a&rsquo;)\)</p>
 
-<p>\(\pi(S_{t+1})\)를 A&rsquo; 에 박아 넣으면 다음의 식이 나온다.</p>
+<p>A&rsquo; 에 \(\pi(S_{t+1})\)를 박아 넣으면 다음의 식이 나온다.</p>
 
-<p>\(\mathsf {Q(S, A) \leftarrow Q(S, A) + \alpha \left( R + \gamma \max_{a&rsquo;} Q(S&rsquo;, a&rsquo;) - Q(S, A) \right)}\)</p>
+<p>\(Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left( R_{t+1} + \gamma \max_{a&rsquo;} Q(S_{t+1}, a&rsquo;) - Q(S_t, A_t) \right)\)</p>
 
 <p>\(\alpha\) : learning rate<br />
 \(\gamma\) : 디스카운트 (discount factor)</p>
+
+<h4 id="target">Target</h4>
+
+<p>목표로 하는 값이다. 여기서 타겟은 \(R_{t+1} + \gamma \max_{a&rsquo;} Q(S_{t+1}, a&rsquo;)\)이다.</p>
+
+<h4 id="error-델타">Error (델타)</h4>
+
+<p>목표값과 현재값과의 차이를 \(\delta\) 라고 한다. 여기서 에러는</p>
+
+<p>\(\delta_t = R_{t+1} + \gamma \max_{a&rsquo;} Q(S_{t+1}, a&rsquo;) - Q(S_t, A_t)\)</p>
+
+<p>계속해서 에피소드를 실행 시키면서 \(Q(S_t, A_t)\)에다가 \(\alpha * \delta_t\) 를 업데이트 하면 결국 \(Q(s, a) \rightarrow q_*(s,a)\)가 된다.</p>
 
 <p>⚙️ 엔지니어</p>
 

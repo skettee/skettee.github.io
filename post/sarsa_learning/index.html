@@ -76,7 +76,11 @@
 <li><a href="#q-value-state-action-value">Q-value (State Action Value)</a></li>
 <li><a href="#최적-가치-optimal-value">최적 가치 (Optimal Value)</a></li>
 <li><a href="#최적-정책-optimal-policy">최적 정책 (Optimal Policy)</a></li>
-<li><a href="#살사-sarsa">살사 (SARSA)</a></li>
+<li><a href="#살사-sarsa">살사 (SARSA)</a>
+<ul>
+<li><a href="#target">Target</a></li>
+<li><a href="#error-델타">Error (델타)</a></li>
+</ul></li>
 <li><a href="#𝜀-greedy">𝜀-greedy</a></li>
 </ul></li>
 <li><a href="#학습-learning">학습 (Learning)</a></li>
@@ -310,12 +314,24 @@ Q-value를 계산한다.</p>
 
 <h3 id="살사-sarsa">살사 (SARSA)</h3>
 
-<p>State-Action-Reward-State-Action의 줄임말로서 미래 보상의 합 \(G_t\) 대신에 보상값 \(R\) 과 다음 스텝의 Q-value를 이용해서 Q-value를 최적화 하는 알고리듬이다.</p>
+<p>State-Action-Reward-State-Action의 줄임말로서 미래 보상의 합 \(G_t\) 대신에 보상(Reward)값과 다음 스텝의 Q-value를 이용해서 Q-value를 최적화 하는 알고리듬이다.</p>
 
-<p>\(\mathsf {Q(S, A) \leftarrow Q(S, A) + \alpha \left( R + \gamma Q(S&rsquo;, A&rsquo;) - Q(S, A) \right)}\)</p>
+<p>\(Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left( R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) \right)\)</p>
 
 <p>\(\alpha\) : learning rate<br />
 \(\gamma\) : 디스카운트 (discount factor)</p>
+
+<h4 id="target">Target</h4>
+
+<p>목표로 하는 값이다. 여기서 타겟은 \(R_{t+1} + \gamma Q(S_{t+1}, A_{t+1})\)이다.</p>
+
+<h4 id="error-델타">Error (델타)</h4>
+
+<p>목표값과 현재값과의 차이를 \(\delta\) 라고 한다. 여기서 에러는</p>
+
+<p>\(\delta_t = R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t)\)</p>
+
+<p>계속해서 에피소드를 실행 시키면서 \(Q(S_t, A_t)\)에다가 \(\alpha * \delta_t\) 를 업데이트 하면 결국 \(Q(s, a) \rightarrow q_*(s,a)\)가 된다.</p>
 
 <h3 id="𝜀-greedy">𝜀-greedy</h3>
 
