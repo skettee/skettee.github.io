@@ -6,10 +6,19 @@
     <description>Recent content on 막돼먹은 엔지니어의 머신런닝 개발</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 26 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 28 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Deep Q-Networks (DQN)</title>
+      <link>/post/deep_q_network/</link>
+      <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/deep_q_network/</guid>
+      <description>&lt;p&gt;딥러닝 과 Q-Learning의 만남! DQN에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 DQN을 모델링 하고 Q-Learning의 알고리듬을 만들어 보자.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Q-Learning</title>

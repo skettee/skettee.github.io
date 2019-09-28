@@ -248,7 +248,7 @@ Episode finished after 7 timesteps
 
 <h2 id="에이전트-agent">에이전트 (Agent)</h2>
 
-<p>에이전트는 환경에서 부터 주어진 상태(\(S\)), 액션(\(A\)), 보상(\(R\))을 가지고 가치(Q-value)를 계산하고 정책(Policy)을 수립해서 최적의 액션(\(\pi_*(a|s)\))을 수행해야 한다.</p>
+<p>에이전트는 환경에서 부터 주어진 상태(\(S\)), 액션(\(A\)), 보상(\(R\))을 가지고 가치(Q-value)를 계산하고 정책(Policy)을 수립해서 최적의 액션을 수행해야 한다.</p>
 
 <h3 id="정책-policy">정책 (Policy)</h3>
 
@@ -258,7 +258,7 @@ Episode finished after 7 timesteps
 
 <h3 id="상태-가치-state-value">상태 가치 (State Value)</h3>
 
-<p>상태 가치는 상태 s 에서 기대되는 미래 보상의 합이다. 여기서 \(G_t\)는 벨만 방정식(Bellman Equation)에 의해서 보상(Reward)값과 다음 스텝의 상태 가치 \(v(s&rsquo;)\) 로 분해 할 수 있다.</p>
+<p>상태 가치는 상태 s 에서 기대되는 미래 보상의 합이다. 여기서 \(G_t\)는 벨만 방정식(Bellman Equation)에 의해서 보상(Reward)값과 다음 스텝의 상태 가치로 분해 할 수 있다.</p>
 
 <p>\(\begin{align}
 v_{\pi}(s) &amp; = \mathbb E_{\pi} [G_t | S_t = s] \\
@@ -270,7 +270,7 @@ v_{\pi}(s) &amp; = \mathbb E_{\pi} [G_t | S_t = s] \\
 
 <h3 id="q-value-state-action-value">Q-value (State Action Value)</h3>
 
-<p>Q-value는 상태 s 에서 액션 a 를 수행할 경우에 기대되는 미래 보상의 합이다.  여기서 \(G_t\)는 벨만 방정식(Bellman Equation)에 의해서 보상(Reward)값과 다음 스텝의 Q-value \(q(s&rsquo;, a&rsquo;)\) 로 분해 할 수 있다.</p>
+<p>Q-value는 상태 s 에서 액션 a 를 수행할 경우에 기대되는 미래 보상의 합이다.  여기서 \(G_t\)는 벨만 방정식(Bellman Equation)에 의해서 보상(Reward)값과 다음 스텝의 Q-value로 분해 할 수 있다.</p>
 
 <p>\(\begin{align}
 q_{\pi}(s,a) &amp; = \mathbb E_{\pi} [G_t | S_t = s, A_t = a] \\
