@@ -143,7 +143,7 @@ action <span style="color:#f92672">=</span> env<span style="color:#f92672">.</sp
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Action space: &#39;</span>, env<span style="color:#f92672">.</span>action_space)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Random action: &#39;</span>, action)</code></pre></div>
 <pre><code>State space:  Box(4,)
-Initial state:  [ 0.00567487  0.01806323 -0.00897363 -0.03876896]
+Initial state:  [-3.81773775e-03  2.15626624e-02 -6.67510456e-03 -9.79646708e-05]
 
 Action space:  Discrete(2)
 Random action:  1
@@ -323,11 +323,7 @@ model <span style="color:#f92672">=</span> Sequential()
 model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">24</span>, input_dim<span style="color:#f92672">=</span> num_state, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
 model<span style="color:#f92672">.</span>add(Dense(<span style="color:#ae81ff">24</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
 model<span style="color:#f92672">.</span>add(Dense(num_action, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;linear&#39;</span>))
-model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;mse&#39;</span>, optimizer<span style="color:#f92672">=</span>Adam(learning_rate<span style="color:#f92672">=</span>learning_rate))</code></pre></div>
-<p>WARNING: Logging before flag parsing goes to stderr.
-W0929 19:16:32.085939 140315350894400 deprecation.py:506] From /home/dataman/anaconda3/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.<strong>init</strong> (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-Instructions for updating:
-Call initializer instance with the dtype argument instead of passing it to the constructor</p></li>
+model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;mse&#39;</span>, optimizer<span style="color:#f92672">=</span>Adam(learning_rate<span style="color:#f92672">=</span>learning_rate))</code></pre></div></li>
 </ol>
 
 <h2 id="에이전트-agent">에이전트 (Agent)</h2>
