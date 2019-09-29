@@ -206,7 +206,7 @@ Episode finished after 43 timesteps
 
 <p>greedy 방식은 다음 스텝의 액션을 선택하는 경우에 욕심쟁이(greedy)처럼 최고의 Q-value의 액션만을 선택한다. 따라서 다음 식을 만족한다.</p>
 
-<p>\(A&rsquo;_{t+1} = \text{argmax}_{a&rsquo;} Q(S_{t+1}, a&rsquo;)\)</p>
+<p>\(Q(S_{t+1}, A&rsquo;_{t+1}) = \max_{a&rsquo;} Q(S_{t+1}, a&rsquo;)\)</p>
 
 <p>따라서 Q-value는 다음과 같다.</p>
 
