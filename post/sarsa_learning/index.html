@@ -257,7 +257,7 @@ Episode finished after 7 timesteps
 
 <p>에이전트가 주어진 상태에서 액션을 선택하는 확률이다.</p>
 
-<p>\(\pi (a|s) = \mathbb P[A_t = a | S_t = s]\)</p>
+<p>\(\pi(s,a) = \pi (a|s) = \mathbb P[A_t = a | S_t = s]\)</p>
 
 <h3 id="상태-가치-state-value">상태 가치 (State Value)</h3>
 
@@ -293,7 +293,7 @@ q_{\pi}(s,a) &amp; = \mathbb E_{\pi} [G_t | S_t = s, A_t = a] \\
 
 <p>\(q_*(s,a)\)가 결정 되면 \(\pi (a|s) = 1\) 이 된다. 즉 상태 s일때는 100% 액션 a를 수행 한다.</p>
 
-<p>\(\pi_*(a|s) = \begin{cases}
+<p>\(\pi_*(s,a) = \begin{cases}
 1 &amp; \text{if } a= \text{argmax}_{a \in A} q_\star(s,a) \\
 0 &amp; \text{otherwise}
 \end{cases}\)</p>

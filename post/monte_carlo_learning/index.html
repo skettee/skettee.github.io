@@ -307,7 +307,7 @@ env<span style="color:#f92672">.</span>observation_space</code></pre></div>
 
 <p>에이전트가 원하는 최종 골(Goal)은 다음의 식과 같이 다음, 다음, 다음&hellip;의 미래의 보상들의 합을 돌려 받는(Return) 것이다.</p>
 
-<p>\(\begin{align}G_t = R_{t+1} + \gamma R_{t+2} + \cdots + = \sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1}\end{align}\)</p>
+<p>\(G_t = R_{t+1} + \gamma R_{t+2} + \cdots + = \sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1}\)</p>
 
 <p>그러나 에이전트도 욕심이 있어서 바로 다음 보상이 커보인다. 이것을 만족시켜 주는 것이 디스카운트(discount factor) \(\gamma\) 값이다.  \(\gamma\) 는 0과 1사이의 값을 가진다. 이렇게 하면 미래로 갈 수록 보상은 지수적으로 작아 보이게 된다.</p>
 
@@ -335,7 +335,7 @@ env<span style="color:#f92672">.</span>observation_space</code></pre></div>
 
 <p>에이전트가 주어진 상태에서 액션을 선택하는 확률이다.</p>
 
-<p>\(\pi (a|s) = \mathbb P[A_t = a | S_t = s]\)</p>
+<p>\(\pi(s,a) = \pi (a|s) = \mathbb P[A_t = a | S_t = s]\)</p>
 
 <p>예를 들어서 \(\pi (1 | 5) = 0.25\) 라는 것은 5번 상태에서 아래로 이동하는 액션(1) 을 수행할 확률을 25%로 정한다는 뜻이다.</p>
 
@@ -359,9 +359,9 @@ env<span style="color:#f92672">.</span>observation_space</code></pre></div>
 
 <h3 id="최적-정책-optimal-policy">최적 정책 (Optimal Policy)</h3>
 
-<p>\(q_*(s,a)\)가 결정 되면 \(\pi (a|s) = 1\) 이 된다. 즉 상태 s일때는 100% 액션 a를 수행 한다.</p>
+<p>\(q_*(s,a)\)가 결정 되면 \(\pi (s, a) = 1\) 이 된다. 즉 상태 s일때는 100% 액션 a를 수행 한다.</p>
 
-<p>\( \pi_*(a|s) = \begin{cases}
+<p>\( \pi_*(s, a) = \begin{cases}
 1 &amp; \text{if } a= \text{argmax}_{a \in A} q_\star(s,a) \\
 0 &amp; \text{otherwise}
 \end{cases} \)</p>
