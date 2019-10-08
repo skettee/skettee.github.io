@@ -86,11 +86,6 @@
   </url>
   
   <url>
-    <loc>/post/deep_q_network/</loc>
-    <lastmod>2019-09-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/policy/</loc>
     <lastmod>2019-09-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
