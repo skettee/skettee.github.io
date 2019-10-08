@@ -344,7 +344,7 @@ model<span style="color:#f92672">.</span>compile(loss<span style="color:#f92672"
 
 <h3 id="리플레이-replay">리플레이 (Replay)</h3>
 
-<p>메모리에 저장된 데이터들을 랜덤(random), 미니배치(mini-batch)로 샘플링해서 QN 모델에 넣고 훈련한다.</p>
+<p>메모리에 저장된 데이터들을 QN 모델에 넣고 훈련한다.</p>
 
 <h2 id="학습-learning">학습 (Learning)</h2>
 
@@ -380,11 +380,11 @@ batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">32</
 
             state <span style="color:#f92672">=</span> next_state
 
-        <span style="color:#75715e"># Replay</span>
         timesteps_this_batch <span style="color:#f92672">+=</span> len(memory)
         <span style="color:#66d9ef">if</span> timesteps_this_batch <span style="color:#f92672">&gt;</span> min_timesteps_per_batch:
             <span style="color:#66d9ef">break</span>
-       
+
+    <span style="color:#75715e"># Replay   </span>
     <span style="color:#66d9ef">for</span> state, action, reward, next_state, done <span style="color:#f92672">in</span> memory:
         <span style="color:#66d9ef">if</span> done:
             target <span style="color:#f92672">=</span> reward
@@ -480,6 +480,7 @@ show_video(file_infix)</code></pre></div>
 		<li class="tags__item"><a class="tags__link btn" href="/tags/action/" rel="tag">Action</a></li>
 		<li class="tags__item"><a class="tags__link btn" href="/tags/reward/" rel="tag">Reward</a></li>
 		<li class="tags__item"><a class="tags__link btn" href="/tags/q-value/" rel="tag">Q-value</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/cartpole/" rel="tag">CartPole</a></li>
 	</ul>
 </div>
 		</footer>
