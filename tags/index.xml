@@ -6,7 +6,7 @@
     <description>Recent content in Tags on 막돼먹은 엔지니어의 머신런닝 개발</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 29 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 30 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,18 +14,90 @@
     <item>
       <title>Action</title>
       <link>/tags/action/</link>
-      <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/action/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Advantage</title>
+      <link>/tags/advantage/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/advantage/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Agent</title>
       <link>/tags/agent/</link>
-      <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/agent/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Environment</title>
+      <link>/tags/environment/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/environment/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gaussian-distribution</title>
+      <link>/tags/gaussian-distribution/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/gaussian-distribution/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Log-Likelihood</title>
+      <link>/tags/log-likelihood/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/log-likelihood/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Policy</title>
+      <link>/tags/policy/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/policy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Policy-Network</title>
+      <link>/tags/policy-network/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/policy-network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reward</title>
+      <link>/tags/reward/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/reward/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>State</title>
+      <link>/tags/state/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/state/</guid>
       <description></description>
     </item>
     
@@ -39,47 +111,11 @@
     </item>
     
     <item>
-      <title>Environment</title>
-      <link>/tags/environment/</link>
-      <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/environment/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Q-value</title>
       <link>/tags/q-value/</link>
       <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/q-value/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Reward</title>
-      <link>/tags/reward/</link>
-      <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/reward/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>State</title>
-      <link>/tags/state/</link>
-      <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/state/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Policy</title>
-      <link>/tags/policy/</link>
-      <pubDate>Thu, 26 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/policy/</guid>
       <description></description>
     </item>
     

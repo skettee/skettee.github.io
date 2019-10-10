@@ -6,7 +6,7 @@
     <description>Recent content in Categories on 막돼먹은 엔지니어의 머신런닝 개발</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 29 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 30 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,27 @@
     <item>
       <title>Neural Network</title>
       <link>/categories/neural-network/</link>
-      <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/neural-network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Policy Gradient</title>
+      <link>/categories/policy-gradient/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/policy-gradient/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reinforcement Learning</title>
+      <link>/categories/reinforcement-learning/</link>
+      <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/reinforcement-learning/</guid>
       <description></description>
     </item>
     
@@ -26,15 +44,6 @@
       <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/categories/q-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Reinforcement Learning</title>
-      <link>/categories/reinforcement-learning/</link>
-      <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/reinforcement-learning/</guid>
       <description></description>
     </item>
     
