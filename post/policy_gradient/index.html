@@ -98,10 +98,10 @@
 <li><a href="#경사-하강법-gradient-descent-1">경사 하강법(Gradient Descent)</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#agent">Agent</a>
+<li><a href="#에이전트-agent">에이전트 (Agent)</a>
 <ul>
-<li><a href="#paths">Paths</a></li>
-<li><a href="#replay">Replay</a></li>
+<li><a href="#메모리-memory">메모리 (Memory)</a></li>
+<li><a href="#리플레이-replay">리플레이 (Replay)</a></li>
 </ul></li>
 <li><a href="#학습-learning">학습 (Learning)</a></li>
 <li><a href="#해결-solution">해결 (Solution)</a></li>
@@ -551,17 +551,17 @@ approx<span style="color:#f92672">.</span>fit(np<span style="color:#f92672">.</s
 <pre><code>LinearRegression(copy_X=True, fit_intercept=True, n_jobs=None, normalize=False)
 </code></pre>
 
-<h2 id="agent">Agent</h2>
+<h2 id="에이전트-agent">에이전트 (Agent)</h2>
 
 <p>평균의 ±1 표준편차 안에서 랜덤하게 액션을 수행 하면서 데이터를 수집하고 최적의 액션으로 업데이트 한다.</p>
 
-<h3 id="paths">Paths</h3>
+<h3 id="메모리-memory">메모리 (Memory)</h3>
 
 <p><code>min_timesteps_per_batch</code> 만큼 액션을 수행한 결과(state, action, reward)를 저장한다.</p>
 
-<h3 id="replay">Replay</h3>
+<h3 id="리플레이-replay">리플레이 (Replay)</h3>
 
-<p>저장된 데이터로 부터 상태 가치(state-value)와 정책(polish)을 업데이트 한다.</p>
+<p>저장된 데이터로 부터 상태 가치(state-value)와 정책(policy)을 업데이트 한다.</p>
 
 <h2 id="학습-learning">학습 (Learning)</h2>
 
@@ -583,7 +583,7 @@ total_timesteps <span style="color:#f92672">=</span> <span style="color:#ae81ff"
 
 <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> tqdm(range(num_iteration)):
     timesteps_this_batch <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-    paths <span style="color:#f92672">=</span> []
+    memory <span style="color:#f92672">=</span> []
     <span style="color:#66d9ef">while</span> True:
         state <span style="color:#f92672">=</span> env<span style="color:#f92672">.</span>reset()
         states, actions, rewards <span style="color:#f92672">=</span> [], [], []
@@ -596,9 +596,9 @@ total_timesteps <span style="color:#f92672">=</span> <span style="color:#ae81ff"
                 rewards<span style="color:#f92672">.</span>append(reward)
             <span style="color:#66d9ef">if</span> done:
                 <span style="color:#66d9ef">break</span>
-        <span style="color:#75715e"># Paths</span>
+        <span style="color:#75715e"># Memory</span>
         path <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;state&#34;</span> : np<span style="color:#f92672">.</span>array(states), <span style="color:#e6db74">&#34;action&#34;</span> : np<span style="color:#f92672">.</span>array(actions), <span style="color:#e6db74">&#34;reward&#34;</span> : np<span style="color:#f92672">.</span>array(rewards)}
-        paths<span style="color:#f92672">.</span>append(path)        
+        memory<span style="color:#f92672">.</span>append(path)        
         timesteps_this_batch <span style="color:#f92672">+=</span> len(path[<span style="color:#e6db74">&#34;reward&#34;</span>])
         <span style="color:#66d9ef">if</span> timesteps_this_batch <span style="color:#f92672">&gt;</span> min_timesteps_per_batch:
             <span style="color:#66d9ef">break</span>
@@ -608,7 +608,7 @@ total_timesteps <span style="color:#f92672">=</span> <span style="color:#ae81ff"
     
     <span style="color:#75715e"># Advantage function</span>
     G_ts, advs <span style="color:#f92672">=</span> [], []
-    <span style="color:#66d9ef">for</span> path <span style="color:#f92672">in</span> paths:
+    <span style="color:#66d9ef">for</span> path <span style="color:#f92672">in</span> memory:
         rew_t <span style="color:#f92672">=</span> path[<span style="color:#e6db74">&#34;reward&#34;</span>]
         G_t <span style="color:#f92672">=</span> get_returns(rew_t, gamma)
         v_hat <span style="color:#f92672">=</span> approx<span style="color:#f92672">.</span>predict(path[<span style="color:#e6db74">&#34;state&#34;</span>])
@@ -617,8 +617,8 @@ total_timesteps <span style="color:#f92672">=</span> <span style="color:#ae81ff"
         G_ts<span style="color:#f92672">.</span>append(G_t)
    
     <span style="color:#75715e"># Build data set</span>
-    in_states <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate([path[<span style="color:#e6db74">&#34;state&#34;</span>] <span style="color:#66d9ef">for</span> path <span style="color:#f92672">in</span> paths])
-    in_actions  <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate([path[<span style="color:#e6db74">&#34;action&#34;</span>] <span style="color:#66d9ef">for</span> path <span style="color:#f92672">in</span> paths])
+    in_states <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate([path[<span style="color:#e6db74">&#34;state&#34;</span>] <span style="color:#66d9ef">for</span> path <span style="color:#f92672">in</span> memory])
+    in_actions  <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate([path[<span style="color:#e6db74">&#34;action&#34;</span>] <span style="color:#66d9ef">for</span> path <span style="color:#f92672">in</span> memory])
     advans <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate(advs)
     in_advans <span style="color:#f92672">=</span> (advans <span style="color:#f92672">-</span> advans<span style="color:#f92672">.</span>mean()) <span style="color:#f92672">/</span> (advans<span style="color:#f92672">.</span>std() <span style="color:#f92672">+</span> <span style="color:#ae81ff">1e-8</span>)    
     G_ts <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>concatenate(G_ts)
