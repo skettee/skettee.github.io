@@ -8,7 +8,7 @@
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
 	<meta property="og:title" content="Policy Gradient (PG)" />
-<meta property="og:description" content="Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 PG-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자." />
+<meta property="og:description" content="Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/policy_gradient/" />
 <meta property="article:published_time" content="2019-09-30T00:00:00+00:00" />
@@ -111,7 +111,7 @@
 	</div>
 </div>
 <div class="content post__content clearfix">
-			<p>Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 PG-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자.</p>
+			<p>Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자.</p>
 
 <p>실제로 돌려 보고 싶으면 구글 코랩으로 ~</p>
 
@@ -312,7 +312,7 @@ Random action:  [-0.98692274  0.14008525]
 <ol>
 <li>&lsquo;달착륙선&rsquo;을 안전하게 깃발 사이로 착륙 시키기 위한 최적의 액션값 \(a\) 들은 가우시안 분포(\(\mu, \sigma\))를 따른다.<br /></li>
 <li>우리가 설계할 뉴럴 네트워크 모델의 출력값 \(\hat y\) 은 액션에 대한 가우시안 분포의 평균값 \(\mu\) 이다.<br /></li>
-<li>PG에서 뉴럴 네트워크의 파라메타(weight)는 \(w\)가 아닌 \(\theta\)로 표시한다.</li>
+<li>PG에서 뉴럴 네트워크의 파라미터는 \(w\)가 아닌 \(\theta\)로 표시한다.</li>
 </ol>
 
 <p>예를 들어 보자.</p>

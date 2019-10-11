@@ -435,6 +435,12 @@
   </url>
   
   <url>
+    <loc>/tags/parameter/</loc>
+    <lastmod>2019-08-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/post/linear_regression/</loc>
     <lastmod>2019-08-15T00:00:00+00:00</lastmod>
   </url>

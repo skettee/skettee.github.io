@@ -17,7 +17,7 @@
       <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/policy_gradient/</guid>
-      <description>&lt;p&gt;Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 PG-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -66,7 +66,7 @@
     </item>
     
     <item>
-      <title>Recurrent Neural Network</title>
+      <title>Recurrent Neural Network (RNN)</title>
       <link>/post/recurrent_neural_network/</link>
       <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
       
@@ -84,7 +84,7 @@
     </item>
     
     <item>
-      <title>Convolutional Neural Network</title>
+      <title>Convolutional Neural Network (CNN)</title>
       <link>/post/convolutional_neural_network/</link>
       <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
       
