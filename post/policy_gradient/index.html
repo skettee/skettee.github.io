@@ -441,11 +441,11 @@ Random action:  [-0.98692274  0.14008525]
 
 <p>\(J(\theta) = - \dfrac{1}{N} \sum_{i=1}^N  \nabla_{\theta} \log p(a ; \theta) * \hat A_{\text{std}}\)</p>
 
-<p>손실함수는 Keras에서 API를 제공하지 않는다. 따라서 Tensorflow를 이용해서 직접 만들어야 한다. Tensorflow는 <code>Graph</code>와 <code>Session</code>에 대한 개념을 알고 있으면 쉽게 사용할 수 있다.</p>
+<p>손실함수 \(J(\theta)\) 는 Keras에서 API를 제공하지 않는다. 따라서 Tensorflow를 이용해서 직접 만들어야 한다. Tensorflow는 <code>Graph</code>와 <code>Session</code>에 대한 개념을 알고 있으면 쉽게 사용할 수 있다.</p>
 
 <h4 id="경사-하강법-gradient-descent">경사 하강법 (Gradient Descent)</h4>
 
-<p>Tensorflow의 Optimizer는 경사 하강법만 있다. 우리는 간단하게 손실 함수에 마이너스(-)를 붙여 줌으로써 경사 하강법을 사용할 수 있다.</p>
+<p>Tensorflow의 Optimizer는 경사 하강 방식이다. 우리는 간단하게 손실 함수에 마이너스(-)를 붙여 줌으로써 경사 하강법을 사용할 수 있다.</p>
 
 <p>REPEAT(epoch) {</p>
 
@@ -456,7 +456,7 @@ Random action:  [-0.98692274  0.14008525]
 
 <h4 id="로그-표준편차-log-standard-deviation">로그 표준편차 (Log standard deviation)</h4>
 
-<p>로그 표준편차(logstd)를 <code>tf.variable</code>로 선언한다. 손실을 계산할 경우에 로그 표준편차 값도 최적화 된다.</p>
+<p>로그 표준편차(logstd)를 <code>tf.variable</code>로 선언한다. 손실을 최적화 하면서 로그 표준편차 값도 최적화 된다.</p>
 
 <h4 id="샘플-액션-sampled-action">샘플 액션 (Sampled Action)</h4>
 
@@ -503,7 +503,7 @@ Call initializer instance with the dtype argument instead of passing it to the c
 
 <h3 id="상태가치-모델링-state-value-modeling">상태가치 모델링 (State-Value Modeling)</h3>
 
-<p>상태(State)의 개수가 무한대이기 때문에 뉴럴 네트워크를 이용해서 상태 가치(State Value)를 예측 해야 하지만 귀찮다. 여기서는 간단하게 선형 회귀 (Linear Regression)을 이용해서 State Value를 예측해 보자.</p>
+<p>상태(State)의 개수가 무한대이기 때문에 뉴럴 네트워크를 이용해서 상태 가치(State Value)를 예측 해야 하지만 귀찮다. 여기서는 간단하게 선형 회귀 (Linear Regression)을 이용한다.</p>
 
 <h4 id="데이터-수집-data-collection">데이터 수집 (Data Collection)</h4>
 
