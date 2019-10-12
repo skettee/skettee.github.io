@@ -17,7 +17,7 @@
       <pubDate>Mon, 30 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/policy_gradient/</guid>
-      <description>&lt;p&gt;Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Gaussian Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자.&lt;/p&gt;</description>
     </item>
     
     <item>

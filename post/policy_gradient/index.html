@@ -8,7 +8,7 @@
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
 	<meta property="og:title" content="Policy Gradient (PG)" />
-<meta property="og:description" content="Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자." />
+<meta property="og:description" content="Gaussian Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/policy_gradient/" />
 <meta property="article:published_time" content="2019-09-30T00:00:00+00:00" />
@@ -16,7 +16,7 @@
 
 	<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Policy Gradient (PG)"/>
-<meta name="twitter:description" content="Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자."/>
+<meta name="twitter:description" content="Gaussian Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자."/>
 
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -73,7 +73,7 @@
 <li><a href="#상태-state">상태 (State)</a></li>
 <li><a href="#보상-reward">보상 (Reward)</a></li>
 </ul></li>
-<li><a href="#policy-gradient">Policy Gradient</a>
+<li><a href="#gaussian-policy-gradient">Gaussian Policy Gradient</a>
 <ul>
 <li><a href="#가우시안-분포-gaussian-distribution">가우시안 분포 (Gaussian Distribution)</a></li>
 <li><a href="#로그-라이클리후드-함수-log-likelihood-function">로그 라이클리후드 함수 (Log Likelihood Function)</a>
@@ -114,7 +114,7 @@
 	</div>
 </div>
 <div class="content post__content clearfix">
-			<p>Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자.</p>
+			<p>Gaussian Policy Gradient (PG)에 대해서 알아 보고 Gym에서 제공하는 문제를 해결하기 위해 Policy-Network을 모델링 하고 최적의 액션을 예측하는 알고리듬을 만들어 보자.</p>
 
 <p>실제로 돌려 보고 싶으면 구글 코랩으로 ~</p>
 
@@ -304,9 +304,9 @@ Random action:  [ 0.8797723  -0.36046624]
 복잡하다&hellip;.</p>
 </blockquote>
 
-<h2 id="policy-gradient">Policy Gradient</h2>
+<h2 id="gaussian-policy-gradient">Gaussian Policy Gradient</h2>
 
-<p>우리의 목표는 상태(state) 데이터를 입력(\(s\))으로, 액션(action)을 출력(\(\hat a\))으로 하는 뉴럴 네트워크를 구성하고 학습을 통해서 주어진 상태에서 최적의 액션을 예측하도록 하는 것이다.</p>
+<p>우리의 목표는 상태(state) 데이터를 입력(\(s\))으로, 아날로그 액션(action)을 출력(\(\hat a\))으로 하는 뉴럴 네트워크를 구성하고 학습을 통해서 주어진 상태에서 최적의 액션을 예측하도록 하는 것이다.</p>
 
 <h3 id="가우시안-분포-gaussian-distribution">가우시안 분포 (Gaussian Distribution)</h3>
 
