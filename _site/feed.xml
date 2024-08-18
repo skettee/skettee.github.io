@@ -1,4 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-18T23:14:17+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DeepLearning, LLMs and Applications</title><subtitle>DeepLearning Engineer, 막돼먹은 엔지니어의 머신러닝 개발, Chat Vibe, Chatbot for the good vibes. </subtitle><entry><title type="html">막돼먹은 엔지니어의 머신러닝 개발</title><link href="http://localhost:4000/deeplearning/2024/08/18/deepl-notebook.html" rel="alternate" type="text/html" title="막돼먹은 엔지니어의 머신러닝 개발" /><published>2024-08-18T23:07:00+09:00</published><updated>2024-08-18T23:07:00+09:00</updated><id>http://localhost:4000/deeplearning/2024/08/18/deepl-notebook</id><content type="html" xml:base="http://localhost:4000/deeplearning/2024/08/18/deepl-notebook.html"><![CDATA[<p>딥러닝 모델링 &amp; 강화학습 알고리듬을 학습하기 위한 주피터 노트북입니다.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-19T01:59:03+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DeepLearning, LLMs and Applications</title><subtitle>DeepLearning Engineer, 막돼먹은 엔지니어의 머신러닝 개발, Chat Vibe, Chatbot for the good vibes. </subtitle><entry><title type="html">Chat Vibe - Chatbot for the good vibes.</title><link href="http://localhost:4000/chat-vibe/2024/08/19/chat-vibe.html" rel="alternate" type="text/html" title="Chat Vibe - Chatbot for the good vibes." /><published>2024-08-19T01:52:00+09:00</published><updated>2024-08-19T01:52:00+09:00</updated><id>http://localhost:4000/chat-vibe/2024/08/19/chat-vibe</id><content type="html" xml:base="http://localhost:4000/chat-vibe/2024/08/19/chat-vibe.html"><![CDATA[<p><a href="https://github.com/skettee/chat-vibe">Chat Vibe 바로가기</a></p>
+
+<p>안녕하세요! Chat Vibe를 소개해 드릴게요. 지루한 대화는 이제 그만, 감성적이고 친근한 AI 친구를 만나보세요!</p>
+
+<p>🎭 Chat Vibe: 당신만의 특별한 AI 친구
+지식을 딱딱하게 나열하는 AI는 잊으세요. Chat Vibe는 마치 실제 친구와 대화하는 것처럼 자연스럽고 재미있게 정보를 전달합니다. 무미건조한 대화 대신, 감정이 살아있는 대화를 즐겨보세요!</p>
+
+<p>😀 감정표현의 달인
+Chat Vibe는 단순히 정보만 주는 게 아니에요. 당신의 말에 공감하고, 때로는 재치 있게, 때로는 진지하게 반응합니다. 마치 실제 사람과 대화하는 것 같은 생생한 경험을 선사해 드릴게요.</p>
+
+<p>🦸 믿을 수 있는 정보 제공
+허황된 이야기는 No! Chat Vibe는 최신 AI 기술을 활용해 정확한 정보만을 제공합니다. 필요하다면 웹 검색도 해서 최신 정보를 찾아드려요.</p>
+
+<p>🔎 궁금한 게 있다면 물어보세요
+복잡한 주제도 걱정 마세요. Chat Vibe가 웹을 검색해 꼭 필요한 정보를 찾아드립니다. 어려운 내용도 쉽고 재미있게 설명해 드릴게요.</p>
+
+<p>🕵️ 투명한 대화
+Chat Vibe의 독특한 기능! AI의 원래 답변도 따로 볼 수 있어요. 어떻게 대화가 바뀌었는지 직접 확인해보세요.</p>
+
+<p>🛡️ 안전한 개인정보 보호
+당신의 대화 내용은 오직 당신의 기기에만 저장됩니다. 안심하고 대화를 즐기세요.</p>
+
+<p>📜 보기 좋은 대화 기록
+마크다운 지원으로 대화 내용을 깔끔하게 정리해드려요. 코드도 예쁘게 하이라이팅 해드립니다!</p>
+
+<p>🌟 계속해서 진화하는 Chat Vibe
+새로운 기능들이 계속 추가될 예정이에요. 당신의 AI 친구 Chat Vibe와 함께 성장해보세요!</p>
+
+<p>지금 바로 Chat Vibe와 대화를 시작해보세요. 똑똑하면서도 친근한 AI 친구가 당신을 기다리고 있습니다!</p>]]></content><author><name></name></author><category term="chat-vibe" /><summary type="html"><![CDATA[Chat Vibe 바로가기]]></summary></entry><entry><title type="html">막돼먹은 엔지니어의 머신러닝 개발</title><link href="http://localhost:4000/deeplearning/2024/08/18/deepl-notebook.html" rel="alternate" type="text/html" title="막돼먹은 엔지니어의 머신러닝 개발" /><published>2024-08-18T23:07:00+09:00</published><updated>2024-08-18T23:07:00+09:00</updated><id>http://localhost:4000/deeplearning/2024/08/18/deepl-notebook</id><content type="html" xml:base="http://localhost:4000/deeplearning/2024/08/18/deepl-notebook.html"><![CDATA[<p>딥러닝 모델링 &amp; 강화학습 알고리듬을 학습하기 위한 주피터 노트북입니다.</p>
 
 <p><a href="https://github.com/skettee/deepl-notebook">막돼먹은 엔지니어의 머신러닝 개발</a></p>
 
