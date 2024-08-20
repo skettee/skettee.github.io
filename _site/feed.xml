@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-20T02:28:08+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DeepLearning, LLMs and Applications</title><subtitle>DeepLearning Engineer, 막돼먹은 엔지니어의 머신러닝 개발, Chat Vibe, Chatbot for the good vibes. </subtitle><entry><title type="html">Chat Vibe - Adding Shakespeare.</title><link href="http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare.html" rel="alternate" type="text/html" title="Chat Vibe - Adding Shakespeare." /><published>2024-08-19T22:53:00+09:00</published><updated>2024-08-19T22:53:00+09:00</updated><id>http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare</id><content type="html" xml:base="http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare.html"><![CDATA[<p><a href="https://github.com/skettee/chat-vibe">Chat Vibe</a>는 캐릭터를 쉽게 추가할 수 있어요. 감정을 표현하는 캐릭터 이미지들과 프로필을 만들어서 추가해 주면 됩니다.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-20T19:59:51+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DeepLearning, LLMs and Applications</title><subtitle>DeepLearning Engineer, 막돼먹은 엔지니어의 머신러닝 개발, Chat Vibe, Chatbot for the good vibes. </subtitle><entry><title type="html">Chat Vibe - Adding Shakespeare.</title><link href="http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare.html" rel="alternate" type="text/html" title="Chat Vibe - Adding Shakespeare." /><published>2024-08-19T22:53:00+09:00</published><updated>2024-08-19T22:53:00+09:00</updated><id>http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare</id><content type="html" xml:base="http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare.html"><![CDATA[<p><a href="https://github.com/skettee/chat-vibe">Chat Vibe</a>는 캐릭터를 쉽게 추가할 수 있어요. 감정을 표현하는 캐릭터 이미지들과 프로필을 만들어서 추가해 주면 됩니다.</p>
 
 <p>이번 포스팅은 <code class="language-plaintext highlighter-rouge">윌리엄 셰익스피어</code> 캐릭터를 만드는 과정을 순서대로 정리해 보았습니다.</p>
 
@@ -14,9 +14,9 @@
 
 <p><img src="/assets/shakespeare-256.png" alt="Shakespeare" /></p>
 
-<h4 id="드라이브-영상-및-이미지">드라이브 영상 및 이미지</h4>
+<h4 id="드라이빙driving-영상-및-이미지">드라이빙(Driving) 영상 및 이미지</h4>
 
-<p>드라이브 영상 및 이미지는 내가 모델이 되어서 셀프 촬영을 했습니다. 셀프 사진이 너무 끔찍(?)해서 여기에 올리지 못한 점 양해 바랍니다.</p>
+<p>드라이빙 영상 및 이미지는 셀프 촬영을 했습니다. 셀프 사진이 너무 끔찍(?)해서 여기에 올리지 못한 점 양해 바랍니다.</p>
 
 <h4 id="출력-이미지">출력 이미지</h4>
 
@@ -107,9 +107,11 @@
 
 <h3 id="5-대화">5. 대화</h3>
 
-<p><a href="https://github.com/skettee/chat-vibe">Chat Vibe</a>를 실행하고 왼쪽 상단의 메뉴에서 <code class="language-plaintext highlighter-rouge">Shakespeare</code>를 선택하고 대화를 시작해 보세요.</p>
+<p><a href="https://github.com/skettee/chat-vibe">Chat Vibe</a> 최신 버전에 셰익스피어 캐릭터가 추가되어 있습니다. 실행 후, 왼쪽 상단의 메뉴에서 <code class="language-plaintext highlighter-rouge">Shakespeare</code>를 선택하고 대화를 시작해 보세요.</p>
 
 <p><img src="/assets/screenshot-720.png" alt="screenshot" /></p>
+
+<p>셰익스피어님은 옛날 영어를 사용하시는 것 같습니다. 하나도 알아듣지 못하겠습니다 TT</p>
 
 <p>영문학 전공하신 분이 계시면 평가 부탁 드립니다.</p>]]></content><author><name></name></author><category term="chat-vibe" /><summary type="html"><![CDATA[Chat Vibe는 캐릭터를 쉽게 추가할 수 있어요. 감정을 표현하는 캐릭터 이미지들과 프로필을 만들어서 추가해 주면 됩니다.]]></summary></entry><entry><title type="html">Chat Vibe - Chatbot for the good vibes.</title><link href="http://localhost:4000/chat-vibe/2024/08/19/chat-vibe.html" rel="alternate" type="text/html" title="Chat Vibe - Chatbot for the good vibes." /><published>2024-08-19T01:52:00+09:00</published><updated>2024-08-19T01:52:00+09:00</updated><id>http://localhost:4000/chat-vibe/2024/08/19/chat-vibe</id><content type="html" xml:base="http://localhost:4000/chat-vibe/2024/08/19/chat-vibe.html"><![CDATA[<p><a href="https://github.com/skettee/chat-vibe">Chat Vibe 바로가기</a></p>
 
