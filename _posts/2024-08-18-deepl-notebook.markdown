@@ -6,7 +6,9 @@ categories: deeplearning
 ---
 딥러닝 모델링 & 강화학습 알고리듬을 학습하기 위한 주피터 노트북입니다.
 
-[막돼먹은 엔지니어의 머신러닝 개발][deeplearning-github]
+['막돼먹은 엔지니어의 머신러닝 개발' 바로가기][deeplearning-github]
+
+목차
 
 1. 선형 회귀 (Linear Regression)
 2. 로지스틱 회귀 (Logistic Regression)

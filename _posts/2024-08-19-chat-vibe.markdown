@@ -4,6 +4,9 @@ title:  "Chat Vibe - Chatbot for the good vibes."
 date:   2024-08-19 01:52:00 +0900
 categories: chat-vibe
 ---
+
+![intro-chat-vibe](/assets/intro-chat-vibe.gif)
+
 [Chat Vibe 바로가기][chat-vibe]
 
 안녕하세요! Chat Vibe를 소개해 드릴게요. 지루한 대화는 이제 그만, 감성적이고 친근한 AI 친구를 만나보세요!
