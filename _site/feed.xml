@@ -1,4 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-20T21:38:54+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DeepLearning, LLMs and Applications</title><subtitle>DeepLearning Engineer, 막돼먹은 엔지니어의 머신러닝 개발, Chat Vibe, Chatbot for the good vibes. </subtitle><entry><title type="html">Chat Vibe - Adding Shakespeare.</title><link href="http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare.html" rel="alternate" type="text/html" title="Chat Vibe - Adding Shakespeare." /><published>2024-08-19T22:53:00+09:00</published><updated>2024-08-19T22:53:00+09:00</updated><id>http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare</id><content type="html" xml:base="http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare.html"><![CDATA[<p><a href="https://github.com/skettee/chat-vibe">Chat Vibe</a>는 캐릭터를 쉽게 추가할 수 있어요. 감정을 표현하는 캐릭터 이미지들과 프로필을 만들어서 추가해 주면 됩니다.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-29T11:17:59+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DeepLearning, LLMs and Applications</title><subtitle>DeepLearning Engineer, 막돼먹은 엔지니어의 머신러닝 개발, Chat Vibe, Chatbot for the good vibes. </subtitle><entry><title type="html">Chat Vibe - 3D Character for the good vibes.</title><link href="http://localhost:4000/chat-vibe/2024/08/29/3d-character.html" rel="alternate" type="text/html" title="Chat Vibe - 3D Character for the good vibes." /><published>2024-08-29T00:32:00+09:00</published><updated>2024-08-29T00:32:00+09:00</updated><id>http://localhost:4000/chat-vibe/2024/08/29/3d-character</id><content type="html" xml:base="http://localhost:4000/chat-vibe/2024/08/29/3d-character.html"><![CDATA[<p>자연스러운 캐릭터의 움직임과 표정 변화를 구현하기 위해서 캐릭터를 3D로 변경하였습니다.</p>
+
+<p><img src="/assets/expression.gif" alt="expression" /></p>
+
+<p>3D 라이브러리는 <a href="https://threejs.org/">three.js</a>와 <a href="https://github.com/pixiv/three-vrm">three-vrm</a>를 사용하였고 표정은 VRM(VR용 인간형 3D 모델링 파일 포맷)에서 제공하는 기본 Expression을 사용하여 구현하였습니다.</p>
+
+<h2 id="1-사용된-소프트웨어">1. 사용된 소프트웨어</h2>
+
+<ul>
+  <li><a href="https://vroid.com/en/studio">VRoid Studio</a>: 인간형 3D 모델링 무료 소프트웨어. 모델링 지식이 없어도 쉽게 캐릭터를 제작할 수 있습니다.</li>
+  <li><a href="https://www.blender.org/">Blender 4.1</a>: 무료 3D 컴퓨터 그래픽 제작 소프트웨어. 최신 버젼은 기존 플러그인을 사용할 수 없어서 4.1을 사용하였습니다.</li>
+  <li><a href="https://www.mixamo.com/">Mixamo</a>: 3D 캐릭터의 다양한 동작을 다운 받을 수 있는 사이트입니다.</li>
+  <li><a href="https://vrm-addon-for-blender.info/en/">VRM Add-on for Blender</a>: 블렌더에서 VRM 파일을 사용하기 위한 플러그인.</li>
+  <li><a href="https://github.com/Rokoko/rokoko-studio-live-blender">Rokoko Blender Plugin</a>: 애니메이션 리타겟팅을 위한 블렌더 플러그인.</li>
+</ul>
+
+<h2 id="2-캐릭터-생성">2. 캐릭터 생성</h2>
+
+<p>VRoid Studio에서 캐릭터를 생성하고 VRM 파일로 저장합니다.</p>
+
+<h2 id="3-동작-애니메이션-생성">3. 동작 애니메이션 생성</h2>
+
+<ul>
+  <li>사용할 애니메이션을 Mixamo에서 선택하여 다운로드 합니다.</li>
+  <li>Blender를 열고 생성한 VRM 캐릭터를 불러옵니다.</li>
+  <li>Mixamo에서 다운받은 애니메이션을 불러옵니다.</li>
+  <li>Rokoko의 <a href="https://github.com/Rokoko/rokoko-studio-live-blender#retargeting">Retargeting</a>을 사용하여 VRM 캐릭터에 애니메이션을 적용합니다.</li>
+  <li>애니메이션이 적용된 캐릭터를 VRMA(VRM 애니메이션 파일 포멧)으로 저장합니다.</li>
+</ul>
+
+<h2 id="4-표정-애니메이션-생성">4. 표정 애니메이션 생성</h2>
+
+<ul>
+  <li>Blender를 열고 생성한 VRM 캐릭터를 불러옵니다.</li>
+  <li>Expressions(Object &gt; VRM &gt; Expressions)에서 표정 컨트롤을 사용해서 애니메이션을 제작합니다.</li>
+  <li>표정 애니메이션이 적용된 캐릭터를 VRMA(VRM 애니메이션 파일 포멧)으로 저장합니다.</li>
+</ul>
+
+<h2 id="5-클립-생성">5. 클립 생성</h2>
+<ul>
+  <li>three.js, three-vrm 라이브러리를 사용해서 생성한 애니메이션(VRMA)을 <a href="https://threejs.org/docs/#api/en/animation/AnimationClip">AnimationClip</a>으로 변환합니다.</li>
+  <li>애니메이션 클립들을 JSON파일로 저장합니다.</li>
+</ul>
+
+<h2 id="6-적용">6. 적용</h2>
+<ul>
+  <li>캐릭터 VRM 파일과 애니메이션 클립 JSON 파일을 <code class="language-plaintext highlighter-rouge">static/models/</code>에 카피합니다.</li>
+  <li><code class="language-plaintext highlighter-rouge">characters.json</code> 파일에 캐릭터 정보와 애니메이션 정보를 추가합니다.</li>
+</ul>
+
+<p>이제 자연스러운 캐릭터 AI와 즐겁게 채팅을 시작해 보세요!</p>]]></content><author><name></name></author><category term="chat-vibe" /><summary type="html"><![CDATA[자연스러운 캐릭터의 움직임과 표정 변화를 구현하기 위해서 캐릭터를 3D로 변경하였습니다.]]></summary></entry><entry><title type="html">Chat Vibe - Adding Shakespeare.</title><link href="http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare.html" rel="alternate" type="text/html" title="Chat Vibe - Adding Shakespeare." /><published>2024-08-19T22:53:00+09:00</published><updated>2024-08-19T22:53:00+09:00</updated><id>http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare</id><content type="html" xml:base="http://localhost:4000/chat-vibe/2024/08/19/add-shakespeare.html"><![CDATA[<p>🔥 <strong><code class="language-plaintext highlighter-rouge">2024/08/29</code></strong>: 캐릭터가 3D로 변경되었습니다. 따라서 이미지로 구성되어 있는 셰익스피어 캐릭터는 현재 지원하지 않습니다.</p>
+
+<p><br /></p>
+
+<p><a href="https://github.com/skettee/chat-vibe">Chat Vibe</a>는 캐릭터를 쉽게 추가할 수 있어요. 감정을 표현하는 캐릭터 이미지들과 프로필을 만들어서 추가해 주면 됩니다.</p>
 
 <p>이번 포스팅은 <code class="language-plaintext highlighter-rouge">윌리엄 셰익스피어</code> 캐릭터를 만드는 과정을 순서대로 정리해 보았습니다.</p>
 
@@ -113,7 +167,7 @@
 
 <p>셰익스피어님은 옛날 영어를 사용하시는 것 같습니다. 하나도 알아듣지 못하겠습니다 TT</p>
 
-<p>영문학 전공하신 분이 계시면 평가 부탁 드립니다.</p>]]></content><author><name></name></author><category term="chat-vibe" /><summary type="html"><![CDATA[Chat Vibe는 캐릭터를 쉽게 추가할 수 있어요. 감정을 표현하는 캐릭터 이미지들과 프로필을 만들어서 추가해 주면 됩니다.]]></summary></entry><entry><title type="html">Chat Vibe - Chatbot for the good vibes.</title><link href="http://localhost:4000/chat-vibe/2024/08/19/chat-vibe.html" rel="alternate" type="text/html" title="Chat Vibe - Chatbot for the good vibes." /><published>2024-08-19T01:52:00+09:00</published><updated>2024-08-19T01:52:00+09:00</updated><id>http://localhost:4000/chat-vibe/2024/08/19/chat-vibe</id><content type="html" xml:base="http://localhost:4000/chat-vibe/2024/08/19/chat-vibe.html"><![CDATA[<p><img src="/assets/intro-chat-vibe.gif" alt="intro-chat-vibe" /></p>
+<p>영문학 전공하신 분이 계시면 평가 부탁 드립니다.</p>]]></content><author><name></name></author><category term="chat-vibe" /><summary type="html"><![CDATA[🔥 2024/08/29: 캐릭터가 3D로 변경되었습니다. 따라서 이미지로 구성되어 있는 셰익스피어 캐릭터는 현재 지원하지 않습니다.]]></summary></entry><entry><title type="html">Chat Vibe - Chatbot for the good vibes.</title><link href="http://localhost:4000/chat-vibe/2024/08/19/chat-vibe.html" rel="alternate" type="text/html" title="Chat Vibe - Chatbot for the good vibes." /><published>2024-08-19T01:52:00+09:00</published><updated>2024-08-19T01:52:00+09:00</updated><id>http://localhost:4000/chat-vibe/2024/08/19/chat-vibe</id><content type="html" xml:base="http://localhost:4000/chat-vibe/2024/08/19/chat-vibe.html"><![CDATA[<p><img src="/assets/intro-chat-vibe.gif" alt="intro-chat-vibe" /></p>
 
 <p><a href="https://github.com/skettee/chat-vibe">Chat Vibe 바로가기</a></p>
 
