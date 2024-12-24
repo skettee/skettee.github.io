@@ -21,7 +21,7 @@
 title: DeepLearning, LLMs and Applications
 email: dohyeong.lee@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
- DeepLearning Engineer, 막돼먹은 엔지니어의 머신러닝 개발, Chat Vibe, Chatbot for the good vibes. 
+ DeepLearning Engineer, 막돼먹은 엔지니어의 머신러닝 개발, myChatbot, Chat Vibe 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: https://skettee.github.io # the base hostname & protocol for your site, e.g. http://example.com
 domain: skettee.github.io # if you want to force HTTPS, specify the domain without the http at the start, e.g. example.com
